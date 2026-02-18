@@ -12079,3 +12079,38 @@
 2026-02-18 19:24:54 │ [32mINFO[0m │ main            │ main.py:260 │ 测试模式: 只处理 3 条
 2026-02-18 19:24:54 │ [32mINFO[0m │ main            │ main.py:279 │ 数据库统计: 总计 67 篇, 今日 67 篇
 2026-02-18 19:24:54 │ [32mINFO[0m │ main            │ main.py:281 │ 运行完成
+2026-02-19 01:30:06 │ [32mINFO[0m │ main            │ main.py:227 │ ========================================
+2026-02-19 01:30:06 │ [32mINFO[0m │ main            │ main.py:228 │ News Funnel 启动
+2026-02-19 01:30:06 │ [32mINFO[0m │ main            │ main.py:229 │ ========================================
+2026-02-19 01:30:06 │ [32mINFO[0m │ main            │ main.py:236 │ 数据库已连接
+2026-02-19 01:30:06 │ [32mINFO[0m │ main            │ main.py:240 │ 已加载 14 个新闻源
+2026-02-19 01:30:06 │ [32mINFO[0m │ main            │ main.py:98 │ 开始并发抓取 (并发数: 5)...
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:116 │ [中国日报] 抓取 5 条
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:116 │ [环球时报] 抓取 5 条
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:116 │ [南华早报] 抓取 5 条
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:116 │ [BBC World] 抓取 5 条
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:116 │ [BBC Tech] 抓取 5 条
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:116 │ [BBC Business] 抓取 5 条
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:116 │ [CNN Top] 抓取 5 条
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:116 │ [CNN Tech] 抓取 5 条
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:116 │ [NYT World] 抓取 5 条
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:116 │ [NYT Tech] 抓取 5 条
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:116 │ [The Guardian] 抓取 5 条
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:116 │ [Al Jazeera] 抓取 5 条
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:116 │ [TechCrunch] 抓取 5 条
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:116 │ [Hacker News] 抓取 5 条
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:123 │ 抓取完成: 14 成功, 0 失败, 耗时 12.1s
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:243 │ 共抓取 70 条新闻
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:182 │ 去重: 跳过 35 条已存在的新闻
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:252 │ 新增 35 条新闻
+2026-02-19 01:30:18 │ [32mINFO[0m │ main            │ main.py:260 │ 测试模式: 只处理 3 条
+2026-02-19 01:30:19 │ [32mINFO[0m │ main            │ main.py:192 │ 开始 AI 处理 3 条新闻...
+2026-02-19 01:30:19 │ [32mINFO[0m │ processor       │ summarizer.py:49 │ 开始总结 3 条新闻
+2026-02-19 01:30:23 │ [32mINFO[0m │ processor       │ summarizer.py:54 │ 总结完成: 3 条
+2026-02-19 01:30:23 │ [32mINFO[0m │ processor       │ classifier.py:64 │ 开始分类 3 条新闻
+2026-02-19 01:30:25 │ [32mINFO[0m │ processor       │ classifier.py:69 │ 分类完成: 3 条
+2026-02-19 01:30:25 │ [32mINFO[0m │ main            │ main.py:195 │ AI 处理完成
+2026-02-19 01:30:27 │ [32mINFO[0m │ notifier        │ telegram.py:91 │ 摘要推送完成: 3 条新闻, 1 条消息
+2026-02-19 01:30:27 │ [32mINFO[0m │ main            │ main.py:204 │ 已推送 3 条新闻到 Telegram
+2026-02-19 01:30:27 │ [32mINFO[0m │ main            │ main.py:279 │ 数据库统计: 总计 102 篇, 今日 102 篇
+2026-02-19 01:30:27 │ [32mINFO[0m │ main            │ main.py:281 │ 运行完成
