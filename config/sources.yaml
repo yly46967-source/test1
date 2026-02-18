@@ -1,0 +1,93 @@
+# 新闻源配置
+# 用户可以自行添加或修改新闻源
+
+china:
+  # 中国新闻源（大部分国内媒体已停用RSS，以下为可用源）
+  - name: "中国日报"
+    url: "https://www.chinadaily.com.cn/rss/china_rss.xml"
+    type: "rss"
+    enabled: true
+
+  - name: "环球时报"
+    url: "https://www.globaltimes.cn/rss/outbrain.xml"
+    type: "rss"
+    enabled: true
+
+  - name: "南华早报"
+    url: "https://www.scmp.com/rss/91/feed"
+    type: "rss"
+    enabled: true
+
+world:
+  # 世界新闻
+  - name: "BBC World"
+    url: "https://feeds.bbci.co.uk/news/world/rss.xml"
+    type: "rss"
+    enabled: true
+
+  - name: "BBC Tech"
+    url: "https://feeds.bbci.co.uk/news/technology/rss.xml"
+    type: "rss"
+    enabled: true
+
+  - name: "BBC Business"
+    url: "https://feeds.bbci.co.uk/news/business/rss.xml"
+    type: "rss"
+    enabled: true
+
+  - name: "CNN Top"
+    url: "http://rss.cnn.com/rss/edition.rss"
+    type: "rss"
+    enabled: true
+
+  - name: "CNN Tech"
+    url: "http://rss.cnn.com/rss/edition_technology.rss"
+    type: "rss"
+    enabled: true
+
+  - name: "NYT World"
+    url: "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"
+    type: "rss"
+    enabled: true
+
+  - name: "NYT Tech"
+    url: "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml"
+    type: "rss"
+    enabled: true
+
+  - name: "The Guardian"
+    url: "https://www.theguardian.com/world/rss"
+    type: "rss"
+    enabled: true
+
+  - name: "Al Jazeera"
+    url: "https://www.aljazeera.com/xml/rss/all.xml"
+    type: "rss"
+    enabled: true
+
+  - name: "TechCrunch"
+    url: "https://techcrunch.com/feed/"
+    type: "rss"
+    enabled: true
+
+  - name: "Hacker News"
+    url: "https://hnrss.org/frontpage"
+    type: "rss"
+    enabled: true
+
+# 分类配置
+categories:
+  - 科技
+  - 政治
+  - 经济
+  - 社会
+  - 国际
+  - 体育
+  - 娱乐
+  - 其他
+
+# 抓取设置
+settings:
+  max_items_per_source: 5   # 每个源最多抓取条数（源多了适当减少）
+  request_timeout: 30       # 请求超时（秒）
+  user_agent: "NewsFunnel/1.0"
