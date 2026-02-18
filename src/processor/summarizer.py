@@ -4,6 +4,9 @@ from typing import List
 from openai import OpenAI
 
 from src.models import NewsItem
+from src.logger import get_processor_logger
+
+logger = get_processor_logger()
 
 
 class Summarizer:
@@ -34,13 +37,19 @@ class Summarizer:
                 max_tokens=200,
                 messages=[{"role": "user", "content": prompt}]
             )
-            return response.choices[0].message.content.strip()
+            summary = response.choices[0].message.content.strip()
+            logger.debug(f"总结完成: {item.title[:30]}...")
+            return summary
         except Exception as e:
-            print(f"总结失败: {e}")
+            logger.error(f"总结失败 [{item.title[:30]}...]: {e}")
             return ""
 
     async def summarize_batch(self, items: List[NewsItem]) -> List[NewsItem]:
         """批量总结新闻"""
-        for item in items:
+        logger.info(f"开始总结 {len(items)} 条新闻")
+        for i, item in enumerate(items, 1):
             item.summary = await self.summarize(item)
+            if i % 10 == 0:
+                logger.debug(f"总结进度: {i}/{len(items)}")
+        logger.info(f"总结完成: {len(items)} 条")
         return items

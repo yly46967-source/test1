@@ -4,6 +4,9 @@ from typing import List
 from telegram import Bot
 
 from src.models import NewsItem, Category
+from src.logger import get_notifier_logger
+
+logger = get_notifier_logger()
 
 
 class TelegramNotifier:
@@ -26,9 +29,10 @@ class TelegramNotifier:
                 parse_mode="HTML",
                 disable_web_page_preview=True
             )
+            logger.debug(f"消息发送成功 ({len(text)} 字符)")
             return True
         except Exception as e:
-            print(f"发送失败: {e}")
+            logger.error(f"消息发送失败: {e}")
             return False
 
     async def send_news(self, item: NewsItem) -> bool:
@@ -78,8 +82,12 @@ class TelegramNotifier:
 
         # 发送所有消息
         success = True
-        for msg in messages:
+        for i, msg in enumerate(messages, 1):
             if not await self.send_message(msg):
                 success = False
+                logger.warning(f"第 {i}/{len(messages)} 条消息发送失败")
+
+        if success:
+            logger.info(f"摘要推送完成: {len(items)} 条新闻, {len(messages)} 条消息")
 
         return success

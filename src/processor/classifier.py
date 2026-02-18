@@ -4,6 +4,9 @@ from typing import List
 from openai import OpenAI
 
 from src.models import NewsItem, Category
+from src.logger import get_processor_logger
+
+logger = get_processor_logger()
 
 
 class Classifier:
@@ -49,13 +52,19 @@ class Classifier:
                 max_tokens=20,
                 messages=[{"role": "user", "content": prompt}]
             )
-            return self._parse_category(response.choices[0].message.content)
+            category = self._parse_category(response.choices[0].message.content)
+            logger.debug(f"分类完成: {item.title[:30]}... -> {category.value}")
+            return category
         except Exception as e:
-            print(f"分类失败: {e}")
+            logger.error(f"分类失败 [{item.title[:30]}...]: {e}")
             return Category.OTHER
 
     async def classify_batch(self, items: List[NewsItem]) -> List[NewsItem]:
         """批量分类新闻"""
-        for item in items:
+        logger.info(f"开始分类 {len(items)} 条新闻")
+        for i, item in enumerate(items, 1):
             item.category = await self.classify(item)
+            if i % 10 == 0:
+                logger.debug(f"分类进度: {i}/{len(items)}")
+        logger.info(f"分类完成: {len(items)} 条")
         return items
