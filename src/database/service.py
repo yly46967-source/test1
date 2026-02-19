@@ -13,7 +13,7 @@ from .models import (
     CategoryEnum, RegionEnum,
     # AInsight Pro 新增模型
     KOL, Topic, RawContent, IntelligencePackage, IntelSource, IntelRelation,
-    KOLTierEnum, SourceTypeEnum, IntelCategoryEnum, TopicStatusEnum,
+    KOLTierEnum, KOLRoleEnum, KOLCategoryEnum, SourceTypeEnum, IntelCategoryEnum, TopicStatusEnum,
     create_fts_tables
 )
 from src.logger import get_database_logger

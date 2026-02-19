@@ -13,6 +13,18 @@ from .ainsight_fetcher import (
     RawContentItem,
     fetch_ainsight_sources,
 )
+from .nitter_gateway import (
+    NitterGateway,
+    NitterInstance,
+    InstanceStatus,
+    get_nitter_gateway,
+    reset_nitter_gateway,
+)
+from .twitter_fetcher import (
+    TwitterFetcher,
+    TwitterContent,
+    fetch_twitter_kols,
+)
 
 __all__ = [
     "BaseFetcher",
@@ -27,4 +39,14 @@ __all__ = [
     "AInsightFetcher",
     "RawContentItem",
     "fetch_ainsight_sources",
+    # Nitter Gateway
+    "NitterGateway",
+    "NitterInstance",
+    "InstanceStatus",
+    "get_nitter_gateway",
+    "reset_nitter_gateway",
+    # Twitter Fetcher
+    "TwitterFetcher",
+    "TwitterContent",
+    "fetch_twitter_kols",
 ]

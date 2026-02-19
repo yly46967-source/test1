@@ -1,16 +1,17 @@
 """AInsight Web UI - FastAPI 应用"""
 import os
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
-from fastapi import FastAPI, Request, Query
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Request, Query, HTTPException, Form
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 from dotenv import load_dotenv
 
 from src.database import DatabaseService
-from src.database.models import TopicStatusEnum, IntelCategoryEnum
+from src.database.models import TopicStatusEnum, IntelCategoryEnum, KOL, KOLTierEnum, KOLRoleEnum, KOLCategoryEnum
 
 load_dotenv()
 
@@ -23,6 +24,9 @@ templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 # 数据库
 db: Optional[DatabaseService] = None
+
+# Nitter 实例（用于生成 RSS URL）
+NITTER_INSTANCE = "https://nitter.privacydev.net"
 
 
 @app.on_event("startup")
@@ -217,6 +221,7 @@ async def api_topic_detail(topic_id: int):
             "keywords": topic.keywords,
             "heat_score": topic.heat_score,
             "source_count": topic.source_count,
+            "first_seen_at": topic.first_seen_at.isoformat() if topic.first_seen_at else None,
         },
         "contents": [
             {
@@ -226,6 +231,7 @@ async def api_topic_detail(topic_id: int):
                 "source_url": c.source_url,
                 "source_type": c.source_type.value if c.source_type else None,
                 "published_at": c.published_at.isoformat() if c.published_at else None,
+                "media_urls": c.media_urls if hasattr(c, 'media_urls') and c.media_urls else [],
             }
             for c in contents
         ],
@@ -236,3 +242,323 @@ async def api_topic_detail(topic_id: int):
             "verdict": intel.verdict if intel else None,
         } if intel else None,
     }
+
+
+# ==================== KOL 管理页面 ====================
+
+@app.get("/kols", response_class=HTMLResponse)
+async def kols_page(
+    request: Request,
+    tier: Optional[str] = None,
+    category: Optional[str] = None,
+    page: int = Query(1, ge=1),
+):
+    """KOL 管理页面"""
+    limit = 50
+    offset = (page - 1) * limit
+
+    # 构建查询
+    from sqlalchemy import select, func as sql_func
+    stmt = select(KOL)
+
+    if tier:
+        try:
+            stmt = stmt.where(KOL.tier == KOLTierEnum(tier))
+        except ValueError:
+            pass
+
+    if category:
+        try:
+            stmt = stmt.where(KOL.category == KOLCategoryEnum(category))
+        except ValueError:
+            pass
+
+    stmt = stmt.order_by(KOL.weight.desc(), KOL.created_at.desc())
+    stmt = stmt.offset(offset).limit(limit)
+
+    async with db.session() as session:
+        result = await session.execute(stmt)
+        kols = result.scalars().all()
+
+        # 统计
+        count_stmt = select(sql_func.count(KOL.id))
+        count_result = await session.execute(count_stmt)
+        total = count_result.scalar() or 0
+
+    # 分类选项
+    tiers = [
+        {"value": "god", "label": "God Tier", "emoji": "👑"},
+        {"value": "expert", "label": "Expert", "emoji": "🎯"},
+        {"value": "insider", "label": "Insider", "emoji": "🔮"},
+        {"value": "observer", "label": "Observer", "emoji": "👀"},
+    ]
+
+    categories = [
+        {"value": "ai_researcher", "label": "AI 研究员", "emoji": "🔬"},
+        {"value": "founder_ceo", "label": "创始人/CEO", "emoji": "🚀"},
+        {"value": "vc_investor", "label": "投资人", "emoji": "💰"},
+        {"value": "engineer", "label": "工程师", "emoji": "👨‍💻"},
+        {"value": "journalist", "label": "记者/媒体", "emoji": "📰"},
+        {"value": "influencer", "label": "KOL/博主", "emoji": "🎤"},
+    ]
+
+    return templates.TemplateResponse("kols.html", {
+        "request": request,
+        "kols": kols,
+        "total": total,
+        "tiers": tiers,
+        "categories": categories,
+        "current_tier": tier,
+        "current_category": category,
+        "page": page,
+        "nitter_instance": NITTER_INSTANCE,
+    })
+
+
+# ==================== KOL API ====================
+
+class KOLCreate(BaseModel):
+    """创建 KOL 请求"""
+    handle: str
+    name: Optional[str] = None
+    tier: str = "observer"
+    role: Optional[str] = None
+    category: Optional[str] = None
+    weight: float = 1.0
+
+
+class KOLUpdate(BaseModel):
+    """更新 KOL 请求"""
+    name: Optional[str] = None
+    tier: Optional[str] = None
+    role: Optional[str] = None
+    category: Optional[str] = None
+    weight: Optional[float] = None
+    is_active: Optional[bool] = None
+
+
+@app.get("/api/kols")
+async def api_list_kols(
+    tier: Optional[str] = None,
+    category: Optional[str] = None,
+    is_active: Optional[bool] = None,
+    limit: int = Query(50, le=200),
+    offset: int = Query(0, ge=0),
+):
+    """获取 KOL 列表"""
+    from sqlalchemy import select
+
+    stmt = select(KOL)
+
+    if tier:
+        try:
+            stmt = stmt.where(KOL.tier == KOLTierEnum(tier))
+        except ValueError:
+            pass
+
+    if category:
+        try:
+            stmt = stmt.where(KOL.category == KOLCategoryEnum(category))
+        except ValueError:
+            pass
+
+    if is_active is not None:
+        stmt = stmt.where(KOL.is_active == is_active)
+
+    stmt = stmt.order_by(KOL.weight.desc()).offset(offset).limit(limit)
+
+    async with db.session() as session:
+        result = await session.execute(stmt)
+        kols = result.scalars().all()
+
+    return {
+        "kols": [
+            {
+                "id": k.id,
+                "handle": k.handle,
+                "name": k.name,
+                "tier": k.tier.value if k.tier else None,
+                "role": k.role.value if k.role else None,
+                "category": k.category.value if k.category else None,
+                "weight": k.weight,
+                "is_active": k.is_active,
+                "rss_url": f"{NITTER_INSTANCE}/{k.handle}/rss" if k.handle else None,
+            }
+            for k in kols
+        ]
+    }
+
+
+@app.post("/api/kols")
+async def api_create_kol(kol_data: KOLCreate):
+    """创建新 KOL"""
+    from sqlalchemy import select
+
+    handle = kol_data.handle.lstrip("@").strip()
+
+    async with db.session() as session:
+        # 检查是否已存在
+        stmt = select(KOL).where(KOL.handle == handle)
+        result = await session.execute(stmt)
+        existing = result.scalar_one_or_none()
+
+        if existing:
+            raise HTTPException(status_code=400, detail=f"KOL @{handle} 已存在")
+
+        # 解析枚举
+        try:
+            tier = KOLTierEnum(kol_data.tier)
+        except ValueError:
+            tier = KOLTierEnum.OBSERVER
+
+        role = None
+        if kol_data.role:
+            try:
+                role = KOLRoleEnum(kol_data.role)
+            except ValueError:
+                pass
+
+        category = None
+        if kol_data.category:
+            try:
+                category = KOLCategoryEnum(kol_data.category)
+            except ValueError:
+                pass
+
+        # 创建 KOL
+        kol = KOL(
+            handle=handle,
+            name=kol_data.name or handle,
+            tier=tier,
+            role=role,
+            category=category,
+            weight=kol_data.weight,
+            rss_url=f"{NITTER_INSTANCE}/{handle}/rss",
+            is_active=True,
+        )
+
+        session.add(kol)
+        await session.flush()
+        kol_id = kol.id
+        kol_handle = kol.handle
+        kol_name = kol.name
+        kol_tier = kol.tier.value
+
+    return {
+        "success": True,
+        "kol": {
+            "id": kol_id,
+            "handle": kol_handle,
+            "name": kol_name,
+            "tier": kol_tier,
+        }
+    }
+
+
+@app.post("/api/kols/batch")
+async def api_batch_create_kols(handles: List[str] = Form(...)):
+    """批量导入 KOL"""
+    from sqlalchemy import select
+
+    created = []
+    skipped = []
+
+    async with db.session() as session:
+        for raw_handle in handles:
+            handle = raw_handle.lstrip("@").strip()
+            if not handle:
+                continue
+
+            # 检查是否已存在
+            stmt = select(KOL).where(KOL.handle == handle)
+            result = await session.execute(stmt)
+            existing = result.scalar_one_or_none()
+
+            if existing:
+                skipped.append(handle)
+                continue
+
+            # 创建 KOL
+            kol = KOL(
+                handle=handle,
+                name=handle,
+                tier=KOLTierEnum.OBSERVER,
+                weight=1.0,
+                rss_url=f"{NITTER_INSTANCE}/{handle}/rss",
+                is_active=True,
+            )
+            session.add(kol)
+            created.append(handle)
+
+    return {
+        "success": True,
+        "created": len(created),
+        "skipped": len(skipped),
+        "created_handles": created[:20],
+        "skipped_handles": skipped[:10],
+    }
+
+
+@app.put("/api/kols/{kol_id}")
+async def api_update_kol(kol_id: int, kol_data: KOLUpdate):
+    """更新 KOL"""
+    from sqlalchemy import select
+
+    async with db.session() as session:
+        stmt = select(KOL).where(KOL.id == kol_id)
+        result = await session.execute(stmt)
+        kol = result.scalar_one_or_none()
+
+        if not kol:
+            raise HTTPException(status_code=404, detail="KOL 不存在")
+
+        # 更新字段
+        if kol_data.name is not None:
+            kol.name = kol_data.name
+
+        if kol_data.tier is not None:
+            try:
+                kol.tier = KOLTierEnum(kol_data.tier)
+            except ValueError:
+                pass
+
+        if kol_data.role is not None:
+            try:
+                kol.role = KOLRoleEnum(kol_data.role)
+            except ValueError:
+                pass
+
+        if kol_data.category is not None:
+            try:
+                kol.category = KOLCategoryEnum(kol_data.category)
+            except ValueError:
+                pass
+
+        if kol_data.weight is not None:
+            kol.weight = kol_data.weight
+
+        if kol_data.is_active is not None:
+            kol.is_active = kol_data.is_active
+
+        handle = kol.handle
+
+    return {"success": True, "message": f"KOL @{handle} 已更新"}
+
+
+@app.delete("/api/kols/{kol_id}")
+async def api_delete_kol(kol_id: int):
+    """删除 KOL"""
+    from sqlalchemy import select
+
+    async with db.session() as session:
+        stmt = select(KOL).where(KOL.id == kol_id)
+        result = await session.execute(stmt)
+        kol = result.scalar_one_or_none()
+
+        if not kol:
+            raise HTTPException(status_code=404, detail="KOL 不存在")
+
+        handle = kol.handle
+        await session.delete(kol)
+
+    return {"success": True, "message": f"KOL @{handle} 已删除"}

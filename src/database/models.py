@@ -283,6 +283,30 @@ class UserSubscription(Base):
 
 # ==================== AInsight Pro 新增表 ====================
 
+class KOLRoleEnum(enum.Enum):
+    """KOL 角色"""
+    RESEARCHER = "researcher"       # 研究员/科学家
+    ENGINEER = "engineer"           # 工程师/开发者
+    FOUNDER = "founder"             # 创始人/CEO
+    INVESTOR = "investor"           # 投资人/VC
+    JOURNALIST = "journalist"       # 记者/媒体人
+    EDUCATOR = "educator"           # 教育者/讲师
+    ANALYST = "analyst"             # 分析师
+    INFLUENCER = "influencer"       # 意见领袖/博主
+
+
+class KOLCategoryEnum(enum.Enum):
+    """KOL 关注领域"""
+    LLM = "llm"                     # 大语言模型
+    CV = "cv"                       # 计算机视觉
+    ROBOTICS = "robotics"           # 机器人
+    INFRA = "infra"                 # AI 基础设施
+    PRODUCT = "product"             # AI 产品
+    RESEARCH = "research"           # 前沿研究
+    STARTUP = "startup"             # 创业/商业
+    GENERAL = "general"             # 综合
+
+
 class KOL(Base):
     """KOL 表 - 关键意见领袖"""
     __tablename__ = "kols"
@@ -296,13 +320,21 @@ class KOL(Base):
     avatar_url = Column(String(500), comment="头像 URL")
     bio = Column(Text, comment="简介")
 
+    # 角色与分类 (新增)
+    role = Column(SQLEnum(KOLRoleEnum), default=KOLRoleEnum.INFLUENCER, comment="KOL 角色")
+    category = Column(SQLEnum(KOLCategoryEnum), default=KOLCategoryEnum.GENERAL, comment="关注领域")
+
     # 等级与权重
     tier = Column(SQLEnum(KOLTierEnum), default=KOLTierEnum.OBSERVER, comment="KOL 等级")
     credibility_score = Column(Float, default=0.5, comment="可信度评分 0-1")
+    weight = Column(Float, default=1.0, comment="聚类权重 0.1-10.0")
 
     # 社交数据
     followers = Column(Integer, default=0, comment="粉丝数")
     following = Column(Integer, default=0, comment="关注数")
+
+    # RSS 订阅 (新增)
+    rss_url = Column(String(500), comment="RSS 订阅地址 (Nitter/RSSHub)")
 
     # 状态
     is_active = Column(Boolean, default=True, comment="是否活跃追踪")
@@ -320,6 +352,8 @@ class KOL(Base):
         Index("idx_kols_tier", "tier"),
         Index("idx_kols_platform", "platform"),
         Index("idx_kols_handle", "handle"),
+        Index("idx_kols_role", "role"),
+        Index("idx_kols_category", "category"),
     )
 
     def __repr__(self):

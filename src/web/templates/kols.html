@@ -1,0 +1,712 @@
+{% extends "base.html" %}
+
+{% block title %}KOL 管理 - AInsight{% endblock %}
+
+{% block content %}
+<div class="kol-page">
+    <!-- 页面标题 -->
+    <div class="page-header">
+        <h1>KOL 管理</h1>
+        <p class="subtitle">共 {{ total }} 位 KOL · 管理你的信息源</p>
+    </div>
+
+    <!-- 操作栏 -->
+    <div class="action-bar">
+        <!-- 筛选 -->
+        <div class="filters">
+            <select id="tierFilter" onchange="applyFilters()">
+                <option value="">全部等级</option>
+                {% for t in tiers %}
+                <option value="{{ t.value }}" {% if current_tier == t.value %}selected{% endif %}>
+                    {{ t.emoji }} {{ t.label }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <select id="categoryFilter" onchange="applyFilters()">
+                <option value="">全部分类</option>
+                {% for c in categories %}
+                <option value="{{ c.value }}" {% if current_category == c.value %}selected{% endif %}>
+                    {{ c.emoji }} {{ c.label }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- 添加按钮 -->
+        <div class="actions">
+            <button class="btn btn-secondary" onclick="showBatchImport()">
+                📥 批量导入
+            </button>
+            <button class="btn btn-primary" onclick="showAddKol()">
+                ➕ 添加 KOL
+            </button>
+        </div>
+    </div>
+
+    <!-- KOL 列表 -->
+    <div class="kol-grid">
+        {% for kol in kols %}
+        <div class="kol-card" data-id="{{ kol.id }}">
+            <div class="kol-header">
+                <div class="kol-avatar">
+                    {{ kol.name[0] if kol.name else '@' }}
+                </div>
+                <div class="kol-info">
+                    <h3 class="kol-name">{{ kol.name or kol.handle }}</h3>
+                    <a href="https://x.com/{{ kol.handle }}" target="_blank" class="kol-handle">
+                        @{{ kol.handle }}
+                    </a>
+                </div>
+                <div class="kol-tier tier-{{ kol.tier.value if kol.tier else 'observer' }}">
+                    {% if kol.tier and kol.tier.value == 'god' %}👑
+                    {% elif kol.tier and kol.tier.value == 'expert' %}🎯
+                    {% elif kol.tier and kol.tier.value == 'insider' %}🔮
+                    {% else %}👀{% endif %}
+                </div>
+            </div>
+
+            <div class="kol-meta">
+                {% if kol.category %}
+                <span class="tag category-tag">
+                    {% if kol.category.value == 'ai_researcher' %}🔬 研究员
+                    {% elif kol.category.value == 'founder_ceo' %}🚀 创始人
+                    {% elif kol.category.value == 'vc_investor' %}💰 投资人
+                    {% elif kol.category.value == 'engineer' %}👨‍💻 工程师
+                    {% elif kol.category.value == 'journalist' %}📰 媒体
+                    {% elif kol.category.value == 'influencer' %}🎤 博主
+                    {% else %}{{ kol.category.value }}{% endif %}
+                </span>
+                {% endif %}
+
+                {% if kol.role %}
+                <span class="tag role-tag">{{ kol.role.value }}</span>
+                {% endif %}
+
+                <span class="tag weight-tag">权重: {{ "%.1f"|format(kol.weight) }}</span>
+            </div>
+
+            <div class="kol-actions">
+                <a href="{{ nitter_instance }}/{{ kol.handle }}/rss" target="_blank" class="btn-icon" title="RSS 订阅">
+                    📡
+                </a>
+                <button class="btn-icon" onclick="editKol({{ kol.id }}, '{{ kol.handle }}', '{{ kol.name }}', '{{ kol.tier.value if kol.tier else 'observer' }}', '{{ kol.category.value if kol.category else '' }}', {{ kol.weight }})" title="编辑">
+                    ✏️
+                </button>
+                <button class="btn-icon btn-danger" onclick="deleteKol({{ kol.id }}, '{{ kol.handle }}')" title="删除">
+                    🗑️
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- 分页 -->
+    {% if total > 50 %}
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="?page={{ page - 1 }}{% if current_tier %}&tier={{ current_tier }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}" class="btn btn-secondary">
+            ← 上一页
+        </a>
+        {% endif %}
+
+        <span class="page-info">第 {{ page }} 页</span>
+
+        {% if kols|length == 50 %}
+        <a href="?page={{ page + 1 }}{% if current_tier %}&tier={{ current_tier }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}" class="btn btn-secondary">
+            下一页 →
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+<!-- 添加 KOL 弹窗 -->
+<div id="addKolModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>添加 KOL</h2>
+            <button class="modal-close" onclick="closeModal('addKolModal')">&times;</button>
+        </div>
+        <form id="addKolForm" onsubmit="submitAddKol(event)">
+            <div class="form-group">
+                <label>X/Twitter Handle</label>
+                <input type="text" name="handle" placeholder="@elonmusk" required>
+            </div>
+            <div class="form-group">
+                <label>名称（可选）</label>
+                <input type="text" name="name" placeholder="Elon Musk">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>等级</label>
+                    <select name="tier">
+                        <option value="observer">👀 Observer</option>
+                        <option value="insider">🔮 Insider</option>
+                        <option value="expert">🎯 Expert</option>
+                        <option value="god">👑 God Tier</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>分类</label>
+                    <select name="category">
+                        <option value="">未分类</option>
+                        <option value="ai_researcher">🔬 AI 研究员</option>
+                        <option value="founder_ceo">🚀 创始人/CEO</option>
+                        <option value="vc_investor">💰 投资人</option>
+                        <option value="engineer">👨‍💻 工程师</option>
+                        <option value="journalist">📰 记者/媒体</option>
+                        <option value="influencer">🎤 KOL/博主</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>权重 (0.1 - 5.0)</label>
+                <input type="number" name="weight" value="1.0" min="0.1" max="5.0" step="0.1">
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('addKolModal')">取消</button>
+                <button type="submit" class="btn btn-primary">添加</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 批量导入弹窗 -->
+<div id="batchImportModal" class="modal" style="display: none;">
+    <div class="modal-content modal-large">
+        <div class="modal-header">
+            <h2>批量导入 KOL</h2>
+            <button class="modal-close" onclick="closeModal('batchImportModal')">&times;</button>
+        </div>
+        <form id="batchImportForm" onsubmit="submitBatchImport(event)">
+            <div class="form-group">
+                <label>输入 X/Twitter Handles（每行一个）</label>
+                <textarea name="handles" rows="10" placeholder="@elonmusk
+@sama
+@kaboraai
+..."></textarea>
+            </div>
+            <p class="form-hint">支持带或不带 @ 符号，自动去重</p>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('batchImportModal')">取消</button>
+                <button type="submit" class="btn btn-primary">导入</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 编辑 KOL 弹窗 -->
+<div id="editKolModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>编辑 KOL</h2>
+            <button class="modal-close" onclick="closeModal('editKolModal')">&times;</button>
+        </div>
+        <form id="editKolForm" onsubmit="submitEditKol(event)">
+            <input type="hidden" name="id" id="editKolId">
+            <div class="form-group">
+                <label>Handle</label>
+                <input type="text" id="editKolHandle" disabled>
+            </div>
+            <div class="form-group">
+                <label>名称</label>
+                <input type="text" name="name" id="editKolName">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>等级</label>
+                    <select name="tier" id="editKolTier">
+                        <option value="observer">👀 Observer</option>
+                        <option value="insider">🔮 Insider</option>
+                        <option value="expert">🎯 Expert</option>
+                        <option value="god">👑 God Tier</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>分类</label>
+                    <select name="category" id="editKolCategory">
+                        <option value="">未分类</option>
+                        <option value="ai_researcher">🔬 AI 研究员</option>
+                        <option value="founder_ceo">🚀 创始人/CEO</option>
+                        <option value="vc_investor">💰 投资人</option>
+                        <option value="engineer">👨‍💻 工程师</option>
+                        <option value="journalist">📰 记者/媒体</option>
+                        <option value="influencer">🎤 KOL/博主</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>权重</label>
+                <input type="number" name="weight" id="editKolWeight" min="0.1" max="5.0" step="0.1">
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('editKolModal')">取消</button>
+                <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+/* KOL 页面样式 */
+.kol-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+}
+
+/* 操作栏 */
+.action-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.filters {
+    display: flex;
+    gap: 1rem;
+}
+
+.filters select {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* KOL 网格 */
+.kol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1rem;
+}
+
+.kol-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+    transition: all 0.2s;
+}
+
+.kol-card:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.kol-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.kol-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-color), #667eea);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+}
+
+.kol-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.kol-name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.kol-handle {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    text-decoration: none;
+}
+
+.kol-handle:hover {
+    color: var(--accent-color);
+}
+
+.kol-tier {
+    font-size: 1.5rem;
+}
+
+.kol-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.tag {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    background: var(--bg-tertiary);
+}
+
+.kol-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: background 0.2s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon:hover {
+    background: var(--bg-tertiary);
+}
+
+.btn-icon.btn-danger:hover {
+    background: rgba(239, 68, 68, 0.2);
+}
+
+/* 按钮 */
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: var(--accent-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-secondary {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background: var(--border-color);
+}
+
+/* 弹窗 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--bg-primary);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-large {
+    max-width: 600px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.modal-content form {
+    padding: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    resize: vertical;
+    font-family: monospace;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-hint {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+/* 分页 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.page-info {
+    color: var(--text-secondary);
+}
+</style>
+
+<script>
+// 筛选
+function applyFilters() {
+    const tier = document.getElementById('tierFilter').value;
+    const category = document.getElementById('categoryFilter').value;
+    let url = '/kols?';
+    if (tier) url += `tier=${tier}&`;
+    if (category) url += `category=${category}&`;
+    window.location.href = url;
+}
+
+// 弹窗控制
+function showAddKol() {
+    document.getElementById('addKolModal').style.display = 'flex';
+}
+
+function showBatchImport() {
+    document.getElementById('batchImportModal').style.display = 'flex';
+}
+
+function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+}
+
+// 添加 KOL
+async function submitAddKol(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = {
+        handle: form.handle.value,
+        name: form.name.value || null,
+        tier: form.tier.value,
+        category: form.category.value || null,
+        weight: parseFloat(form.weight.value)
+    };
+
+    try {
+        const res = await fetch('/api/kols', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+
+        if (res.ok) {
+            alert(`成功添加 KOL @${result.kol.handle}`);
+            window.location.reload();
+        } else {
+            alert(result.detail || '添加失败');
+        }
+    } catch (err) {
+        alert('请求失败: ' + err.message);
+    }
+}
+
+// 批量导入
+async function submitBatchImport(e) {
+    e.preventDefault();
+    const form = e.target;
+    const handles = form.handles.value.split('\n')
+        .map(h => h.trim())
+        .filter(h => h);
+
+    if (handles.length === 0) {
+        alert('请输入至少一个 handle');
+        return;
+    }
+
+    const formData = new FormData();
+    handles.forEach(h => formData.append('handles', h));
+
+    try {
+        const res = await fetch('/api/kols/batch', {
+            method: 'POST',
+            body: formData
+        });
+        const result = await res.json();
+
+        if (res.ok) {
+            alert(`导入完成！\n新增: ${result.created}\n跳过（已存在）: ${result.skipped}`);
+            window.location.reload();
+        } else {
+            alert(result.detail || '导入失败');
+        }
+    } catch (err) {
+        alert('请求失败: ' + err.message);
+    }
+}
+
+// 编辑 KOL
+function editKol(id, handle, name, tier, category, weight) {
+    document.getElementById('editKolId').value = id;
+    document.getElementById('editKolHandle').value = '@' + handle;
+    document.getElementById('editKolName').value = name;
+    document.getElementById('editKolTier').value = tier;
+    document.getElementById('editKolCategory').value = category;
+    document.getElementById('editKolWeight').value = weight;
+    document.getElementById('editKolModal').style.display = 'flex';
+}
+
+async function submitEditKol(e) {
+    e.preventDefault();
+    const form = e.target;
+    const id = form.id.value;
+    const data = {
+        name: form.name.value,
+        tier: form.tier.value,
+        category: form.category.value || null,
+        weight: parseFloat(form.weight.value)
+    };
+
+    try {
+        const res = await fetch(`/api/kols/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+
+        if (res.ok) {
+            alert('更新成功');
+            window.location.reload();
+        } else {
+            alert(result.detail || '更新失败');
+        }
+    } catch (err) {
+        alert('请求失败: ' + err.message);
+    }
+}
+
+// 删除 KOL
+async function deleteKol(id, handle) {
+    if (!confirm(`确定要删除 @${handle} 吗？`)) return;
+
+    try {
+        const res = await fetch(`/api/kols/${id}`, { method: 'DELETE' });
+        const result = await res.json();
+
+        if (res.ok) {
+            alert(`已删除 @${handle}`);
+            window.location.reload();
+        } else {
+            alert(result.detail || '删除失败');
+        }
+    } catch (err) {
+        alert('请求失败: ' + err.message);
+    }
+}
+
+// 点击弹窗外部关闭
+document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+</script>
+{% endblock %}

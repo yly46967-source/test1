@@ -12862,3 +12862,79 @@ sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled 
 2026-02-19 22:18:39 │ [32mINFO[0m │ main            │ ainsight.py:113 │ 跳过 Telegram 推送
 2026-02-19 22:18:39 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 统计: 主题 5 个, 内容 5 条, 情报包 0 个
 2026-02-19 22:18:39 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 运行完成
+2026-02-20 00:10:32 │ [32mINFO[0m │ main            │ ainsight.py:53 │ ==================================================
+2026-02-20 00:10:32 │ [32mINFO[0m │ main            │ ainsight.py:54 │ AInsight 启动
+2026-02-20 00:10:32 │ [32mINFO[0m │ main            │ ainsight.py:55 │ ==================================================
+2026-02-20 00:10:32 │ [32mINFO[0m │ database        │ service.py:806 │ FTS 全文搜索表已初始化
+2026-02-20 00:10:32 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-20 00:10:32 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 6 个数据源
+2026-02-20 00:10:32 │ [32mINFO[0m │ main            │ ainsight.py:74 │ 已加载 6 个数据源
+2026-02-20 00:10:37 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 1056 chars
+2026-02-20 00:10:38 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 5734 chars
+2026-02-20 00:10:39 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 3394 chars
+2026-02-20 00:10:41 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 2814 chars
+2026-02-20 00:10:42 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 5199 chars
+2026-02-20 00:10:43 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 3210 chars
+2026-02-20 00:10:45 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 3375 chars
+2026-02-20 00:10:46 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 4442 chars
+2026-02-20 00:10:47 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 6050 chars
+2026-02-20 00:10:49 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 6213 chars
+2026-02-20 00:10:51 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 4915 chars
+2026-02-20 00:10:52 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 5395 chars
+2026-02-20 00:10:54 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 6754 chars
+2026-02-20 00:10:56 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 9625 chars
+2026-02-20 00:10:58 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 14064 chars
+2026-02-20 00:11:01 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 5330 chars
+2026-02-20 00:11:02 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 7794 chars
+2026-02-20 00:11:05 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 9347 chars
+2026-02-20 00:11:07 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 5071 chars
+2026-02-20 00:11:09 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 8900 chars
+2026-02-20 00:11:10 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:157 │ [Hacker News] 请求失败，重试 1/3
+2026-02-20 00:11:15 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Hacker News] 抓取完整内容成功: 19462 chars
+2026-02-20 00:11:16 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:306 │ [Hacker News] 抓取完整内容失败: 403 Client Error: Forbidden for url: https://journals.sagepub.com/doi/10.1177/26339137261421577
+2026-02-20 00:11:22 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Hacker News] 抓取完整内容成功: 38856 chars
+2026-02-20 00:11:23 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Hacker News] 抓取完整内容成功: 19566 chars
+2026-02-20 00:11:25 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Hacker News] 抓取完整内容成功: 8024 chars
+2026-02-20 00:11:26 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Hacker News] 抓取完整内容成功: 12283 chars
+2026-02-20 00:11:35 │ [31mERROR[0m │ trafilatura.utils │ utils.py:259 │ parsed tree length: 1, wrong data type or not valid HTML
+2026-02-20 00:11:35 │ [31mERROR[0m │ trafilatura.core │ core.py:237 │ empty HTML tree: None
+2026-02-20 00:11:35 │ [33mWARNING[0m │ trafilatura.core │ core.py:344 │ discarding data: None
+2026-02-20 00:11:37 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Hacker News] 抓取完整内容成功: 969 chars
+2026-02-20 00:11:38 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Hacker News] 抓取完整内容成功: 7829 chars
+2026-02-20 00:11:40 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Hacker News] 抓取完整内容成功: 5446 chars
+2026-02-20 00:11:40 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [TechCrunch] 抓取 10 条
+2026-02-20 00:11:40 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [Hacker News] 抓取 10 条
+2026-02-20 00:11:40 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [Ars Technica AI] 抓取 10 条
+2026-02-20 00:11:40 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [MIT Tech Review] 抓取 10 条
+2026-02-20 00:11:40 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [Wired AI] 抓取 10 条
+2026-02-20 00:11:40 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [VentureBeat AI] 抓取 7 条
+2026-02-20 00:11:40 │ [32mINFO[0m │ main            │ ainsight.py:84 │ 抓取完成: 6 成功, 0 失败, 57 条内容, 耗时 67.9s
+2026-02-20 00:11:40 │ [32mINFO[0m │ main            │ ainsight.py:95 │ 测试模式: 只处理 5 条
+2026-02-20 00:11:40 │ [32mINFO[0m │ main            │ ainsight.py:133 │ 开始聚类处理 5 条内容...
+2026-02-20 00:11:40 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-20 00:11:40 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-20 00:11:43 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-20 00:11:43 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: OpenAI拟融资超100亿美元估值破8500亿 (ID: 1)
+2026-02-20 00:11:43 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-20 00:11:43 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-20 00:11:45 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-20 00:11:45 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: RSS阅读器Current发布：流式新闻体验 (ID: 2)
+2026-02-20 00:11:45 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-20 00:11:45 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-20 00:11:47 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-20 00:11:47 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Tenga遭遇数据泄露事件 (ID: 3)
+2026-02-20 00:11:47 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-20 00:11:47 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-20 00:11:49 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-20 00:11:49 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Ravenna Hub安全漏洞致儿童信息泄露 (ID: 4)
+2026-02-20 00:11:49 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-20 00:11:49 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-20 00:11:51 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-20 00:11:51 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Reload推出AI代理共享内存系统 (ID: 5)
+2026-02-20 00:11:51 │ [32mINFO[0m │ main            │ ainsight.py:182 │ 聚类完成: 5 处理, 0 跳过
+2026-02-20 00:11:51 │ [32mINFO[0m │ main            │ ainsight.py:187 │ 检查情报合成触发条件...
+2026-02-20 00:11:51 │ [32mINFO[0m │ src.processor.synthesis_service │ synthesis_service.py:127 │ 批量合成完成: {'processed': 0, 'success': 0, 'failed': 0, 'skipped': 5}
+2026-02-20 00:11:51 │ [32mINFO[0m │ main            │ ainsight.py:209 │ 情报合成: 0 个主题, 5 跳过
+2026-02-20 00:11:51 │ [32mINFO[0m │ main            │ ainsight.py:113 │ 跳过 Telegram 推送
+2026-02-20 00:11:51 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 统计: 主题 5 个, 内容 5 条, 情报包 0 个
+2026-02-20 00:11:51 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 运行完成

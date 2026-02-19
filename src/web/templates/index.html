@@ -51,87 +51,9 @@
         {% endif %}
     </div>
 
-    <!-- Part 3: Article Detail -->
-    <div class="article-panel">
-        {% if topics and topics|length > 0 %}
-        {% set first_topic = topics[0] %}
-        <div class="article-header">
-            <div class="source-tabs">
-                <div class="source-tab active" data-source="main">
-                    <span class="source-tab-avatar">
-                        {% if first_topic.category %}
-                            {% if first_topic.category.value == 'model_release' %}AI
-                            {% elif first_topic.category.value == 'funding' %}VC
-                            {% elif first_topic.category.value == 'product_launch' %}PH
-                            {% elif first_topic.category.value == 'research' %}RX
-                            {% elif first_topic.category.value == 'drama' %}TW
-                            {% elif first_topic.category.value == 'tutorial' %}GH
-                            {% elif first_topic.category.value == 'market_signal' %}MK
-                            {% else %}RS{% endif %}
-                        {% else %}RS{% endif %}
-                    </span>
-                    <span class="source-tab-name">
-                        {% if first_topic.category %}
-                            {% if first_topic.category.value == 'model_release' %}AI 资讯
-                            {% elif first_topic.category.value == 'funding' %}投资动态
-                            {% elif first_topic.category.value == 'product_launch' %}产品发布
-                            {% elif first_topic.category.value == 'research' %}学术论文
-                            {% elif first_topic.category.value == 'drama' %}社交媒体
-                            {% elif first_topic.category.value == 'tutorial' %}技术博客
-                            {% elif first_topic.category.value == 'market_signal' %}市场观察
-                            {% else %}RSS 订阅{% endif %}
-                        {% else %}RSS 订阅{% endif %}
-                    </span>
-                </div>
-            </div>
-            <a href="/topic/{{ first_topic.id }}" class="article-source-link" title="查看详情">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                    <polyline points="15 3 21 3 21 9"/>
-                    <line x1="10" y1="14" x2="21" y2="3"/>
-                </svg>
-            </a>
-        </div>
-
-        <div class="article-content">
-            <h1 class="article-title">{{ first_topic.title }}</h1>
-            <div class="article-meta">
-                <span>{{ first_topic.first_seen_at.strftime('%Y-%m-%d %H:%M') if first_topic.first_seen_at else '今天' }}</span>
-                <span>热度: {{ first_topic.heat_score }}</span>
-            </div>
-
-            <div class="article-body">
-                {% if first_topic.description %}
-                <p>{{ first_topic.description }}</p>
-                {% endif %}
-
-                {% if first_topic.keywords %}
-                <p><strong>关键词:</strong> {{ first_topic.keywords }}</p>
-                {% endif %}
-
-                <p>本主题聚合自 {{ first_topic.source_count }} 个不同信息源，经过 AI 分析整合后呈现。</p>
-            </div>
-
-            <!-- AI Analysis -->
-            <div class="ai-analysis">
-                <div class="ai-analysis-header">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                        <path d="M2 17l10 5 10-5"/>
-                        <path d="M2 12l10 5 10-5"/>
-                    </svg>
-                    AI 分析
-                </div>
-                <div class="ai-analysis-content">
-                    {% if first_topic.heat_score and first_topic.heat_score > 50 %}
-                    该主题在多个平台上引发热议，聚合情报显示市场关注度较高，可能对 AI 行业产生重要影响。建议持续关注后续发展。
-                    {% else %}
-                    该主题已从您配置的数据源中识别并聚合。AI 分析表明，基于您设置的关键词和 KOL 追踪，该主题与您的关注领域相关。
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        {% else %}
+    <!-- Part 3: Article Detail - 动态渲染容器 -->
+    <div class="article-panel" id="article-panel">
+        <!-- 内容由 JavaScript 动态渲染 -->
         <div class="empty-article">
             <div class="empty-article-icon">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -143,7 +65,6 @@
             </div>
             <div class="empty-article-text">选择一篇文章阅读</div>
         </div>
-        {% endif %}
     </div>
 </div>
 {% endblock %}
@@ -154,6 +75,12 @@
 
 {% block scripts %}
 <script>
+// 检查 marked.js 是否加载
+console.log('[Init] marked 对象:', typeof marked !== 'undefined' ? 'loaded' : 'NOT LOADED');
+if (typeof marked !== 'undefined') {
+    console.log('[Init] marked.parse:', typeof marked.parse);
+}
+
 // Category mapping for Chinese display
 const categoryMap = {
     'model_release': { abbr: 'AI', name: 'AI 资讯' },
@@ -334,17 +261,25 @@ document.querySelectorAll('.news-item').forEach(item => {
 });
 
 function updateArticlePanel(data) {
+    console.log('[updateArticlePanel] 开始渲染，数据:', data);
+
     const topic = data.topic;
     const intel = data.intelligence;
     const contents = data.contents || [];
 
-    const panel = document.querySelector('.article-panel');
+    // 使用 getElementById 确保获取正确的容器
+    const panel = document.getElementById('article-panel');
+    if (!panel) {
+        console.error('[updateArticlePanel] 找不到 #article-panel 容器！');
+        return;
+    }
+    console.log('[updateArticlePanel] 找到面板容器');
+
     const cat = categoryMap[topic.category] || { abbr: 'RS', name: 'RSS 订阅' };
 
-    // 生成 Intelligence Insight（3句要点总结）
+    // ========== 1. Intelligence Insight（紫色渐变卡片）==========
     let insightHtml = '';
     if (intel && intel.tldr) {
-        // 将 tldr 分成3个要点
         const points = intel.tldr.split(/[。.！!]/g).filter(p => p.trim()).slice(0, 3);
         if (points.length > 0) {
             insightHtml = `
@@ -364,8 +299,9 @@ function updateArticlePanel(data) {
             `;
         }
     }
+    console.log('[updateArticlePanel] Intelligence Insight:', insightHtml ? '已生成' : '无数据');
 
-    // 作者信息（X 风格）
+    // ========== 2. 作者信息卡片（X 风格）==========
     const authorHtml = `
         <div class="author-card">
             <div class="author-avatar">${cat.abbr}</div>
@@ -390,29 +326,73 @@ function updateArticlePanel(data) {
         </div>
     `;
 
-    // 渲染 Markdown 内容
+    // ========== 3. 主图（强制打印 media_urls）==========
+    let featuredImageHtml = '';
+    console.log('[updateArticlePanel] contents[0]:', contents.length > 0 ? contents[0] : 'empty');
+    console.log('[updateArticlePanel] media_urls:', contents.length > 0 ? contents[0].media_urls : 'N/A');
+
+    if (contents.length > 0 && contents[0].media_urls && Array.isArray(contents[0].media_urls) && contents[0].media_urls.length > 0) {
+        const imageUrl = contents[0].media_urls[0];
+        console.log('[updateArticlePanel] ✅ 找到主图:', imageUrl);
+        featuredImageHtml = `<img src="${imageUrl}" alt="Featured Image" class="article-featured-image" onerror="console.log('图片加载失败:', this.src); this.style.display='none'">`;
+    } else {
+        console.log('[updateArticlePanel] ❌ 无主图数据');
+    }
+
+    // ========== 4. 文本内容渲染（纯文本转 HTML）==========
     let contentHtml = '';
     if (contents.length > 0 && contents[0].text) {
-        // 使用 marked.js 渲染 Markdown
-        const markdownText = contents[0].text;
-        contentHtml = marked.parse(markdownText);
+        const rawText = contents[0].text;
+        console.log('[updateArticlePanel] 原始文本长度:', rawText.length);
+
+        // 将纯文本转换为 HTML 段落
+        // 按双换行分割段落，单换行保持在同一段落内
+        const paragraphs = rawText.split(/\n\n+/);
+        contentHtml = paragraphs
+            .map(para => {
+                const trimmed = para.trim();
+                if (!trimmed) return '';
+
+                // 检查是否是标题（第一行且较短）
+                if (para === paragraphs[0] && trimmed.length < 150) {
+                    return `<h1>${trimmed}</h1>`;
+                }
+
+                // 普通段落：将单换行替换为空格
+                const cleanPara = trimmed.replace(/\n/g, ' ');
+                return `<p>${cleanPara}</p>`;
+            })
+            .filter(p => p)
+            .join('\n');
+
+        console.log('[updateArticlePanel] 渲染后 HTML 段落数:', paragraphs.length);
     } else {
+        console.log('[updateArticlePanel] 无文本内容，使用默认描述');
         contentHtml = `
-            <p>${topic.description || ''}</p>
+            <p>${topic.description || '暂无描述'}</p>
             ${topic.keywords ? `<p><strong>关键词:</strong> ${topic.keywords}</p>` : ''}
-            <p>本主题聚合自 ${topic.source_count} 个不同信息源，经过 AI 分析整合后呈现。</p>
+            <p>本主题聚合自 ${topic.source_count} 个不同信息源。</p>
         `;
     }
 
-    panel.innerHTML = `
+    // ========== 5. 组装完整 HTML 并注入 ==========
+    const fullHtml = `
         ${insightHtml}
         ${authorHtml}
+        ${featuredImageHtml}
         <div class="article-content-x">
             <div class="article-body-x">
                 ${contentHtml}
             </div>
         </div>
     `;
+
+    console.log('[updateArticlePanel] 准备注入 HTML，总长度:', fullHtml.length);
+
+    // 使用 innerHTML 注入
+    panel.innerHTML = fullHtml;
+
+    console.log('[updateArticlePanel] ✅ 渲染完成');
 }
 
 // Initialize timeline on page load

@@ -8,11 +8,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
-    <!-- Marked.js for Markdown rendering -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     {% block head %}{% endblock %}
 </head>
 <body>
+    <!-- Marked.js MUST load before any script that uses it -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <div class="app">
         <!-- Part 1: Sidebar -->
         <aside class="sidebar">
@@ -48,6 +49,17 @@
                     </svg>
                     <span class="nav-btn-tooltip">Telegram 推送</span>
                 </div>
+
+                <!-- KOL 管理 -->
+                <a href="/kols" class="nav-btn nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <span class="nav-btn-tooltip">KOL 管理</span>
+                </a>
 
                 <div style="flex: 1;"></div>
 

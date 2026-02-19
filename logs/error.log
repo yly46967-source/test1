@@ -54,3 +54,5 @@ sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled 
 2026-02-19 22:01:38 │ [31mERROR[0m │ trafilatura.core │ core.py:237 │ empty HTML tree: None
 2026-02-19 22:18:29 │ [31mERROR[0m │ trafilatura.utils │ utils.py:259 │ parsed tree length: 1, wrong data type or not valid HTML
 2026-02-19 22:18:29 │ [31mERROR[0m │ trafilatura.core │ core.py:237 │ empty HTML tree: None
+2026-02-20 00:11:35 │ [31mERROR[0m │ trafilatura.utils │ utils.py:259 │ parsed tree length: 1, wrong data type or not valid HTML
+2026-02-20 00:11:35 │ [31mERROR[0m │ trafilatura.core │ core.py:237 │ empty HTML tree: None

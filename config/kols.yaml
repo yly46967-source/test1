@@ -1,0 +1,514 @@
+# AInsight Pro - KOL 资产库
+# 支持 200+ AI 领域 KOL 的批量导入
+#
+# 字段说明:
+#   handle: 唯一标识 (Twitter @handle 或 GitHub username)
+#   name: 显示名称
+#   platform: 平台 (x/github/blog)
+#   tier: 等级 (god/expert/insider/observer)
+#   role: 角色 (researcher/engineer/founder/investor/journalist/educator/analyst/influencer)
+#   category: 关注领域 (llm/cv/robotics/infra/product/research/startup/general)
+#   weight: 聚类权重 (0.1-10.0, 默认 1.0)
+#   rss_url: RSS 订阅地址 (可选，支持 Nitter/RSSHub)
+#   bio: 简介
+#   tags: 标签列表
+
+# ==================== Nitter 实例配置 ====================
+nitter:
+  # 公共实例列表 (按优先级排序)
+  instances:
+    - "https://nitter.privacydev.net"
+    - "https://nitter.poast.org"
+    - "https://nitter.woodland.cafe"
+    - "https://nitter.1d4.us"
+    - "https://nitter.kavin.rocks"
+  # RSS 路径模板: {instance}/{handle}/rss
+  rss_template: "{instance}/{handle}/rss"
+  timeout: 15
+  retry: 3
+
+# ==================== God Tier - 行业领袖 ====================
+# 权重: 5.0-10.0
+god_tier:
+  # OpenAI 核心
+  - handle: "sama"
+    name: "Sam Altman"
+    platform: "x"
+    tier: "god"
+    role: "founder"
+    category: "llm"
+    weight: 10.0
+    bio: "OpenAI CEO"
+    tags: ["OpenAI", "GPT", "AGI"]
+
+  - handle: "gaborcselle"
+    name: "Gabor Cselle"
+    platform: "x"
+    tier: "god"
+    role: "founder"
+    category: "product"
+    weight: 8.0
+    bio: "OpenAI Product"
+    tags: ["OpenAI", "ChatGPT", "产品"]
+
+  # AI 研究领袖
+  - handle: "karpathy"
+    name: "Andrej Karpathy"
+    platform: "x"
+    tier: "god"
+    role: "researcher"
+    category: "llm"
+    weight: 10.0
+    bio: "前 Tesla AI 总监, 前 OpenAI 研究员"
+    tags: ["AI", "Tesla", "OpenAI", "教育"]
+
+  - handle: "ylecun"
+    name: "Yann LeCun"
+    platform: "x"
+    tier: "god"
+    role: "researcher"
+    category: "research"
+    weight: 9.0
+    bio: "Meta 首席 AI 科学家, 图灵奖得主"
+    tags: ["Meta", "深度学习", "CNN"]
+
+  - handle: "demaborsa"
+    name: "Demis Hassabis"
+    platform: "x"
+    tier: "god"
+    role: "founder"
+    category: "research"
+    weight: 9.0
+    bio: "DeepMind CEO, 诺贝尔化学奖得主"
+    tags: ["DeepMind", "AlphaFold", "AGI"]
+
+  # Anthropic
+  - handle: "DarioAmodei"
+    name: "Dario Amodei"
+    platform: "x"
+    tier: "god"
+    role: "founder"
+    category: "llm"
+    weight: 9.0
+    bio: "Anthropic CEO"
+    tags: ["Anthropic", "Claude", "AI安全"]
+
+  # Google/DeepMind
+  - handle: "JeffDean"
+    name: "Jeff Dean"
+    platform: "x"
+    tier: "god"
+    role: "researcher"
+    category: "infra"
+    weight: 8.0
+    bio: "Google 首席科学家"
+    tags: ["Google", "TensorFlow", "分布式系统"]
+
+  # NVIDIA
+  - handle: "DrJimFan"
+    name: "Jim Fan"
+    platform: "x"
+    tier: "god"
+    role: "researcher"
+    category: "robotics"
+    weight: 8.0
+    bio: "NVIDIA 高级研究科学家"
+    tags: ["NVIDIA", "具身智能", "机器人"]
+
+# ==================== Expert Tier - 技术专家 ====================
+# 权重: 3.0-5.0
+expert_tier:
+  # AI 工程师/开发者
+  - handle: "swyx"
+    name: "Swyx"
+    platform: "x"
+    tier: "expert"
+    role: "engineer"
+    category: "product"
+    weight: 5.0
+    bio: "AI 工程师, Latent Space 主播"
+    tags: ["AI工程", "LLM", "开发者"]
+
+  - handle: "simonw"
+    name: "Simon Willison"
+    platform: "x"
+    tier: "expert"
+    role: "engineer"
+    category: "product"
+    weight: 5.0
+    bio: "Django 联合创始人, LLM 工具开发者"
+    tags: ["LLM", "工具", "开源"]
+
+  - handle: "hwchase17"
+    name: "Harrison Chase"
+    platform: "x"
+    tier: "expert"
+    role: "founder"
+    category: "product"
+    weight: 5.0
+    bio: "LangChain 创始人"
+    tags: ["LangChain", "RAG", "Agent"]
+
+  - handle: "jerryjliu0"
+    name: "Jerry Liu"
+    platform: "x"
+    tier: "expert"
+    role: "founder"
+    category: "product"
+    weight: 5.0
+    bio: "LlamaIndex 创始人"
+    tags: ["LlamaIndex", "RAG", "数据"]
+
+  - handle: "emollick"
+    name: "Ethan Mollick"
+    platform: "x"
+    tier: "expert"
+    role: "educator"
+    category: "general"
+    weight: 4.5
+    bio: "沃顿商学院教授, AI 教育者"
+    tags: ["教育", "商业", "AI应用"]
+
+  - handle: "goodside"
+    name: "Riley Goodside"
+    platform: "x"
+    tier: "expert"
+    role: "engineer"
+    category: "llm"
+    weight: 4.5
+    bio: "Prompt 工程专家"
+    tags: ["Prompt", "GPT", "技巧"]
+
+  - handle: "cloakedninja"
+    name: "Cloaked Ninja"
+    platform: "x"
+    tier: "expert"
+    role: "engineer"
+    category: "llm"
+    weight: 4.0
+    bio: "AI 开发者"
+    tags: ["LLM", "开发"]
+
+  # 研究员
+  - handle: "aabordes"
+    name: "Antoine Bordes"
+    platform: "x"
+    tier: "expert"
+    role: "researcher"
+    category: "research"
+    weight: 4.0
+    bio: "Meta AI 研究员"
+    tags: ["Meta", "NLP", "研究"]
+
+  - handle: "jaseweston"
+    name: "Jason Weston"
+    platform: "x"
+    tier: "expert"
+    role: "researcher"
+    category: "research"
+    weight: 4.0
+    bio: "Meta AI 研究员"
+    tags: ["Meta", "对话系统", "研究"]
+
+  - handle: "sabordes"
+    name: "Samy Bengio"
+    platform: "x"
+    tier: "expert"
+    role: "researcher"
+    category: "research"
+    weight: 4.0
+    bio: "Apple AI 研究负责人"
+    tags: ["Apple", "研究"]
+
+  # 创业者
+  - handle: "bindureddy"
+    name: "Bindu Reddy"
+    platform: "x"
+    tier: "expert"
+    role: "founder"
+    category: "startup"
+    weight: 4.0
+    bio: "Abacus.AI CEO"
+    tags: ["AI创业", "Abacus.AI"]
+
+  - handle: "emaborsa"
+    name: "Elvis"
+    platform: "x"
+    tier: "expert"
+    role: "founder"
+    category: "startup"
+    weight: 4.0
+    bio: "AI 创业者"
+    tags: ["AI", "创业", "产品"]
+
+  - handle: "alexandr_wang"
+    name: "Alexandr Wang"
+    platform: "x"
+    tier: "expert"
+    role: "founder"
+    category: "infra"
+    weight: 4.5
+    bio: "Scale AI CEO"
+    tags: ["Scale AI", "数据标注", "基础设施"]
+
+  # 投资人
+  - handle: "saranormous"
+    name: "Sarah Guo"
+    platform: "x"
+    tier: "expert"
+    role: "investor"
+    category: "startup"
+    weight: 4.0
+    bio: "Conviction VC 合伙人"
+    tags: ["VC", "AI投资"]
+
+  - handle: "naborso"
+    name: "Nabeel Hyatt"
+    platform: "x"
+    tier: "expert"
+    role: "investor"
+    category: "startup"
+    weight: 3.5
+    bio: "Spark Capital 合伙人"
+    tags: ["VC", "投资"]
+
+# ==================== Insider Tier - 业内人士 ====================
+# 权重: 1.5-3.0
+insider_tier:
+  # 大厂员工
+  - handle: "polynoamial"
+    name: "Noam Shazeer"
+    platform: "x"
+    tier: "insider"
+    role: "researcher"
+    category: "llm"
+    weight: 3.0
+    bio: "Character.AI 联合创始人, 前 Google"
+    tags: ["Character.AI", "Transformer"]
+
+  - handle: "aidan_mclau"
+    name: "Aidan McLaughlin"
+    platform: "x"
+    tier: "insider"
+    role: "engineer"
+    category: "llm"
+    weight: 2.5
+    bio: "AI 工程师"
+    tags: ["LLM", "工程"]
+
+  - handle: "theshawwn"
+    name: "Shawn Presser"
+    platform: "x"
+    tier: "insider"
+    role: "engineer"
+    category: "llm"
+    weight: 2.5
+    bio: "开源 AI 开发者"
+    tags: ["开源", "LLM"]
+
+  - handle: "teknium1"
+    name: "Teknium"
+    platform: "x"
+    tier: "insider"
+    role: "engineer"
+    category: "llm"
+    weight: 2.5
+    bio: "开源 LLM 微调专家"
+    tags: ["微调", "开源", "LLM"]
+
+  - handle: "winglian"
+    name: "Wing Lian"
+    platform: "x"
+    tier: "insider"
+    role: "engineer"
+    category: "llm"
+    weight: 2.5
+    bio: "Axolotl 作者"
+    tags: ["Axolotl", "微调", "开源"]
+
+  - handle: "jxnlco"
+    name: "Jason Liu"
+    platform: "x"
+    tier: "insider"
+    role: "engineer"
+    category: "product"
+    weight: 2.5
+    bio: "Instructor 作者"
+    tags: ["Instructor", "结构化输出"]
+
+  # 媒体/分析师
+  - handle: "chiefaioffice"
+    name: "Chief AI Officer"
+    platform: "x"
+    tier: "insider"
+    role: "analyst"
+    category: "general"
+    weight: 2.0
+    bio: "AI 行业分析"
+    tags: ["分析", "行业"]
+
+  - handle: "ai_explained"
+    name: "AI Explained"
+    platform: "x"
+    tier: "insider"
+    role: "educator"
+    category: "general"
+    weight: 2.0
+    bio: "AI 科普博主"
+    tags: ["科普", "教育"]
+
+# ==================== Observer Tier - 关注者 ====================
+# 权重: 0.5-1.5
+observer_tier:
+  - handle: "ai_pub"
+    name: "AI Pub"
+    platform: "x"
+    tier: "observer"
+    role: "journalist"
+    category: "general"
+    weight: 1.0
+    bio: "AI 新闻聚合"
+    tags: ["新闻", "聚合"]
+
+  - handle: "aiaborsa"
+    name: "AI News"
+    platform: "x"
+    tier: "observer"
+    role: "journalist"
+    category: "general"
+    weight: 1.0
+    bio: "AI 新闻"
+    tags: ["新闻"]
+
+# ==================== 中文 AI KOL ====================
+chinese_kols:
+  - handle: "oran_ge"
+    name: "橙子"
+    platform: "x"
+    tier: "expert"
+    role: "analyst"
+    category: "general"
+    weight: 3.0
+    bio: "AI 行业分析师"
+    tags: ["中文", "分析"]
+
+  - handle: "dotey"
+    name: "宝玉"
+    platform: "x"
+    tier: "expert"
+    role: "engineer"
+    category: "product"
+    weight: 3.5
+    bio: "AI 产品开发者, 翻译者"
+    tags: ["中文", "翻译", "产品"]
+
+  - handle: "op7418"
+    name: "歸藏"
+    platform: "x"
+    tier: "insider"
+    role: "analyst"
+    category: "general"
+    weight: 2.5
+    bio: "AI 资讯博主"
+    tags: ["中文", "资讯"]
+
+# ==================== GitHub 项目追踪 ====================
+github_projects:
+  - handle: "langchain-ai/langchain"
+    name: "LangChain"
+    platform: "github"
+    tier: "expert"
+    role: "engineer"
+    category: "product"
+    weight: 4.0
+    rss_url: "https://github.com/langchain-ai/langchain/releases.atom"
+    bio: "LLM 应用开发框架"
+    tags: ["LangChain", "框架", "RAG"]
+
+  - handle: "run-llama/llama_index"
+    name: "LlamaIndex"
+    platform: "github"
+    tier: "expert"
+    role: "engineer"
+    category: "product"
+    weight: 4.0
+    rss_url: "https://github.com/run-llama/llama_index/releases.atom"
+    bio: "数据框架"
+    tags: ["LlamaIndex", "RAG", "数据"]
+
+  - handle: "ollama/ollama"
+    name: "Ollama"
+    platform: "github"
+    tier: "expert"
+    role: "engineer"
+    category: "infra"
+    weight: 4.0
+    rss_url: "https://github.com/ollama/ollama/releases.atom"
+    bio: "本地 LLM 运行工具"
+    tags: ["Ollama", "本地部署"]
+
+  - handle: "ggerganov/llama.cpp"
+    name: "llama.cpp"
+    platform: "github"
+    tier: "expert"
+    role: "engineer"
+    category: "infra"
+    weight: 4.5
+    rss_url: "https://github.com/ggerganov/llama.cpp/releases.atom"
+    bio: "LLM 推理引擎"
+    tags: ["llama.cpp", "推理", "C++"]
+
+  - handle: "huggingface/transformers"
+    name: "Transformers"
+    platform: "github"
+    tier: "god"
+    role: "engineer"
+    category: "infra"
+    weight: 5.0
+    rss_url: "https://github.com/huggingface/transformers/releases.atom"
+    bio: "Hugging Face Transformers 库"
+    tags: ["HuggingFace", "Transformers"]
+
+  - handle: "vllm-project/vllm"
+    name: "vLLM"
+    platform: "github"
+    tier: "expert"
+    role: "engineer"
+    category: "infra"
+    weight: 4.0
+    rss_url: "https://github.com/vllm-project/vllm/releases.atom"
+    bio: "高性能 LLM 推理引擎"
+    tags: ["vLLM", "推理", "性能"]
+
+  - handle: "openai/openai-python"
+    name: "OpenAI Python SDK"
+    platform: "github"
+    tier: "expert"
+    role: "engineer"
+    category: "product"
+    weight: 3.5
+    rss_url: "https://github.com/openai/openai-python/releases.atom"
+    bio: "OpenAI 官方 Python SDK"
+    tags: ["OpenAI", "SDK"]
+
+  - handle: "anthropics/anthropic-sdk-python"
+    name: "Anthropic Python SDK"
+    platform: "github"
+    tier: "expert"
+    role: "engineer"
+    category: "product"
+    weight: 3.5
+    rss_url: "https://github.com/anthropics/anthropic-sdk-python/releases.atom"
+    bio: "Anthropic 官方 Python SDK"
+    tags: ["Anthropic", "Claude", "SDK"]
+
+# ==================== 导入设置 ====================
+import_settings:
+  # 是否覆盖已存在的 KOL
+  overwrite_existing: false
+  # 是否自动生成 Nitter RSS URL
+  auto_generate_nitter_url: true
+  # 默认 Nitter 实例
+  default_nitter_instance: "https://nitter.privacydev.net"
+  # 是否启用新导入的 KOL
+  enable_on_import: true
