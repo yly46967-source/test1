@@ -12114,3 +12114,256 @@
 2026-02-19 01:30:27 │ [32mINFO[0m │ main            │ main.py:204 │ 已推送 3 条新闻到 Telegram
 2026-02-19 01:30:27 │ [32mINFO[0m │ main            │ main.py:279 │ 数据库统计: 总计 102 篇, 今日 102 篇
 2026-02-19 01:30:27 │ [32mINFO[0m │ main            │ main.py:281 │ 运行完成
+2026-02-19 14:27:31 │ [32mINFO[0m │ main            │ ainsight.py:53 │ ==================================================
+2026-02-19 14:27:31 │ [32mINFO[0m │ main            │ ainsight.py:54 │ AInsight 启动
+2026-02-19 14:27:31 │ [32mINFO[0m │ main            │ ainsight.py:55 │ ==================================================
+2026-02-19 14:27:31 │ [32mINFO[0m │ database        │ service.py:806 │ FTS 全文搜索表已初始化
+2026-02-19 14:27:31 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-19 14:27:31 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 19 个数据源
+2026-02-19 14:27:31 │ [32mINFO[0m │ main            │ ainsight.py:74 │ 已加载 19 个数据源
+2026-02-19 14:27:36 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [Jim Fan] HTTP 404
+2026-02-19 14:27:36 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [Swyx] HTTP 404
+2026-02-19 14:27:36 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [Sam Altman] HTTP 404
+2026-02-19 14:27:36 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [Yann LeCun] HTTP 404
+2026-02-19 14:27:36 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [Andrej Karpathy] HTTP 404
+2026-02-19 14:27:40 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [X搜索: GPT-5] HTTP 404
+2026-02-19 14:27:40 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [X搜索: Gemini 2] HTTP 404
+2026-02-19 14:27:40 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [Bindu Reddy] HTTP 404
+2026-02-19 14:27:40 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [Elvis] HTTP 404
+2026-02-19 14:27:42 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [X搜索: Claude 4] HTTP 404
+2026-02-19 14:27:43 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [GitHub AI Trending] HTTP 403
+2026-02-19 14:27:43 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [LangChain] HTTP 403
+2026-02-19 14:27:44 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [LlamaIndex] HTTP 403
+2026-02-19 14:27:44 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [Ollama] HTTP 403
+2026-02-19 14:27:45 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [GitHub ML Trending] HTTP 403
+2026-02-19 14:27:46 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:163 │ [The Verge AI] HTTP 403
+2026-02-19 14:27:46 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [TechCrunch] 抓取 10 条
+2026-02-19 14:27:46 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Hacker News] 抓取 10 条
+2026-02-19 14:27:46 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Ars Technica AI] 抓取 10 条
+2026-02-19 14:27:46 │ [32mINFO[0m │ main            │ ainsight.py:84 │ 抓取完成: 3 成功, 16 失败, 30 条内容, 耗时 15.2s
+2026-02-19 14:27:46 │ [32mINFO[0m │ main            │ ainsight.py:95 │ 测试模式: 只处理 5 条
+2026-02-19 14:27:46 │ [32mINFO[0m │ main            │ ainsight.py:101 │ 跳过聚类处理
+2026-02-19 14:27:46 │ [32mINFO[0m │ main            │ ainsight.py:107 │ 跳过情报合成
+2026-02-19 14:27:46 │ [32mINFO[0m │ main            │ ainsight.py:113 │ 跳过 Telegram 推送
+2026-02-19 14:27:46 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 统计: 主题 0 个, 内容 0 条, 情报包 0 个
+2026-02-19 14:27:46 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 运行完成
+2026-02-19 14:29:07 │ [32mINFO[0m │ main            │ ainsight.py:53 │ ==================================================
+2026-02-19 14:29:07 │ [32mINFO[0m │ main            │ ainsight.py:54 │ AInsight 启动
+2026-02-19 14:29:07 │ [32mINFO[0m │ main            │ ainsight.py:55 │ ==================================================
+2026-02-19 14:29:07 │ [32mINFO[0m │ database        │ service.py:806 │ FTS 全文搜索表已初始化
+2026-02-19 14:29:07 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-19 14:29:07 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 6 个数据源
+2026-02-19 14:29:07 │ [32mINFO[0m │ main            │ ainsight.py:74 │ 已加载 6 个数据源
+2026-02-19 14:29:12 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [TechCrunch] 抓取 10 条
+2026-02-19 14:29:12 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Hacker News] 抓取 10 条
+2026-02-19 14:29:12 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Ars Technica AI] 抓取 10 条
+2026-02-19 14:29:12 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [MIT Tech Review] 抓取 10 条
+2026-02-19 14:29:12 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Wired AI] 抓取 10 条
+2026-02-19 14:29:12 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [VentureBeat AI] 抓取 7 条
+2026-02-19 14:29:12 │ [32mINFO[0m │ main            │ ainsight.py:84 │ 抓取完成: 6 成功, 0 失败, 57 条内容, 耗时 5.1s
+2026-02-19 14:29:12 │ [32mINFO[0m │ main            │ ainsight.py:95 │ 测试模式: 只处理 5 条
+2026-02-19 14:29:12 │ [32mINFO[0m │ main            │ ainsight.py:133 │ 开始聚类处理 5 条内容...
+2026-02-19 14:29:13 │ [33mWARNING[0m │ src.clustering.pipeline │ pipeline.py:154 │ FTS 查询失败，使用降级方案: 'str' object is not callable
+2026-02-19 14:29:13 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 14:29:13 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 14:29:15 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 14:29:15 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:228 │ 创建新主题: OpenAI携手塔塔在印度建100MW AI数据中心 (ID: 1)
+2026-02-19 14:29:15 │ [33mWARNING[0m │ src.clustering.pipeline │ pipeline.py:154 │ FTS 查询失败，使用降级方案: 'str' object is not callable
+2026-02-19 14:29:15 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 1 个候选主题
+2026-02-19 14:29:18 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: merge, 相关度: 0.82
+2026-02-19 14:29:18 │ [33mWARNING[0m │ src.clustering.pipeline │ pipeline.py:154 │ FTS 查询失败，使用降级方案: 'str' object is not callable
+2026-02-19 14:29:18 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 1 个候选主题
+2026-02-19 14:29:21 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.05
+2026-02-19 14:29:21 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: 'NoneType' object has no attribute 'get'
+2026-02-19 14:29:21 │ [33mWARNING[0m │ src.clustering.pipeline │ pipeline.py:154 │ FTS 查询失败，使用降级方案: 'str' object is not callable
+2026-02-19 14:29:21 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 1 个候选主题
+2026-02-19 14:29:23 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.05
+2026-02-19 14:29:23 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: 'NoneType' object has no attribute 'get'
+2026-02-19 14:29:23 │ [33mWARNING[0m │ src.clustering.pipeline │ pipeline.py:154 │ FTS 查询失败，使用降级方案: 'str' object is not callable
+2026-02-19 14:29:23 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 1 个候选主题
+2026-02-19 14:29:26 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.15
+2026-02-19 14:29:26 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: 'NoneType' object has no attribute 'get'
+2026-02-19 14:29:26 │ [32mINFO[0m │ main            │ ainsight.py:182 │ 聚类完成: 2 处理, 3 跳过
+2026-02-19 14:29:26 │ [32mINFO[0m │ main            │ ainsight.py:107 │ 跳过情报合成
+2026-02-19 14:29:26 │ [32mINFO[0m │ main            │ ainsight.py:113 │ 跳过 Telegram 推送
+2026-02-19 14:29:26 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 统计: 主题 1 个, 内容 2 条, 情报包 0 个
+2026-02-19 14:29:26 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 运行完成
+2026-02-19 14:30:59 │ [32mINFO[0m │ main            │ ainsight.py:53 │ ==================================================
+2026-02-19 14:30:59 │ [32mINFO[0m │ main            │ ainsight.py:54 │ AInsight 启动
+2026-02-19 14:30:59 │ [32mINFO[0m │ main            │ ainsight.py:55 │ ==================================================
+2026-02-19 14:30:59 │ [32mINFO[0m │ database        │ service.py:806 │ FTS 全文搜索表已初始化
+2026-02-19 14:30:59 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-19 14:30:59 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 6 个数据源
+2026-02-19 14:30:59 │ [32mINFO[0m │ main            │ ainsight.py:74 │ 已加载 6 个数据源
+2026-02-19 14:31:04 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [TechCrunch] 抓取 10 条
+2026-02-19 14:31:04 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Hacker News] 抓取 10 条
+2026-02-19 14:31:04 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Ars Technica AI] 抓取 10 条
+2026-02-19 14:31:04 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [MIT Tech Review] 抓取 10 条
+2026-02-19 14:31:04 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Wired AI] 抓取 10 条
+2026-02-19 14:31:04 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [VentureBeat AI] 抓取 7 条
+2026-02-19 14:31:04 │ [32mINFO[0m │ main            │ ainsight.py:84 │ 抓取完成: 6 成功, 0 失败, 57 条内容, 耗时 5.4s
+2026-02-19 14:31:04 │ [32mINFO[0m │ main            │ ainsight.py:95 │ 测试模式: 只处理 5 条
+2026-02-19 14:31:04 │ [32mINFO[0m │ main            │ ainsight.py:133 │ 开始聚类处理 5 条内容...
+2026-02-19 14:31:04 │ [33mWARNING[0m │ src.clustering.pipeline │ pipeline.py:154 │ FTS 查询失败，使用降级方案: (sqlite3.OperationalError) fts5: syntax error near "$"
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('Etsy sells secondhand clothing marketplace Depop to eBay for $1.2B\n\nThe deal comes nearly five years', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-02-19 14:31:04 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 1 个候选主题
+2026-02-19 14:31:07 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.05
+2026-02-19 14:31:09 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:237 │ 创建新主题: Etsy 将二手服饰平台 Depop 以 12 亿美元出售给 eBay (ID: 2)
+2026-02-19 14:31:09 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 14:31:09 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 14:31:12 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 14:31:12 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:237 │ 创建新主题: Def Con封禁与爱泼斯坦有关联的三名人士 (ID: 3)
+2026-02-19 14:31:12 │ [33mWARNING[0m │ src.clustering.pipeline │ pipeline.py:154 │ FTS 查询失败，使用降级方案: (sqlite3.OperationalError) fts5: syntax error near "?"
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('Is your startup’s check engine light on? Google Cloud’s VP explains what to do\n\nStartup founders are', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-02-19 14:31:12 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 3 个候选主题
+2026-02-19 14:31:14 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.15
+2026-02-19 14:31:16 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:237 │ 创建新主题: 初创企业AI基建风险预警与优化指南 (ID: 4)
+2026-02-19 14:31:16 │ [32mINFO[0m │ main            │ ainsight.py:182 │ 聚类完成: 3 处理, 2 跳过
+2026-02-19 14:31:16 │ [32mINFO[0m │ main            │ ainsight.py:107 │ 跳过情报合成
+2026-02-19 14:31:16 │ [32mINFO[0m │ main            │ ainsight.py:113 │ 跳过 Telegram 推送
+2026-02-19 14:31:16 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 统计: 主题 4 个, 内容 5 条, 情报包 0 个
+2026-02-19 14:31:16 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 运行完成
+2026-02-19 14:32:14 │ [32mINFO[0m │ main            │ ainsight.py:53 │ ==================================================
+2026-02-19 14:32:14 │ [32mINFO[0m │ main            │ ainsight.py:54 │ AInsight 启动
+2026-02-19 14:32:14 │ [32mINFO[0m │ main            │ ainsight.py:55 │ ==================================================
+2026-02-19 14:32:14 │ [32mINFO[0m │ database        │ service.py:806 │ FTS 全文搜索表已初始化
+2026-02-19 14:32:14 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-19 14:32:14 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 6 个数据源
+2026-02-19 14:32:14 │ [32mINFO[0m │ main            │ ainsight.py:74 │ 已加载 6 个数据源
+2026-02-19 14:32:19 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [TechCrunch] 抓取 10 条
+2026-02-19 14:32:19 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Hacker News] 抓取 10 条
+2026-02-19 14:32:19 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Ars Technica AI] 抓取 10 条
+2026-02-19 14:32:19 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [MIT Tech Review] 抓取 10 条
+2026-02-19 14:32:19 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Wired AI] 抓取 10 条
+2026-02-19 14:32:19 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [VentureBeat AI] 抓取 7 条
+2026-02-19 14:32:19 │ [32mINFO[0m │ main            │ ainsight.py:84 │ 抓取完成: 6 成功, 0 失败, 57 条内容, 耗时 5.1s
+2026-02-19 14:32:19 │ [32mINFO[0m │ main            │ ainsight.py:95 │ 测试模式: 只处理 5 条
+2026-02-19 14:32:19 │ [32mINFO[0m │ main            │ ainsight.py:133 │ 开始聚类处理 5 条内容...
+2026-02-19 14:32:19 │ [32mINFO[0m │ main            │ ainsight.py:182 │ 聚类完成: 0 处理, 5 跳过
+2026-02-19 14:32:19 │ [32mINFO[0m │ main            │ ainsight.py:187 │ 检查情报合成触发条件...
+2026-02-19 14:32:20 │ [31mERROR[0m │ main            │ ainsight.py:124 │ 运行出错: SynthesisService.__init__() got an unexpected keyword argument 'db'
+Traceback (most recent call last):
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 105, in run_ainsight
+    await run_synthesis()
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 195, in run_synthesis
+    synthesis_service = SynthesisService(
+        db=db,
+        llm_client=llm_client,
+        model=os.getenv("LLM_MODEL", "qwen-plus"),
+    )
+TypeError: SynthesisService.__init__() got an unexpected keyword argument 'db'
+2026-02-19 14:32:50 │ [32mINFO[0m │ main            │ ainsight.py:53 │ ==================================================
+2026-02-19 14:32:50 │ [32mINFO[0m │ main            │ ainsight.py:54 │ AInsight 启动
+2026-02-19 14:32:50 │ [32mINFO[0m │ main            │ ainsight.py:55 │ ==================================================
+2026-02-19 14:32:50 │ [32mINFO[0m │ database        │ service.py:806 │ FTS 全文搜索表已初始化
+2026-02-19 14:32:50 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-19 14:32:50 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 6 个数据源
+2026-02-19 14:32:50 │ [32mINFO[0m │ main            │ ainsight.py:74 │ 已加载 6 个数据源
+2026-02-19 14:32:55 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [TechCrunch] 抓取 10 条
+2026-02-19 14:32:55 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Hacker News] 抓取 10 条
+2026-02-19 14:32:55 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Ars Technica AI] 抓取 10 条
+2026-02-19 14:32:55 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [MIT Tech Review] 抓取 10 条
+2026-02-19 14:32:55 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Wired AI] 抓取 10 条
+2026-02-19 14:32:55 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [VentureBeat AI] 抓取 7 条
+2026-02-19 14:32:55 │ [32mINFO[0m │ main            │ ainsight.py:84 │ 抓取完成: 6 成功, 0 失败, 57 条内容, 耗时 5.0s
+2026-02-19 14:32:55 │ [32mINFO[0m │ main            │ ainsight.py:95 │ 测试模式: 只处理 5 条
+2026-02-19 14:32:55 │ [32mINFO[0m │ main            │ ainsight.py:133 │ 开始聚类处理 5 条内容...
+2026-02-19 14:32:55 │ [32mINFO[0m │ main            │ ainsight.py:182 │ 聚类完成: 0 处理, 5 跳过
+2026-02-19 14:32:55 │ [32mINFO[0m │ main            │ ainsight.py:187 │ 检查情报合成触发条件...
+2026-02-19 14:32:56 │ [32mINFO[0m │ src.processor.synthesis_service │ synthesis_service.py:127 │ 批量合成完成: {'processed': 0, 'success': 0, 'failed': 0, 'skipped': 4}
+2026-02-19 14:32:56 │ [31mERROR[0m │ database        │ service.py:71 │ 数据库事务回滚: 'synthesized'
+2026-02-19 14:32:56 │ [31mERROR[0m │ main            │ ainsight.py:124 │ 运行出错: 'synthesized'
+Traceback (most recent call last):
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 105, in run_ainsight
+    await run_synthesis()
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 209, in run_synthesis
+    logger.info(f"情报合成: {result['synthesized']} 个主题, {result['skipped']} 跳过")
+                             ~~~~~~^^^^^^^^^^^^^^^
+KeyError: 'synthesized'
+2026-02-19 14:33:19 │ [32mINFO[0m │ main            │ ainsight.py:53 │ ==================================================
+2026-02-19 14:33:19 │ [32mINFO[0m │ main            │ ainsight.py:54 │ AInsight 启动
+2026-02-19 14:33:19 │ [32mINFO[0m │ main            │ ainsight.py:55 │ ==================================================
+2026-02-19 14:33:19 │ [32mINFO[0m │ database        │ service.py:806 │ FTS 全文搜索表已初始化
+2026-02-19 14:33:19 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-19 14:33:19 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 6 个数据源
+2026-02-19 14:33:19 │ [32mINFO[0m │ main            │ ainsight.py:74 │ 已加载 6 个数据源
+2026-02-19 14:33:24 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [TechCrunch] 抓取 10 条
+2026-02-19 14:33:24 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Hacker News] 抓取 10 条
+2026-02-19 14:33:24 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Ars Technica AI] 抓取 10 条
+2026-02-19 14:33:24 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [MIT Tech Review] 抓取 10 条
+2026-02-19 14:33:24 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Wired AI] 抓取 10 条
+2026-02-19 14:33:24 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [VentureBeat AI] 抓取 7 条
+2026-02-19 14:33:24 │ [32mINFO[0m │ main            │ ainsight.py:84 │ 抓取完成: 6 成功, 0 失败, 57 条内容, 耗时 5.1s
+2026-02-19 14:33:24 │ [32mINFO[0m │ main            │ ainsight.py:95 │ 测试模式: 只处理 5 条
+2026-02-19 14:33:24 │ [32mINFO[0m │ main            │ ainsight.py:133 │ 开始聚类处理 5 条内容...
+2026-02-19 14:33:25 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 14:33:25 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 14:33:27 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 14:33:27 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: OpenAI携手塔塔在印度建1GW AI数据中心 (ID: 1)
+2026-02-19 14:33:27 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 14:33:27 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 14:33:29 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 14:33:29 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: OpenAI携手Pine Labs拓展印度企业支付AI (ID: 2)
+2026-02-19 14:33:29 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 14:33:29 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 14:33:31 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 14:33:31 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Etsy 将二手服饰平台 Depop 以12亿美元出售给eBay (ID: 3)
+2026-02-19 14:33:31 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 14:33:31 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 14:33:33 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 14:33:33 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Def Con封禁与爱泼斯坦有关人士 (ID: 4)
+2026-02-19 14:33:33 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 14:33:33 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 14:33:35 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 14:33:35 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: 初创企业云基础设施早期决策指南 (ID: 5)
+2026-02-19 14:33:35 │ [32mINFO[0m │ main            │ ainsight.py:182 │ 聚类完成: 5 处理, 0 跳过
+2026-02-19 14:33:35 │ [32mINFO[0m │ main            │ ainsight.py:187 │ 检查情报合成触发条件...
+2026-02-19 14:33:36 │ [32mINFO[0m │ src.processor.synthesis_service │ synthesis_service.py:127 │ 批量合成完成: {'processed': 0, 'success': 0, 'failed': 0, 'skipped': 5}
+2026-02-19 14:33:36 │ [32mINFO[0m │ main            │ ainsight.py:209 │ 情报合成: 0 个主题, 5 跳过
+2026-02-19 14:33:36 │ [32mINFO[0m │ main            │ ainsight.py:113 │ 跳过 Telegram 推送
+2026-02-19 14:33:36 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 统计: 主题 5 个, 内容 5 条, 情报包 0 个
+2026-02-19 14:33:36 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 运行完成
+2026-02-19 14:39:26 │ [32mINFO[0m │ main            │ ainsight.py:53 │ ==================================================
+2026-02-19 14:39:26 │ [32mINFO[0m │ main            │ ainsight.py:54 │ AInsight 启动
+2026-02-19 14:39:26 │ [32mINFO[0m │ main            │ ainsight.py:55 │ ==================================================
+2026-02-19 14:39:26 │ [32mINFO[0m │ database        │ service.py:806 │ FTS 全文搜索表已初始化
+2026-02-19 14:39:26 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-19 14:39:26 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 6 个数据源
+2026-02-19 14:39:26 │ [32mINFO[0m │ main            │ ainsight.py:74 │ 已加载 6 个数据源
+2026-02-19 14:39:31 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [TechCrunch] 抓取 10 条
+2026-02-19 14:39:31 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Hacker News] 抓取 10 条
+2026-02-19 14:39:31 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Ars Technica AI] 抓取 10 条
+2026-02-19 14:39:31 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [MIT Tech Review] 抓取 10 条
+2026-02-19 14:39:31 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Wired AI] 抓取 10 条
+2026-02-19 14:39:31 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [VentureBeat AI] 抓取 7 条
+2026-02-19 14:39:31 │ [32mINFO[0m │ main            │ ainsight.py:84 │ 抓取完成: 6 成功, 0 失败, 57 条内容, 耗时 5.2s
+2026-02-19 14:39:31 │ [32mINFO[0m │ main            │ ainsight.py:95 │ 测试模式: 只处理 5 条
+2026-02-19 14:39:31 │ [32mINFO[0m │ main            │ ainsight.py:133 │ 开始聚类处理 5 条内容...
+2026-02-19 14:39:32 │ [32mINFO[0m │ main            │ ainsight.py:182 │ 聚类完成: 0 处理, 5 跳过
+2026-02-19 14:39:32 │ [32mINFO[0m │ main            │ ainsight.py:187 │ 检查情报合成触发条件...
+2026-02-19 14:39:32 │ [32mINFO[0m │ src.processor.synthesis_service │ synthesis_service.py:127 │ 批量合成完成: {'processed': 0, 'success': 0, 'failed': 0, 'skipped': 5}
+2026-02-19 14:39:32 │ [32mINFO[0m │ main            │ ainsight.py:209 │ 情报合成: 0 个主题, 5 跳过
+2026-02-19 14:39:32 │ [32mINFO[0m │ main            │ ainsight.py:214 │ 准备发送情报摘要...
+2026-02-19 14:39:35 │ [32mINFO[0m │ main            │ ainsight.py:266 │ 情报推送完成
+2026-02-19 14:39:35 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 统计: 主题 5 个, 内容 5 条, 情报包 0 个
+2026-02-19 14:39:35 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 运行完成

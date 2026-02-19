@@ -1,93 +1,233 @@
-# 新闻源配置
-# 用户可以自行添加或修改新闻源
+# AInsight 数据源配置
+# RSSHub 统一数据源 + 传统 RSS
 
-china:
-  # 中国新闻源（大部分国内媒体已停用RSS，以下为可用源）
-  - name: "中国日报"
-    url: "https://www.chinadaily.com.cn/rss/china_rss.xml"
-    type: "rss"
-    enabled: true
+# ==================== RSSHub 配置 ====================
+rsshub:
+  base_url: "https://rsshub.app"  # 公共实例
+  # base_url: "http://localhost:1200"  # 自部署（推荐，无限流）
+  timeout: 30
+  retry: 3
 
-  - name: "环球时报"
-    url: "https://www.globaltimes.cn/rss/outbrain.xml"
-    type: "rss"
-    enabled: true
+# ==================== AI KOL 追踪 ====================
+# 通过 RSSHub 获取 X/Twitter 数据
+# 注意：公共 RSSHub 实例限制 Twitter 路由，需自部署
+ai_kols:
+  # God Tier - 行业领袖
+  - handle: "karpathy"
+    name: "Andrej Karpathy"
+    tier: "god"
+    platform: "x"
+    rsshub_route: "/twitter/user/karpathy"
+    enabled: false  # 需自部署 RSSHub
+    tags: ["AI", "Tesla", "OpenAI"]
 
-  - name: "南华早报"
-    url: "https://www.scmp.com/rss/91/feed"
-    type: "rss"
-    enabled: true
+  - handle: "ylecun"
+    name: "Yann LeCun"
+    tier: "god"
+    platform: "x"
+    rsshub_route: "/twitter/user/ylecun"
+    enabled: false
+    tags: ["AI", "Meta", "深度学习"]
 
-world:
-  # 世界新闻
-  - name: "BBC World"
-    url: "https://feeds.bbci.co.uk/news/world/rss.xml"
-    type: "rss"
-    enabled: true
+  - handle: "sama"
+    name: "Sam Altman"
+    tier: "god"
+    platform: "x"
+    rsshub_route: "/twitter/user/sama"
+    enabled: false
+    tags: ["OpenAI", "GPT", "AGI"]
 
-  - name: "BBC Tech"
-    url: "https://feeds.bbci.co.uk/news/technology/rss.xml"
-    type: "rss"
-    enabled: true
+  # Expert Tier - 技术专家
+  - handle: "DrJimFan"
+    name: "Jim Fan"
+    tier: "expert"
+    platform: "x"
+    rsshub_route: "/twitter/user/DrJimFan"
+    enabled: false
+    tags: ["NVIDIA", "具身智能", "机器人"]
 
-  - name: "BBC Business"
-    url: "https://feeds.bbci.co.uk/news/business/rss.xml"
-    type: "rss"
-    enabled: true
+  - handle: "swyx"
+    name: "Swyx"
+    tier: "expert"
+    platform: "x"
+    rsshub_route: "/twitter/user/swyx"
+    enabled: false
+    tags: ["AI工程", "LLM", "开发者"]
 
-  - name: "CNN Top"
-    url: "http://rss.cnn.com/rss/edition.rss"
-    type: "rss"
-    enabled: true
+  - handle: "emaborsa"
+    name: "Elvis"
+    tier: "expert"
+    platform: "x"
+    rsshub_route: "/twitter/user/emaborsa"
+    enabled: false
+    tags: ["AI", "创业", "产品"]
 
-  - name: "CNN Tech"
-    url: "http://rss.cnn.com/rss/edition_technology.rss"
-    type: "rss"
-    enabled: true
+  # Insider Tier - 业内人士
+  - handle: "bindureddy"
+    name: "Bindu Reddy"
+    tier: "insider"
+    platform: "x"
+    rsshub_route: "/twitter/user/bindureddy"
+    enabled: false
+    tags: ["AI创业", "Abacus.AI"]
 
-  - name: "NYT World"
-    url: "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"
-    type: "rss"
-    enabled: true
+  - handle: "aabordes"
+    name: "Antoine Bordes"
+    tier: "insider"
+    platform: "x"
+    rsshub_route: "/twitter/user/aabordes"
+    enabled: false
+    tags: ["Meta", "AI研究"]
 
-  - name: "NYT Tech"
-    url: "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml"
-    type: "rss"
-    enabled: true
+# ==================== AI 关键词追踪 ====================
+ai_keywords:
+  - keyword: "GPT-5"
+    rsshub_route: "/twitter/search/GPT-5"
+    enabled: false  # 需自部署 RSSHub
+    category: "model_release"
 
-  - name: "The Guardian"
-    url: "https://www.theguardian.com/world/rss"
-    type: "rss"
-    enabled: true
+  - keyword: "Claude 4"
+    rsshub_route: "/twitter/search/Claude%204"
+    enabled: false
+    category: "model_release"
 
-  - name: "Al Jazeera"
-    url: "https://www.aljazeera.com/xml/rss/all.xml"
-    type: "rss"
-    enabled: true
+  - keyword: "Gemini 2"
+    rsshub_route: "/twitter/search/Gemini%202"
+    enabled: false
+    category: "model_release"
 
+  - keyword: "AI funding"
+    rsshub_route: "/twitter/search/AI%20funding%20million"
+    enabled: false
+    category: "funding"
+
+# ==================== GitHub 追踪 ====================
+# 注意：公共 RSSHub 实例限制 GitHub 路由，需自部署
+github:
+  # Trending
+  - name: "GitHub AI Trending"
+    rsshub_route: "/github/trending/daily/python"
+    enabled: false  # 需自部署 RSSHub
+    category: "research"
+
+  - name: "GitHub ML Trending"
+    rsshub_route: "/github/trending/daily/jupyter-notebook"
+    enabled: false
+    category: "research"
+
+  # 重点项目
+  - name: "LangChain"
+    rsshub_route: "/github/repos/langchain-ai/langchain"
+    enabled: false
+    category: "product_launch"
+
+  - name: "LlamaIndex"
+    rsshub_route: "/github/repos/run-llama/llama_index"
+    enabled: false
+    category: "product_launch"
+
+  - name: "Ollama"
+    rsshub_route: "/github/repos/ollama/ollama"
+    enabled: false
+    category: "product_launch"
+
+  - name: "Open Interpreter"
+    rsshub_route: "/github/repos/OpenInterpreter/open-interpreter"
+    enabled: false
+    category: "product_launch"
+
+# ==================== 科技媒体 ====================
+tech_media:
   - name: "TechCrunch"
     url: "https://techcrunch.com/feed/"
     type: "rss"
     enabled: true
+    category: "news"
 
   - name: "Hacker News"
     url: "https://hnrss.org/frontpage"
     type: "rss"
     enabled: true
+    category: "news"
 
-# 分类配置
+  - name: "The Verge AI"
+    rsshub_route: "/theverge/ai-artificial-intelligence"
+    enabled: false  # 需自部署 RSSHub
+    category: "news"
+
+  - name: "Ars Technica AI"
+    url: "https://feeds.arstechnica.com/arstechnica/technology-lab"
+    type: "rss"
+    enabled: true
+    category: "news"
+
+  - name: "MIT Tech Review"
+    url: "https://www.technologyreview.com/feed/"
+    type: "rss"
+    enabled: true
+    category: "news"
+
+  - name: "Wired AI"
+    url: "https://www.wired.com/feed/tag/ai/latest/rss"
+    type: "rss"
+    enabled: true
+    category: "news"
+
+  - name: "VentureBeat AI"
+    url: "https://venturebeat.com/category/ai/feed/"
+    type: "rss"
+    enabled: true
+    category: "news"
+
+# ==================== 论文追踪 ====================
+papers:
+  - name: "arXiv AI"
+    rsshub_route: "/arxiv/search_query=cat:cs.AI&sortBy=submittedDate"
+    enabled: false
+    category: "research"
+
+  - name: "arXiv LLM"
+    rsshub_route: "/arxiv/search_query=all:large+language+model&sortBy=submittedDate"
+    enabled: false
+    category: "research"
+
+# ==================== 传统新闻源（保留） ====================
+china:
+  - name: "中国日报"
+    url: "https://www.chinadaily.com.cn/rss/china_rss.xml"
+    type: "rss"
+    enabled: false
+
+  - name: "南华早报"
+    url: "https://www.scmp.com/rss/91/feed"
+    type: "rss"
+    enabled: false
+
+world:
+  - name: "BBC Tech"
+    url: "https://feeds.bbci.co.uk/news/technology/rss.xml"
+    type: "rss"
+    enabled: false
+
+  - name: "NYT Tech"
+    url: "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml"
+    type: "rss"
+    enabled: false
+
+# ==================== 分类配置 ====================
 categories:
-  - 科技
-  - 政治
-  - 经济
-  - 社会
-  - 国际
-  - 体育
-  - 娱乐
-  - 其他
+  - model_release    # 模型发布
+  - funding          # 融资消息
+  - product_launch   # 产品发布
+  - research         # 研究论文
+  - drama            # 行业八卦
+  - tutorial         # 教程分享
+  - market_signal    # 市场信号
 
-# 抓取设置
+# ==================== 抓取设置 ====================
 settings:
-  max_items_per_source: 5   # 每个源最多抓取条数（源多了适当减少）
-  request_timeout: 30       # 请求超时（秒）
-  user_agent: "NewsFunnel/1.0"
+  max_items_per_source: 10    # 每个源最多抓取条数
+  request_timeout: 30         # 请求超时（秒）
+  user_agent: "AInsight/1.0 (RSS Reader)"
+  concurrent_limit: 5         # 并发数限制
+  fetch_interval_minutes: 30  # 抓取间隔（分钟）

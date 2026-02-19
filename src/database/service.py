@@ -4,13 +4,17 @@ from datetime import datetime
 from typing import Optional
 from contextlib import asynccontextmanager
 
-from sqlalchemy import select, update, and_, or_
+from sqlalchemy import select, update, and_, or_, text, func as sql_func
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from .models import (
     Base, NewsArticle, NewsSource, FetchLog, User, UserSubscription,
-    CategoryEnum, RegionEnum
+    CategoryEnum, RegionEnum,
+    # AInsight Pro 新增模型
+    KOL, Topic, RawContent, IntelligencePackage, IntelSource, IntelRelation,
+    KOLTierEnum, SourceTypeEnum, IntelCategoryEnum, TopicStatusEnum,
+    create_fts_tables
 )
 from src.logger import get_database_logger
 
@@ -450,3 +454,417 @@ class DatabaseService:
             await session.commit()
             await session.refresh(subscription)
             return subscription
+
+    # ==================== AInsight Pro: KOL 操作 ====================
+
+    async def get_or_create_kol(
+        self,
+        handle: str,
+        platform: str = "x",
+        name: Optional[str] = None,
+        **kwargs
+    ) -> KOL:
+        """获取或创建 KOL"""
+        async with self.session() as session:
+            result = await session.execute(
+                select(KOL).where(KOL.handle == handle)
+            )
+            kol = result.scalar_one_or_none()
+
+            if not kol:
+                kol = KOL(
+                    handle=handle,
+                    platform=platform,
+                    name=name or handle,
+                    **kwargs
+                )
+                session.add(kol)
+                await session.commit()
+                await session.refresh(kol)
+                logger.debug(f"创建新 KOL: {handle}")
+
+            return kol
+
+    async def update_kol(self, kol_id: int, **kwargs) -> Optional[KOL]:
+        """更新 KOL 信息"""
+        async with self.session() as session:
+            await session.execute(
+                update(KOL).where(KOL.id == kol_id).values(**kwargs)
+            )
+            result = await session.execute(select(KOL).where(KOL.id == kol_id))
+            return result.scalar_one_or_none()
+
+    async def get_active_kols(self, platform: Optional[str] = None) -> list[KOL]:
+        """获取活跃的 KOL 列表"""
+        async with self.session() as session:
+            query = select(KOL).where(KOL.is_active == True)
+            if platform:
+                query = query.where(KOL.platform == platform)
+            query = query.order_by(KOL.tier, KOL.followers.desc())
+            result = await session.execute(query)
+            return list(result.scalars().all())
+
+    # ==================== AInsight Pro: 主题操作 ====================
+
+    async def get_topic_by_id(self, topic_id: int) -> Optional[Topic]:
+        """根据 ID 获取主题"""
+        async with self.session() as session:
+            result = await session.execute(
+                select(Topic).where(Topic.id == topic_id)
+            )
+            return result.scalar_one_or_none()
+
+    async def get_topic_by_slug(self, slug: str) -> Optional[Topic]:
+        """根据 slug 获取主题"""
+        async with self.session() as session:
+            result = await session.execute(
+                select(Topic).where(Topic.slug == slug)
+            )
+            return result.scalar_one_or_none()
+
+    async def get_active_topics(
+        self,
+        category: Optional[IntelCategoryEnum] = None,
+        limit: int = 50,
+        offset: int = 0
+    ) -> list[Topic]:
+        """获取活跃主题列表"""
+        async with self.session() as session:
+            query = select(Topic).where(Topic.status == TopicStatusEnum.ACTIVE)
+            if category:
+                query = query.where(Topic.category == category)
+            query = query.order_by(Topic.heat_score.desc(), Topic.last_updated_at.desc())
+            query = query.offset(offset).limit(limit)
+            result = await session.execute(query)
+            return list(result.scalars().all())
+
+    async def search_topics_fts(self, query_text: str, limit: int = 10) -> list[Topic]:
+        """使用 FTS 搜索主题"""
+        async with self.session() as session:
+            try:
+                # SQLite FTS5 查询
+                result = await session.execute(
+                    text("""
+                        SELECT t.* FROM topics t
+                        JOIN topics_fts fts ON t.id = fts.rowid
+                        WHERE topics_fts MATCH :query
+                        AND t.status = :status
+                        ORDER BY rank
+                        LIMIT :limit
+                    """),
+                    {
+                        "query": query_text,
+                        "status": TopicStatusEnum.ACTIVE.value,
+                        "limit": limit
+                    }
+                )
+                rows = result.fetchall()
+                # 转换为 Topic 对象
+                topic_ids = [row.id for row in rows]
+                if not topic_ids:
+                    return []
+                topics_result = await session.execute(
+                    select(Topic).where(Topic.id.in_(topic_ids))
+                )
+                return list(topics_result.scalars().all())
+            except Exception as e:
+                logger.warning(f"FTS 搜索失败: {e}")
+                return []
+
+    async def create_topic(self, topic_data: dict) -> Topic:
+        """创建新主题"""
+        async with self.session() as session:
+            # 处理 category 枚举
+            if isinstance(topic_data.get("category"), str):
+                try:
+                    topic_data["category"] = IntelCategoryEnum(topic_data["category"])
+                except ValueError:
+                    topic_data["category"] = IntelCategoryEnum.RESEARCH
+
+            topic = Topic(**topic_data)
+            session.add(topic)
+            await session.commit()
+            await session.refresh(topic)
+            logger.debug(f"创建主题: {topic.title}")
+            return topic
+
+    async def update_topic(self, topic_id: int, **kwargs) -> Optional[Topic]:
+        """更新主题"""
+        async with self.session() as session:
+            kwargs["last_updated_at"] = datetime.utcnow()
+            await session.execute(
+                update(Topic).where(Topic.id == topic_id).values(**kwargs)
+            )
+            result = await session.execute(select(Topic).where(Topic.id == topic_id))
+            return result.scalar_one_or_none()
+
+    async def merge_topics(self, source_id: int, target_id: int) -> bool:
+        """合并主题"""
+        async with self.session() as session:
+            # 更新源主题状态
+            await session.execute(
+                update(Topic)
+                .where(Topic.id == source_id)
+                .values(
+                    status=TopicStatusEnum.MERGED,
+                    merged_into_id=target_id
+                )
+            )
+            # 迁移原始内容
+            await session.execute(
+                update(RawContent)
+                .where(RawContent.topic_id == source_id)
+                .values(topic_id=target_id)
+            )
+            # 更新目标主题统计
+            count_result = await session.execute(
+                select(sql_func.count(RawContent.id))
+                .where(RawContent.topic_id == target_id)
+            )
+            new_count = count_result.scalar()
+            await session.execute(
+                update(Topic)
+                .where(Topic.id == target_id)
+                .values(
+                    source_count=new_count,
+                    last_updated_at=datetime.utcnow()
+                )
+            )
+            logger.info(f"合并主题: {source_id} -> {target_id}")
+            return True
+
+    # ==================== AInsight Pro: 原始内容操作 ====================
+
+    async def raw_content_exists(self, url_hash: str) -> bool:
+        """检查原始内容是否已存在"""
+        async with self.session() as session:
+            result = await session.execute(
+                select(RawContent.id).where(RawContent.source_url_hash == url_hash)
+            )
+            return result.scalar_one_or_none() is not None
+
+    async def save_raw_content(self, content_data: dict) -> Optional[RawContent]:
+        """保存原始内容"""
+        url_hash = self._hash_url(content_data.get("source_url", ""))
+
+        async with self.session() as session:
+            # 检查是否已存在
+            existing = await session.execute(
+                select(RawContent.id).where(RawContent.source_url_hash == url_hash)
+            )
+            if existing.scalar_one_or_none():
+                return None
+
+            # 处理 source_type 枚举
+            if isinstance(content_data.get("source_type"), str):
+                try:
+                    content_data["source_type"] = SourceTypeEnum(content_data["source_type"])
+                except ValueError:
+                    content_data["source_type"] = SourceTypeEnum.NEWS
+
+            content_data["source_url_hash"] = url_hash
+            raw_content = RawContent(**content_data)
+            session.add(raw_content)
+            await session.commit()
+            await session.refresh(raw_content)
+            return raw_content
+
+    async def get_unclustered_contents(self, limit: int = 50) -> list[RawContent]:
+        """获取未聚类的原始内容"""
+        async with self.session() as session:
+            result = await session.execute(
+                select(RawContent)
+                .where(RawContent.is_clustered == False)
+                .order_by(RawContent.fetched_at.desc())
+                .limit(limit)
+            )
+            return list(result.scalars().all())
+
+    async def get_topic_contents(
+        self,
+        topic_id: int,
+        unsynthesized_only: bool = False
+    ) -> list[RawContent]:
+        """获取主题下的原始内容"""
+        async with self.session() as session:
+            query = select(RawContent).where(RawContent.topic_id == topic_id)
+            if unsynthesized_only:
+                query = query.where(RawContent.is_synthesized == False)
+            query = query.order_by(RawContent.published_at.desc())
+            result = await session.execute(query)
+            return list(result.scalars().all())
+
+    async def mark_contents_synthesized(self, content_ids: list[int]):
+        """标记内容已合成"""
+        async with self.session() as session:
+            await session.execute(
+                update(RawContent)
+                .where(RawContent.id.in_(content_ids))
+                .values(is_synthesized=True)
+            )
+
+    # ==================== AInsight Pro: 情报包操作 ====================
+
+    async def get_intelligence_package(self, intel_id: str) -> Optional[IntelligencePackage]:
+        """根据 intel_id 获取情报包"""
+        async with self.session() as session:
+            result = await session.execute(
+                select(IntelligencePackage)
+                .where(IntelligencePackage.intel_id == intel_id)
+            )
+            return result.scalar_one_or_none()
+
+    async def get_topic_intelligence(self, topic_id: int) -> Optional[IntelligencePackage]:
+        """获取主题的情报包"""
+        async with self.session() as session:
+            result = await session.execute(
+                select(IntelligencePackage)
+                .where(IntelligencePackage.topic_id == topic_id)
+            )
+            return result.scalar_one_or_none()
+
+    async def create_intelligence_package(
+        self,
+        topic_id: int,
+        intel_id: str,
+        synthesis_data: dict
+    ) -> IntelligencePackage:
+        """创建情报包"""
+        async with self.session() as session:
+            intel = IntelligencePackage(
+                intel_id=intel_id,
+                topic_id=topic_id,
+                tldr=synthesis_data.get("tldr"),
+                fact_summary=synthesis_data.get("fact_summary"),
+                action_guide=synthesis_data.get("action_guide"),
+                logic_chain=synthesis_data.get("logic_chain"),
+                historical_context=synthesis_data.get("historical_context"),
+                verdict=synthesis_data.get("verdict"),
+                source_count=synthesis_data.get("source_count", 0),
+                kol_count=synthesis_data.get("kol_count", 0),
+            )
+            session.add(intel)
+            await session.commit()
+            await session.refresh(intel)
+            logger.info(f"创建情报包: {intel_id}")
+            return intel
+
+    async def update_intelligence_package(
+        self,
+        intel_id: str,
+        synthesis_data: dict
+    ) -> Optional[IntelligencePackage]:
+        """更新情报包"""
+        async with self.session() as session:
+            await session.execute(
+                update(IntelligencePackage)
+                .where(IntelligencePackage.intel_id == intel_id)
+                .values(
+                    tldr=synthesis_data.get("tldr"),
+                    fact_summary=synthesis_data.get("fact_summary"),
+                    action_guide=synthesis_data.get("action_guide"),
+                    logic_chain=synthesis_data.get("logic_chain"),
+                    historical_context=synthesis_data.get("historical_context"),
+                    verdict=synthesis_data.get("verdict"),
+                    source_count=synthesis_data.get("source_count"),
+                    kol_count=synthesis_data.get("kol_count"),
+                    updated_at=datetime.utcnow()
+                )
+            )
+            result = await session.execute(
+                select(IntelligencePackage)
+                .where(IntelligencePackage.intel_id == intel_id)
+            )
+            return result.scalar_one_or_none()
+
+    async def get_published_intelligence(
+        self,
+        limit: int = 20,
+        offset: int = 0
+    ) -> list[IntelligencePackage]:
+        """获取已发布的情报包列表"""
+        async with self.session() as session:
+            result = await session.execute(
+                select(IntelligencePackage)
+                .where(IntelligencePackage.is_published == True)
+                .order_by(IntelligencePackage.published_at.desc())
+                .offset(offset)
+                .limit(limit)
+            )
+            return list(result.scalars().all())
+
+    # ==================== AInsight Pro: FTS 初始化 ====================
+
+    async def init_fts_tables(self):
+        """初始化 FTS 全文搜索表"""
+        # 使用同步方式创建 FTS 表（SQLite 特性）
+        from sqlalchemy import create_engine
+        sync_url = self.database_url.replace("+aiosqlite", "").replace("+asyncpg", "")
+        sync_engine = create_engine(sync_url)
+        try:
+            create_fts_tables(sync_engine)
+            logger.info("FTS 全文搜索表已初始化")
+        except Exception as e:
+            logger.warning(f"FTS 初始化失败（可能已存在）: {e}")
+        finally:
+            sync_engine.dispose()
+
+    # ==================== AInsight Pro: 统计信息 ====================
+
+    async def get_clustering_stats(self) -> dict:
+        """获取聚类统计信息"""
+        async with self.session() as session:
+            # 主题统计
+            topics_total = await session.execute(
+                select(sql_func.count(Topic.id))
+            )
+            topics_active = await session.execute(
+                select(sql_func.count(Topic.id))
+                .where(Topic.status == TopicStatusEnum.ACTIVE)
+            )
+
+            # 原始内容统计
+            contents_total = await session.execute(
+                select(sql_func.count(RawContent.id))
+            )
+            contents_clustered = await session.execute(
+                select(sql_func.count(RawContent.id))
+                .where(RawContent.is_clustered == True)
+            )
+            contents_synthesized = await session.execute(
+                select(sql_func.count(RawContent.id))
+                .where(RawContent.is_synthesized == True)
+            )
+
+            # 情报包统计
+            intel_total = await session.execute(
+                select(sql_func.count(IntelligencePackage.id))
+            )
+            intel_published = await session.execute(
+                select(sql_func.count(IntelligencePackage.id))
+                .where(IntelligencePackage.is_published == True)
+            )
+
+            # KOL 统计
+            kols_total = await session.execute(
+                select(sql_func.count(KOL.id))
+            )
+
+            return {
+                "topics": {
+                    "total": topics_total.scalar(),
+                    "active": topics_active.scalar()
+                },
+                "raw_contents": {
+                    "total": contents_total.scalar(),
+                    "clustered": contents_clustered.scalar(),
+                    "synthesized": contents_synthesized.scalar()
+                },
+                "intelligence_packages": {
+                    "total": intel_total.scalar(),
+                    "published": intel_published.scalar()
+                },
+                "kols": {
+                    "total": kols_total.scalar()
+                }
+            }

@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # RSSHub 服务 - 用于获取 X/Twitter 和 GitHub 数据
+  rsshub:
+    image: diygod/rsshub:latest
+    container_name: ainsight-rsshub
+    restart: unless-stopped
+    ports:
+      - "1200:1200"
+    environment:
+      # 基础配置
+      NODE_ENV: production
+      CACHE_TYPE: memory
+      CACHE_EXPIRE: 300
+
+      # Twitter/X 配置（可选，提高成功率）
+      # 获取方式：登录 Twitter 后从浏览器开发者工具获取
+      # TWITTER_AUTH_TOKEN: your_auth_token
+
+      # GitHub 配置（可选，提高 API 限额）
+      # GITHUB_ACCESS_TOKEN: your_github_token
+
+      # 代理配置（如需翻墙）
+      # PROXY_URI: http://host.docker.internal:7890
+
+      # 访问控制
+      ACCESS_KEY: ""  # 留空表示不需要密钥
+
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:1200"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # AInsight 主服务（可选，用于定时任务）
+  # ainsight:
+  #   build: .
+  #   container_name: ainsight-app
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - rsshub
+  #   environment:
+  #     DATABASE_URL: sqlite+aiosqlite:///./data/ainsight.db
+  #     DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY}
+  #     TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+  #     TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
+  #   volumes:
+  #     - ./data:/app/data
+  #     - ./config:/app/config
+  #   command: python ainsight.py --schedule

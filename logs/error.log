@@ -1,0 +1,20 @@
+2026-02-19 14:32:20 │ [31mERROR[0m │ main            │ ainsight.py:124 │ 运行出错: SynthesisService.__init__() got an unexpected keyword argument 'db'
+Traceback (most recent call last):
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 105, in run_ainsight
+    await run_synthesis()
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 195, in run_synthesis
+    synthesis_service = SynthesisService(
+        db=db,
+        llm_client=llm_client,
+        model=os.getenv("LLM_MODEL", "qwen-plus"),
+    )
+TypeError: SynthesisService.__init__() got an unexpected keyword argument 'db'
+2026-02-19 14:32:56 │ [31mERROR[0m │ database        │ service.py:71 │ 数据库事务回滚: 'synthesized'
+2026-02-19 14:32:56 │ [31mERROR[0m │ main            │ ainsight.py:124 │ 运行出错: 'synthesized'
+Traceback (most recent call last):
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 105, in run_ainsight
+    await run_synthesis()
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 209, in run_synthesis
+    logger.info(f"情报合成: {result['synthesized']} 个主题, {result['skipped']} 跳过")
+                             ~~~~~~^^^^^^^^^^^^^^^
+KeyError: 'synthesized'
