@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}404 - AInsight{% endblock %}
+
+{% block content %}
+<div class="empty-state" style="padding: 100px 20px;">
+    <div class="empty-icon">🔍</div>
+    <div class="empty-text">{{ message if message else '页面不存在' }}</div>
+    <p style="color: var(--text-muted); margin-top: 16px;">
+        <a href="/">返回首页</a>
+    </p>
+</div>
+{% endblock %}

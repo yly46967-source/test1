@@ -308,13 +308,20 @@ class TopicClusterer:
         return " ".join(unique_words)
 
     def _generate_slug(self, title: str) -> str:
-        """生成 URL 友好的 slug"""
+        """生成 URL 友好的 slug，确保唯一性"""
+        import hashlib
+
         # 提取英文和数字
         slug = re.sub(r'[^a-zA-Z0-9\s]', '', title.lower())
         slug = re.sub(r'\s+', '-', slug.strip())
 
-        # 如果全是中文，使用时间戳
-        if not slug:
-            slug = f"topic-{datetime.now().strftime('%Y%m%d%H%M%S')}"
+        # 如果 slug 为空或太短（<3字符），使用标题哈希
+        if not slug or len(slug) < 3:
+            title_hash = hashlib.md5(title.encode('utf-8')).hexdigest()[:8]
+            slug = f"topic-{title_hash}"
+        else:
+            # 添加短哈希后缀确保唯一性
+            title_hash = hashlib.md5(title.encode('utf-8')).hexdigest()[:6]
+            slug = f"{slug[:40]}-{title_hash}"
 
         return slug[:50]  # 限制长度

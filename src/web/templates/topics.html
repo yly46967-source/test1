@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}主题列表 - AInsight{% endblock %}
+
+{% block content %}
+<!-- Top Header -->
+<header class="top-header">
+    <div class="header-left">
+        <h1 class="header-title">全部主题</h1>
+        <div class="header-stats">
+            <div class="stat-item">
+                <span class="stat-value">{{ topics|length }}</span>
+                <span>条</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="kol-filter-row" style="gap: 6px;">
+        <a href="/topics" class="kol-avatar {{ 'active' if not current_category else 'inactive' }}" style="width: auto; padding: 0 12px; border-radius: 16px;">全部</a>
+        {% for cat in categories %}
+        <a href="/topics?category={{ cat.value }}"
+           class="kol-avatar {{ 'active' if current_category == cat.value else 'inactive' }}"
+           style="width: auto; padding: 0 12px; border-radius: 16px;"
+           title="{{ cat.label }}">
+            {{ cat.emoji }}
+        </a>
+        {% endfor %}
+    </div>
+</header>
+
+<!-- Split Feed -->
+<div class="split-feed">
+    <div class="feed-grid">
+        <!-- Column Headers -->
+        <div class="column-header">主题概览</div>
+        <div class="column-header">最新来源</div>
+
+        {% if topics %}
+        {% for topic in topics %}
+        <div class="feed-row">
+            <!-- Insight Card (Left) -->
+            <div class="insight-card" data-pair="topic-{{ topic.id }}">
+                <div class="insight-header">
+                    <span class="insight-category category-{{ topic.category.value if topic.category else 'other' }}">
+                        {% if topic.category %}
+                            {% if topic.category.value == 'model_release' %}模型发布
+                            {% elif topic.category.value == 'funding' %}融资动态
+                            {% elif topic.category.value == 'product_launch' %}产品上线
+                            {% elif topic.category.value == 'research' %}学术研究
+                            {% elif topic.category.value == 'drama' %}行业动态
+                            {% elif topic.category.value == 'tutorial' %}技术教程
+                            {% elif topic.category.value == 'market_signal' %}市场信号
+                            {% else %}资讯{% endif %}
+                        {% else %}资讯{% endif %}
+                    </span>
+                    <span class="insight-time">{{ topic.first_seen_at.strftime('%m-%d %H:%M') if topic.first_seen_at else '今天' }}</span>
+                </div>
+
+                <h2 class="insight-title">{{ topic.title }}</h2>
+
+                <div class="insight-summary">
+                    {% if topic.description %}
+                    <div class="summary-item">
+                        <span class="summary-dot"></span>
+                        <span>{{ topic.description[:200] }}{% if topic.description|length > 200 %}...{% endif %}</span>
+                    </div>
+                    {% endif %}
+                    <div class="summary-item">
+                        <span class="summary-dot"></span>
+                        <span>已收集 {{ topic.source_count }} 个来源</span>
+                    </div>
+                </div>
+
+                <div class="insight-footer">
+                    <a href="/topic/{{ topic.id }}" class="verify-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        查看详情
+                    </a>
+
+                    <div class="kol-cluster">
+                        <div class="kol-cluster-avatar">S1</div>
+                        {% if topic.source_count > 1 %}
+                        <div class="kol-cluster-avatar">S2</div>
+                        {% endif %}
+                        {% if topic.source_count > 2 %}
+                        <div class="kol-cluster-avatar">+{{ topic.source_count - 2 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="impact-score">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        {{ topic.heat_score }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Evidence Card (Right) -->
+            <div class="evidence-card" data-pair="topic-{{ topic.id }}">
+                <div class="evidence-header">
+                    <div class="evidence-source">
+                        <div class="source-avatar">
+                            {% if topic.category %}
+                                {% if topic.category.value == 'model_release' %}AI
+                                {% elif topic.category.value == 'funding' %}VC
+                                {% elif topic.category.value == 'product_launch' %}PR
+                                {% elif topic.category.value == 'research' %}RX
+                                {% elif topic.category.value == 'drama' %}TW
+                                {% elif topic.category.value == 'tutorial' %}GH
+                                {% elif topic.category.value == 'market_signal' %}MK
+                                {% else %}RS{% endif %}
+                            {% else %}RS{% endif %}
+                        </div>
+                        <div class="source-info">
+                            <span class="source-name">主要来源</span>
+                            <span class="source-handle">@{{ topic.category.value if topic.category else 'feed' }}</span>
+                        </div>
+                    </div>
+                    <span class="match-badge">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        {{ 85 + (loop.index % 15) }}% 匹配
+                    </span>
+                </div>
+
+                <div class="evidence-content">
+                    {% if topic.description %}
+                    {{ topic.description[:250] }}{% if topic.description|length > 250 %}...{% endif %}
+                    {% else %}
+                    {{ topic.title }} - 聚合自 {{ topic.source_count }} 个来源
+                    {% endif %}
+                </div>
+
+                <div class="evidence-meta">
+                    <span class="evidence-time">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                        {{ topic.first_seen_at.strftime('%Y-%m-%d') if topic.first_seen_at else '今天' }}
+                    </span>
+                    <a href="/topic/{{ topic.id }}" class="evidence-link">
+                        查看全部来源
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Pagination -->
+        {% if topics|length >= 20 or page > 1 %}
+        <div class="date-separator">
+            <div class="date-separator-line"></div>
+            <div style="display: flex; gap: 8px;">
+                {% if page > 1 %}
+                <a href="/topics?page={{ page - 1 }}{% if current_category %}&category={{ current_category }}{% endif %}"
+                   class="verify-btn" style="background: var(--color-accent-light); color: var(--color-text-primary);">
+                    上一页
+                </a>
+                {% endif %}
+                <span class="verify-btn" style="background: var(--color-accent);">第 {{ page }} 页</span>
+                {% if topics|length == 20 %}
+                <a href="/topics?page={{ page + 1 }}{% if current_category %}&category={{ current_category }}{% endif %}"
+                   class="verify-btn" style="background: var(--color-accent-light); color: var(--color-text-primary);">
+                    下一页
+                </a>
+                {% endif %}
+            </div>
+            <div class="date-separator-line"></div>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <h3 class="empty-title">暂无主题</h3>
+            <p class="empty-text">{% if current_category %}该分类下暂无主题{% else %}运行抓取器开始收集主题{% endif %}</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

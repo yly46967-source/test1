@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block title %}{{ topic.title }} - AInsight{% endblock %}
+
+{% block content %}
+<!-- Top Header -->
+<header class="top-header">
+    <div class="header-left">
+        <a href="/topics" style="display: flex; align-items: center; gap: 8px; color: var(--color-text-muted); margin-right: 16px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"/>
+            </svg>
+            返回
+        </a>
+        <h1 class="header-title">主题详情</h1>
+    </div>
+
+    <div class="header-stats">
+        <div class="stat-item">
+            <span class="stat-value">{{ topic.source_count }}</span>
+            <span>个来源</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-value">{{ topic.heat_score }}</span>
+            <span>热度</span>
+        </div>
+    </div>
+</header>
+
+<!-- Split Feed -->
+<div class="split-feed">
+    <div class="feed-grid">
+        <!-- Column Headers -->
+        <div class="column-header">情报分析</div>
+        <div class="column-header">原始来源</div>
+
+        <!-- Main Topic Card -->
+        <div class="insight-card" style="grid-column: 1 / -1;">
+            <div class="insight-header">
+                <span class="insight-category category-{{ topic.category.value if topic.category else 'other' }}">
+                    {% if topic.category %}
+                        {% if topic.category.value == 'model_release' %}模型发布
+                        {% elif topic.category.value == 'funding' %}融资动态
+                        {% elif topic.category.value == 'product_launch' %}产品上线
+                        {% elif topic.category.value == 'research' %}学术研究
+                        {% elif topic.category.value == 'drama' %}行业动态
+                        {% elif topic.category.value == 'tutorial' %}技术教程
+                        {% elif topic.category.value == 'market_signal' %}市场信号
+                        {% else %}资讯{% endif %}
+                    {% else %}资讯{% endif %}
+                </span>
+                <span class="insight-time">{{ topic.first_seen_at.strftime('%Y-%m-%d %H:%M') if topic.first_seen_at else '今天' }}</span>
+            </div>
+
+            <h2 class="insight-title" style="font-size: 24px;">{{ topic.title }}</h2>
+
+            {% if topic.description %}
+            <div class="insight-summary">
+                <div class="summary-item">
+                    <span class="summary-dot"></span>
+                    <span>{{ topic.description }}</span>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if topic.keywords %}
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;">
+                {% for keyword in topic.keywords.split(',')[:8] %}
+                <span style="padding: 4px 12px; background: var(--color-accent-light); border-radius: 12px; font-size: 12px; color: var(--color-text-secondary);">
+                    {{ keyword.strip() }}
+                </span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Intelligence Analysis (Left) -->
+        {% if intel %}
+        <div class="insight-card">
+            <div class="insight-header">
+                <span class="insight-category" style="background: var(--color-match-bg); color: var(--color-match-text);">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </svg>
+                    AI 分析
+                </span>
+            </div>
+
+            {% if intel.tldr %}
+            <h3 class="insight-title" style="font-size: 16px; margin-bottom: 12px;">摘要</h3>
+            <div class="insight-summary" style="margin-bottom: 20px;">
+                <div class="summary-item">
+                    <span class="summary-dot"></span>
+                    <span>{{ intel.tldr }}</span>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if intel.fact_summary %}
+            <h3 class="insight-title" style="font-size: 16px; margin-bottom: 12px;">事实总结</h3>
+            <div class="insight-summary" style="margin-bottom: 20px;">
+                <div class="summary-item">
+                    <span class="summary-dot"></span>
+                    <span>{{ intel.fact_summary }}</span>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if intel.action_guide %}
+            <div class="action-guide">
+                <div class="action-guide-label">行动指南</div>
+                <div class="action-guide-text">{{ intel.action_guide }}</div>
+            </div>
+            {% endif %}
+
+            {% if intel.logic_chain %}
+            <h3 class="insight-title" style="font-size: 16px; margin-bottom: 12px;">逻辑链</h3>
+            <div class="insight-summary" style="margin-bottom: 20px;">
+                <div class="summary-item">
+                    <span class="summary-dot"></span>
+                    <span>{{ intel.logic_chain }}</span>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if intel.verdict %}
+            <div style="padding: 16px; background: var(--color-bg-secondary); border-radius: 8px; margin-top: 16px;">
+                <div style="font-size: 11px; font-weight: 600; color: var(--color-text-muted); text-transform: uppercase; margin-bottom: 8px;">结论</div>
+                <div style="font-size: 14px; color: var(--color-text-primary); line-height: 1.6;">{{ intel.verdict }}</div>
+            </div>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="insight-card">
+            <div class="empty-state" style="padding: 40px 20px;">
+                <div class="empty-icon" style="width: 48px; height: 48px; font-size: 20px;">AI</div>
+                <h3 class="empty-title" style="font-size: 16px;">暂无分析</h3>
+                <p class="empty-text">当收集到 3 个以上来源时，将自动生成情报分析</p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Raw Sources (Right) -->
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+            {% if contents %}
+            {% for content in contents %}
+            <div class="evidence-card">
+                <div class="evidence-header">
+                    <div class="evidence-source">
+                        <div class="source-avatar">
+                            {% if content.source_type %}
+                                {% if content.source_type.value == 'x_kol' %}TW
+                                {% elif content.source_type.value == 'github' %}GH
+                                {% elif content.source_type.value == 'news' %}NS
+                                {% else %}RS{% endif %}
+                            {% else %}RS{% endif %}
+                        </div>
+                        <div class="source-info">
+                            <span class="source-name">
+                                {% if content.source_type %}
+                                    {% if content.source_type.value == 'x_kol' %}Twitter/X
+                                    {% elif content.source_type.value == 'github' %}GitHub
+                                    {% elif content.source_type.value == 'news' %}新闻
+                                    {% else %}{{ content.source_type.value }}{% endif %}
+                                {% else %}未知{% endif %}
+                            </span>
+                            <span class="source-handle">
+                                {% if content.title %}{{ content.title[:30] }}{% if content.title|length > 30 %}...{% endif %}{% else %}来源{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    <span class="match-badge">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        已验证
+                    </span>
+                </div>
+
+                <div class="evidence-content">
+                    {{ content.text_content[:400] if content.text_content else '暂无内容' }}
+                    {% if content.text_content and content.text_content|length > 400 %}...{% endif %}
+                </div>
+
+                <div class="evidence-meta">
+                    <span class="evidence-time">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                        {{ content.published_at.strftime('%Y-%m-%d %H:%M') if content.published_at else '未知' }}
+                    </span>
+                    {% if content.source_url %}
+                    <a href="{{ content.source_url }}" target="_blank" class="evidence-link">
+                        查看原文
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="evidence-card">
+                <div class="empty-state" style="padding: 40px 20px;">
+                    <div class="empty-icon" style="width: 48px; height: 48px; font-size: 20px;">?</div>
+                    <h3 class="empty-title" style="font-size: 16px;">暂无来源</h3>
+                    <p class="empty-text">该主题暂无原始内容</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

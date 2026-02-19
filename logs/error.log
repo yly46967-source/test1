@@ -18,3 +18,39 @@ Traceback (most recent call last):
     logger.info(f"情报合成: {result['synthesized']} 个主题, {result['skipped']} 跳过")
                              ~~~~~~^^^^^^^^^^^^^^^
 KeyError: 'synthesized'
+2026-02-19 20:46:55 │ [31mERROR[0m │ database        │ service.py:71 │ 数据库事务回滚: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [31mERROR[0m │ main            │ ainsight.py:124 │ 运行出错: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "d:\VibeCoding Skills\news-funnel\ainsight.py", line 99, in run_ainsight
+    await run_clustering(items)
+  File "d:\VibeCoding Skills\news-funnel\ainsight.py", line 180, in run_clustering
+    await session.commit()
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\ext\asyncio\session.py", line 1000, in commit
+    await greenlet_spawn(self.sync_session.commit)
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 190, in greenlet_spawn
+    result = context.switch(*args, **kwargs)
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "<string>", line 2, in commit
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\state_changes.py", line 101, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\session.py", line 971, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 22:01:38 │ [31mERROR[0m │ trafilatura.utils │ utils.py:259 │ parsed tree length: 1, wrong data type or not valid HTML
+2026-02-19 22:01:38 │ [31mERROR[0m │ trafilatura.core │ core.py:237 │ empty HTML tree: None
+2026-02-19 22:18:29 │ [31mERROR[0m │ trafilatura.utils │ utils.py:259 │ parsed tree length: 1, wrong data type or not valid HTML
+2026-02-19 22:18:29 │ [31mERROR[0m │ trafilatura.core │ core.py:237 │ empty HTML tree: None

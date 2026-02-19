@@ -12367,3 +12367,498 @@ KeyError: 'synthesized'
 2026-02-19 14:39:35 │ [32mINFO[0m │ main            │ ainsight.py:266 │ 情报推送完成
 2026-02-19 14:39:35 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 统计: 主题 5 个, 内容 5 条, 情报包 0 个
 2026-02-19 14:39:35 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 运行完成
+2026-02-19 20:12:51 │ [32mINFO[0m │ main            │ ainsight.py:53 │ ==================================================
+2026-02-19 20:12:51 │ [32mINFO[0m │ main            │ ainsight.py:54 │ AInsight 启动
+2026-02-19 20:12:51 │ [32mINFO[0m │ main            │ ainsight.py:55 │ ==================================================
+2026-02-19 20:12:51 │ [32mINFO[0m │ database        │ service.py:806 │ FTS 全文搜索表已初始化
+2026-02-19 20:12:51 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-19 20:12:51 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 6 个数据源
+2026-02-19 20:12:51 │ [32mINFO[0m │ main            │ ainsight.py:74 │ 已加载 6 个数据源
+2026-02-19 20:12:56 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [TechCrunch] 抓取 10 条
+2026-02-19 20:12:56 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Hacker News] 抓取 10 条
+2026-02-19 20:12:56 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Ars Technica AI] 抓取 10 条
+2026-02-19 20:12:56 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [MIT Tech Review] 抓取 10 条
+2026-02-19 20:12:56 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Wired AI] 抓取 10 条
+2026-02-19 20:12:56 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [VentureBeat AI] 抓取 7 条
+2026-02-19 20:12:56 │ [32mINFO[0m │ main            │ ainsight.py:84 │ 抓取完成: 6 成功, 0 失败, 57 条内容, 耗时 5.0s
+2026-02-19 20:12:56 │ [32mINFO[0m │ main            │ ainsight.py:95 │ 测试模式: 只处理 5 条
+2026-02-19 20:12:56 │ [32mINFO[0m │ main            │ ainsight.py:133 │ 开始聚类处理 5 条内容...
+2026-02-19 20:12:56 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:12:56 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:12:59 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:12:59 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Reliance宣布110亿美元AI投资计划 (ID: 6)
+2026-02-19 20:12:59 │ [32mINFO[0m │ main            │ ainsight.py:182 │ 聚类完成: 1 处理, 4 跳过
+2026-02-19 20:12:59 │ [32mINFO[0m │ main            │ ainsight.py:187 │ 检查情报合成触发条件...
+2026-02-19 20:12:59 │ [32mINFO[0m │ src.processor.synthesis_service │ synthesis_service.py:127 │ 批量合成完成: {'processed': 0, 'success': 0, 'failed': 0, 'skipped': 6}
+2026-02-19 20:12:59 │ [32mINFO[0m │ main            │ ainsight.py:209 │ 情报合成: 0 个主题, 6 跳过
+2026-02-19 20:12:59 │ [32mINFO[0m │ main            │ ainsight.py:113 │ 跳过 Telegram 推送
+2026-02-19 20:12:59 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 统计: 主题 6 个, 内容 6 条, 情报包 0 个
+2026-02-19 20:12:59 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 运行完成
+2026-02-19 20:45:54 │ [32mINFO[0m │ main            │ ainsight.py:53 │ ==================================================
+2026-02-19 20:45:54 │ [32mINFO[0m │ main            │ ainsight.py:54 │ AInsight 启动
+2026-02-19 20:45:54 │ [32mINFO[0m │ main            │ ainsight.py:55 │ ==================================================
+2026-02-19 20:45:54 │ [32mINFO[0m │ database        │ service.py:806 │ FTS 全文搜索表已初始化
+2026-02-19 20:45:54 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-19 20:45:54 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 6 个数据源
+2026-02-19 20:45:54 │ [32mINFO[0m │ main            │ ainsight.py:74 │ 已加载 6 个数据源
+2026-02-19 20:45:59 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [TechCrunch] 抓取 10 条
+2026-02-19 20:45:59 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Hacker News] 抓取 10 条
+2026-02-19 20:45:59 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Ars Technica AI] 抓取 10 条
+2026-02-19 20:45:59 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [MIT Tech Review] 抓取 10 条
+2026-02-19 20:45:59 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Wired AI] 抓取 10 条
+2026-02-19 20:45:59 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [VentureBeat AI] 抓取 7 条
+2026-02-19 20:45:59 │ [32mINFO[0m │ main            │ ainsight.py:84 │ 抓取完成: 6 成功, 0 失败, 57 条内容, 耗时 5.2s
+2026-02-19 20:45:59 │ [32mINFO[0m │ main            │ ainsight.py:133 │ 开始聚类处理 57 条内容...
+2026-02-19 20:46:00 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:00 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:02 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:02 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: VC分享早期创始团队组建建议 (ID: 7)
+2026-02-19 20:46:02 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:02 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:04 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:04 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Bluesky 集成 Germ 推出原生端到端加密私信 (ID: 8)
+2026-02-19 20:46:04 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:04 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:06 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:06 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: SeatGeek与Spotify合作内嵌售票 (ID: 9)
+2026-02-19 20:46:06 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:06 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:09 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:09 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Amazon abruptly cancels Blue Jay robotics project (ID: 10)
+2026-02-19 20:46:09 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:09 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:11 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:11 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: 加密本地跨平台日记应用发布 (ID: 11)
+2026-02-19 20:46:11 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:11 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:13 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:13 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: ShannonMax：基于信息论优化Emacs键位的开源库 (ID: 12)
+2026-02-19 20:46:13 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:13 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:15 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:15 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: 用Oban桥接Elixir与Python (ID: 13)
+2026-02-19 20:46:15 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:15 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:17 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:17 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Julia实现的物理渲染GPU光线追踪器 (ID: 14)
+2026-02-19 20:46:17 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:17 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:19 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:19 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: 老式视觉特效：云雾水箱技术 (ID: 15)
+2026-02-19 20:46:19 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:19 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:21 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:21 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Docker-Lisp：函数调用即容器执行 (ID: 16)
+2026-02-19 20:46:21 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:21 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:23 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:23 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Anthropic禁止第三方使用订阅认证 (ID: 17)
+2026-02-19 20:46:23 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:23 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:25 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:25 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Step 3.5 Flash开源基础模型发布 (ID: 18)
+2026-02-19 20:46:25 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:25 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:27 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:27 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Minecraft Java版将从OpenGL迁移至Vulkan (ID: 19)
+2026-02-19 20:46:27 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:27 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:29 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:29 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Blackwell Ultra打破FP64性能分水岭 (ID: 20)
+2026-02-19 20:46:29 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:29 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:31 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:31 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: 密码管理器服务器泄露风险警示 (ID: 21)
+2026-02-19 20:46:31 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:31 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:32 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:32 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: VMware用户加速缩减使用规模 (ID: 22)
+2026-02-19 20:46:32 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:32 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:34 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:34 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: AI代理因代码被拒发布人身攻击文章 (ID: 23)
+2026-02-19 20:46:34 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:34 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:37 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:37 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: OpenAI推GPT-5.3-Codex-Spark编码模型 (ID: 24)
+2026-02-19 20:46:37 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:37 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:39 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:39 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: 攻击者百万次提示窃取Gemini模型 (ID: 25)
+2026-02-19 20:46:39 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:39 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:41 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:41 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Lumma Stealer 卷土重来：ClickFix诱饵+Castleloader大规模投放 (ID: 26)
+2026-02-19 20:46:41 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:41 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:42 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:42 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: OpenAI研究员因ChatGPT广告辞职 (ID: 27)
+2026-02-19 20:46:42 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:42 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:45 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:45 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: 16个Claude AI代理协同开发C编译器 (ID: 28)
+2026-02-19 20:46:45 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:45 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:47 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:47 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: dYdX遭恶意包攻击致用户钱包清空 (ID: 29)
+2026-02-19 20:46:47 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:47 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:49 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:49 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: AI公司转向AI代理管理范式 (ID: 30)
+2026-02-19 20:46:49 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:49 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:51 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:51 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: 无人毒品潜艇重塑哥伦比亚贩毒格局 (ID: 31)
+2026-02-19 20:46:51 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:51 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:53 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:53 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: 全球气候正义的法律建构路径 (ID: 32)
+2026-02-19 20:46:53 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:46:53 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:46:55 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [33mWARNING[0m │ main            │ ainsight.py:177 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [31mERROR[0m │ database        │ service.py:71 │ 数据库事务回滚: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:46:55 │ [31mERROR[0m │ main            │ ainsight.py:124 │ 运行出错: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "d:\VibeCoding Skills\news-funnel\ainsight.py", line 99, in run_ainsight
+    await run_clustering(items)
+  File "d:\VibeCoding Skills\news-funnel\ainsight.py", line 180, in run_clustering
+    await session.commit()
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\ext\asyncio\session.py", line 1000, in commit
+    await greenlet_spawn(self.sync_session.commit)
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 190, in greenlet_spawn
+    result = context.switch(*args, **kwargs)
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "<string>", line 2, in commit
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\state_changes.py", line 101, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\session.py", line 971, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('零售业中代理式AI的落地实践', 'ai', None, 'agentic AI 零售 代理式人工智能 AI落地 software development lifecycle SDL', 'RESEARCH', '["agentic AI", "retail tech", "AI adoption", "software engineering"]', 1, 0, 'ACTIVE', None, '2026-02-19 20:46:55.712942', '2026-02-19 20:46:55.712942')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-19 20:54:02 │ [32mINFO[0m │ main            │ ainsight.py:53 │ ==================================================
+2026-02-19 20:54:02 │ [32mINFO[0m │ main            │ ainsight.py:54 │ AInsight 启动
+2026-02-19 20:54:02 │ [32mINFO[0m │ main            │ ainsight.py:55 │ ==================================================
+2026-02-19 20:54:02 │ [32mINFO[0m │ database        │ service.py:806 │ FTS 全文搜索表已初始化
+2026-02-19 20:54:02 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-19 20:54:02 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 6 个数据源
+2026-02-19 20:54:02 │ [32mINFO[0m │ main            │ ainsight.py:74 │ 已加载 6 个数据源
+2026-02-19 20:54:13 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [TechCrunch] 抓取 10 条
+2026-02-19 20:54:13 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Hacker News] 抓取 10 条
+2026-02-19 20:54:13 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Ars Technica AI] 抓取 10 条
+2026-02-19 20:54:13 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [MIT Tech Review] 抓取 10 条
+2026-02-19 20:54:13 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Wired AI] 抓取 10 条
+2026-02-19 20:54:13 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [VentureBeat AI] 抓取 7 条
+2026-02-19 20:54:13 │ [32mINFO[0m │ main            │ ainsight.py:84 │ 抓取完成: 6 成功, 0 失败, 57 条内容, 耗时 10.8s
+2026-02-19 20:54:13 │ [32mINFO[0m │ main            │ ainsight.py:95 │ 测试模式: 只处理 5 条
+2026-02-19 20:54:13 │ [32mINFO[0m │ main            │ ainsight.py:133 │ 开始聚类处理 5 条内容...
+2026-02-19 20:54:13 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:54:13 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:54:15 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:54:15 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: VC分享早期创始团队组建建议 (ID: 1)
+2026-02-19 20:54:15 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:54:15 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:54:17 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:54:17 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Reliance宣布110亿美元AI投资计划 (ID: 2)
+2026-02-19 20:54:17 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:54:17 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:54:19 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:54:19 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: OpenAI携手塔塔在印度建1GW AI数据中心 (ID: 3)
+2026-02-19 20:54:19 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:54:19 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:54:21 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:54:21 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: OpenAI携手Pine Labs拓展印度企业支付AI (ID: 4)
+2026-02-19 20:54:21 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 20:54:21 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 20:54:23 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 20:54:23 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Etsy 将二手服饰平台 Depop 以12亿美元出售给eBay (ID: 5)
+2026-02-19 20:54:23 │ [32mINFO[0m │ main            │ ainsight.py:182 │ 聚类完成: 5 处理, 0 跳过
+2026-02-19 20:54:23 │ [32mINFO[0m │ main            │ ainsight.py:187 │ 检查情报合成触发条件...
+2026-02-19 20:54:24 │ [32mINFO[0m │ src.processor.synthesis_service │ synthesis_service.py:127 │ 批量合成完成: {'processed': 0, 'success': 0, 'failed': 0, 'skipped': 5}
+2026-02-19 20:54:24 │ [32mINFO[0m │ main            │ ainsight.py:209 │ 情报合成: 0 个主题, 5 跳过
+2026-02-19 20:54:24 │ [32mINFO[0m │ main            │ ainsight.py:113 │ 跳过 Telegram 推送
+2026-02-19 20:54:24 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 统计: 主题 5 个, 内容 5 条, 情报包 0 个
+2026-02-19 20:54:24 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 运行完成
+2026-02-19 21:51:05 │ [32mINFO[0m │ main            │ ainsight.py:53 │ ==================================================
+2026-02-19 21:51:05 │ [32mINFO[0m │ main            │ ainsight.py:54 │ AInsight 启动
+2026-02-19 21:51:05 │ [32mINFO[0m │ main            │ ainsight.py:55 │ ==================================================
+2026-02-19 21:51:05 │ [32mINFO[0m │ database        │ service.py:806 │ FTS 全文搜索表已初始化
+2026-02-19 21:51:05 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-19 21:51:05 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 6 个数据源
+2026-02-19 21:51:05 │ [32mINFO[0m │ main            │ ainsight.py:74 │ 已加载 6 个数据源
+2026-02-19 21:51:10 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [TechCrunch] 抓取 10 条
+2026-02-19 21:51:10 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Hacker News] 抓取 10 条
+2026-02-19 21:51:10 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Ars Technica AI] 抓取 10 条
+2026-02-19 21:51:10 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [MIT Tech Review] 抓取 10 条
+2026-02-19 21:51:10 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [Wired AI] 抓取 10 条
+2026-02-19 21:51:10 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:131 │ [VentureBeat AI] 抓取 7 条
+2026-02-19 21:51:10 │ [32mINFO[0m │ main            │ ainsight.py:84 │ 抓取完成: 6 成功, 0 失败, 57 条内容, 耗时 5.1s
+2026-02-19 21:51:10 │ [32mINFO[0m │ main            │ ainsight.py:95 │ 测试模式: 只处理 5 条
+2026-02-19 21:51:10 │ [32mINFO[0m │ main            │ ainsight.py:133 │ 开始聚类处理 5 条内容...
+2026-02-19 21:51:11 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 21:51:11 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 21:51:13 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 21:51:13 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Altman与Amodei在印度AI峰会拒牵手引热议 (ID: 1)
+2026-02-19 21:51:13 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 21:51:13 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 21:51:15 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 21:51:15 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Freeform获6700万美元B轮融资 (ID: 2)
+2026-02-19 21:51:15 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 21:51:15 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 21:51:17 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 21:51:17 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: VC分享早期创始团队组建建议 (ID: 3)
+2026-02-19 21:51:17 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 21:51:17 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 21:51:19 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 21:51:19 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Reliance宣布110亿美元AI投资计划 (ID: 4)
+2026-02-19 21:51:19 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 21:51:19 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 21:51:21 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 21:51:21 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: OpenAI携手塔塔在印度建1GW AI数据中心 (ID: 5)
+2026-02-19 21:51:21 │ [32mINFO[0m │ main            │ ainsight.py:182 │ 聚类完成: 5 处理, 0 跳过
+2026-02-19 21:51:21 │ [32mINFO[0m │ main            │ ainsight.py:187 │ 检查情报合成触发条件...
+2026-02-19 21:51:21 │ [32mINFO[0m │ src.processor.synthesis_service │ synthesis_service.py:127 │ 批量合成完成: {'processed': 0, 'success': 0, 'failed': 0, 'skipped': 5}
+2026-02-19 21:51:21 │ [32mINFO[0m │ main            │ ainsight.py:209 │ 情报合成: 0 个主题, 5 跳过
+2026-02-19 21:51:21 │ [32mINFO[0m │ main            │ ainsight.py:113 │ 跳过 Telegram 推送
+2026-02-19 21:51:21 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 统计: 主题 5 个, 内容 5 条, 情报包 0 个
+2026-02-19 21:51:21 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 运行完成
+2026-02-19 22:00:49 │ [32mINFO[0m │ main            │ ainsight.py:53 │ ==================================================
+2026-02-19 22:00:49 │ [32mINFO[0m │ main            │ ainsight.py:54 │ AInsight 启动
+2026-02-19 22:00:49 │ [32mINFO[0m │ main            │ ainsight.py:55 │ ==================================================
+2026-02-19 22:00:49 │ [32mINFO[0m │ database        │ service.py:806 │ FTS 全文搜索表已初始化
+2026-02-19 22:00:49 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-19 22:00:49 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 6 个数据源
+2026-02-19 22:00:49 │ [32mINFO[0m │ main            │ ainsight.py:74 │ 已加载 6 个数据源
+2026-02-19 22:00:54 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [TechCrunch] 抓取完整内容成功: 5968 chars
+2026-02-19 22:00:55 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [TechCrunch] 抓取完整内容成功: 6196 chars
+2026-02-19 22:00:57 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [TechCrunch] 抓取完整内容成功: 1420 chars
+2026-02-19 22:00:58 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [TechCrunch] 抓取完整内容成功: 3708 chars
+2026-02-19 22:00:59 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [TechCrunch] 抓取完整内容成功: 4827 chars
+2026-02-19 22:01:00 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [TechCrunch] 抓取完整内容成功: 3316 chars
+2026-02-19 22:01:02 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [TechCrunch] 抓取完整内容成功: 5855 chars
+2026-02-19 22:01:03 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [TechCrunch] 抓取完整内容成功: 6315 chars
+2026-02-19 22:01:04 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [TechCrunch] 抓取完整内容成功: 3270 chars
+2026-02-19 22:01:06 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [TechCrunch] 抓取完整内容成功: 4409 chars
+2026-02-19 22:01:08 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Wired AI] 抓取完整内容成功: 4893 chars
+2026-02-19 22:01:10 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Wired AI] 抓取完整内容成功: 5367 chars
+2026-02-19 22:01:11 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Wired AI] 抓取完整内容成功: 6728 chars
+2026-02-19 22:01:13 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Wired AI] 抓取完整内容成功: 9603 chars
+2026-02-19 22:01:15 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Wired AI] 抓取完整内容成功: 14031 chars
+2026-02-19 22:01:17 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Wired AI] 抓取完整内容成功: 5314 chars
+2026-02-19 22:01:18 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Wired AI] 抓取完整内容成功: 7770 chars
+2026-02-19 22:01:20 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Wired AI] 抓取完整内容成功: 9308 chars
+2026-02-19 22:01:22 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Wired AI] 抓取完整内容成功: 5048 chars
+2026-02-19 22:01:23 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Wired AI] 抓取完整内容成功: 8874 chars
+2026-02-19 22:01:27 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:296 │ [Hacker News] 抓取完整内容失败: 403 Client Error: Forbidden for url: https://www.economist.com/united-states/2026/02/12/alabama-offers-three-tricks-to-fix-poor-urban-schools
+2026-02-19 22:01:29 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Hacker News] 抓取完整内容成功: 7504 chars
+2026-02-19 22:01:30 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Hacker News] 抓取完整内容成功: 10912 chars
+2026-02-19 22:01:38 │ [31mERROR[0m │ trafilatura.utils │ utils.py:259 │ parsed tree length: 1, wrong data type or not valid HTML
+2026-02-19 22:01:38 │ [31mERROR[0m │ trafilatura.core │ core.py:237 │ empty HTML tree: None
+2026-02-19 22:01:38 │ [33mWARNING[0m │ trafilatura.core │ core.py:344 │ discarding data: None
+2026-02-19 22:01:39 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Hacker News] 抓取完整内容成功: 940 chars
+2026-02-19 22:01:40 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Hacker News] 抓取完整内容成功: 3225 chars
+2026-02-19 22:01:43 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Hacker News] 抓取完整内容成功: 7633 chars
+2026-02-19 22:01:45 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Hacker News] 抓取完整内容成功: 5335 chars
+2026-02-19 22:01:46 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:217 │ [Hacker News] 抓取完整内容成功: 7176 chars
+2026-02-19 22:01:47 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [TechCrunch] 抓取 10 条
+2026-02-19 22:01:47 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [Hacker News] 抓取 10 条
+2026-02-19 22:01:47 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [Ars Technica AI] 抓取 10 条
+2026-02-19 22:01:47 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [MIT Tech Review] 抓取 10 条
+2026-02-19 22:01:47 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [Wired AI] 抓取 10 条
+2026-02-19 22:01:47 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [VentureBeat AI] 抓取 7 条
+2026-02-19 22:01:47 │ [32mINFO[0m │ main            │ ainsight.py:84 │ 抓取完成: 6 成功, 0 失败, 57 条内容, 耗时 58.1s
+2026-02-19 22:01:47 │ [32mINFO[0m │ main            │ ainsight.py:95 │ 测试模式: 只处理 5 条
+2026-02-19 22:01:47 │ [32mINFO[0m │ main            │ ainsight.py:133 │ 开始聚类处理 5 条内容...
+2026-02-19 22:01:48 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 22:01:48 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 22:01:50 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 22:01:50 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: 前谷歌工程师用AI应对特朗普贸易政策冲击 (ID: 1)
+2026-02-19 22:01:50 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 22:01:50 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 22:01:52 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 22:01:52 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: AI编码工具对开源项目的双刃剑效应 (ID: 2)
+2026-02-19 22:01:52 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 22:01:52 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 22:01:54 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 22:01:54 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Altman与Amodei在印度AI峰会尴尬拒牵手 (ID: 3)
+2026-02-19 22:01:54 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 22:01:54 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 22:01:56 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 22:01:56 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: Freeform获6700万美元B轮融资 (ID: 4)
+2026-02-19 22:01:56 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:89 │ FTS 匹配到 0 个候选主题
+2026-02-19 22:01:56 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-19 22:01:58 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:93 │ 聚类决策: create, 相关度: 0.00
+2026-02-19 22:01:58 │ [32mINFO[0m │ src.clustering.pipeline │ pipeline.py:248 │ 创建新主题: VC专家谈如何组建顶尖创始团队 (ID: 5)
+2026-02-19 22:01:58 │ [32mINFO[0m │ main            │ ainsight.py:182 │ 聚类完成: 5 处理, 0 跳过
+2026-02-19 22:01:58 │ [32mINFO[0m │ main            │ ainsight.py:187 │ 检查情报合成触发条件...
+2026-02-19 22:01:59 │ [32mINFO[0m │ src.processor.synthesis_service │ synthesis_service.py:127 │ 批量合成完成: {'processed': 0, 'success': 0, 'failed': 0, 'skipped': 5}
+2026-02-19 22:01:59 │ [32mINFO[0m │ main            │ ainsight.py:209 │ 情报合成: 0 个主题, 5 跳过
+2026-02-19 22:01:59 │ [32mINFO[0m │ main            │ ainsight.py:113 │ 跳过 Telegram 推送
+2026-02-19 22:01:59 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 统计: 主题 5 个, 内容 5 条, 情报包 0 个
+2026-02-19 22:01:59 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 运行完成
+2026-02-19 22:17:40 │ [32mINFO[0m │ main            │ ainsight.py:53 │ ==================================================
+2026-02-19 22:17:40 │ [32mINFO[0m │ main            │ ainsight.py:54 │ AInsight 启动
+2026-02-19 22:17:40 │ [32mINFO[0m │ main            │ ainsight.py:55 │ ==================================================
+2026-02-19 22:17:40 │ [32mINFO[0m │ database        │ service.py:806 │ FTS 全文搜索表已初始化
+2026-02-19 22:17:40 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-19 22:17:40 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 6 个数据源
+2026-02-19 22:17:40 │ [32mINFO[0m │ main            │ ainsight.py:74 │ 已加载 6 个数据源
+2026-02-19 22:17:45 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 6050 chars
+2026-02-19 22:17:46 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 6293 chars
+2026-02-19 22:17:48 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 1424 chars
+2026-02-19 22:17:49 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 3784 chars
+2026-02-19 22:17:50 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 4918 chars
+2026-02-19 22:17:52 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 3393 chars
+2026-02-19 22:17:53 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 5934 chars
+2026-02-19 22:17:54 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 6394 chars
+2026-02-19 22:17:55 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 3344 chars
+2026-02-19 22:17:57 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [TechCrunch] 抓取完整内容成功: 4495 chars
+2026-02-19 22:17:59 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 4915 chars
+2026-02-19 22:18:01 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 5395 chars
+2026-02-19 22:18:02 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 6754 chars
+2026-02-19 22:18:04 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 9625 chars
+2026-02-19 22:18:06 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 14064 chars
+2026-02-19 22:18:07 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 5330 chars
+2026-02-19 22:18:09 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 7794 chars
+2026-02-19 22:18:11 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 9347 chars
+2026-02-19 22:18:12 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 5071 chars
+2026-02-19 22:18:14 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Wired AI] 抓取完整内容成功: 8900 chars
+2026-02-19 22:18:18 │ [33mWARNING[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:306 │ [Hacker News] 抓取完整内容失败: 403 Client Error: Forbidden for url: https://www.economist.com/united-states/2026/02/12/alabama-offers-three-tricks-to-fix-poor-urban-schools
+2026-02-19 22:18:20 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Hacker News] 抓取完整内容成功: 8024 chars
+2026-02-19 22:18:21 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Hacker News] 抓取完整内容成功: 12283 chars
+2026-02-19 22:18:29 │ [31mERROR[0m │ trafilatura.utils │ utils.py:259 │ parsed tree length: 1, wrong data type or not valid HTML
+2026-02-19 22:18:29 │ [31mERROR[0m │ trafilatura.core │ core.py:237 │ empty HTML tree: None
+2026-02-19 22:18:29 │ [33mWARNING[0m │ trafilatura.core │ core.py:344 │ discarding data: None
+2026-02-19 22:18:31 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Hacker News] 抓取完整内容成功: 969 chars
+2026-02-19 22:18:32 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Hacker News] 抓取完整内容成功: 3248 chars
+2026-02-19 22:18:34 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Hacker News] 抓取完整内容成功: 7829 chars
+2026-02-19 22:18:35 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Hacker News] 抓取完整内容成功: 5446 chars
+2026-02-19 22:18:36 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:218 │ [Hacker News] 抓取完整内容成功: 7472 chars
+2026-02-19 22:18:38 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [TechCrunch] 抓取 10 条
+2026-02-19 22:18:38 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [Hacker News] 抓取 10 条
+2026-02-19 22:18:38 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [Ars Technica AI] 抓取 10 条
+2026-02-19 22:18:38 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [MIT Tech Review] 抓取 10 条
+2026-02-19 22:18:38 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [Wired AI] 抓取 10 条
+2026-02-19 22:18:38 │ [32mINFO[0m │ src.fetcher.ainsight_fetcher │ ainsight_fetcher.py:132 │ [VentureBeat AI] 抓取 7 条
+2026-02-19 22:18:38 │ [32mINFO[0m │ main            │ ainsight.py:84 │ 抓取完成: 6 成功, 0 失败, 57 条内容, 耗时 57.6s
+2026-02-19 22:18:38 │ [32mINFO[0m │ main            │ ainsight.py:95 │ 测试模式: 只处理 5 条
+2026-02-19 22:18:38 │ [32mINFO[0m │ main            │ ainsight.py:133 │ 开始聚类处理 5 条内容...
+2026-02-19 22:18:38 │ [32mINFO[0m │ main            │ ainsight.py:182 │ 聚类完成: 0 处理, 5 跳过
+2026-02-19 22:18:38 │ [32mINFO[0m │ main            │ ainsight.py:187 │ 检查情报合成触发条件...
+2026-02-19 22:18:39 │ [32mINFO[0m │ src.processor.synthesis_service │ synthesis_service.py:127 │ 批量合成完成: {'processed': 0, 'success': 0, 'failed': 0, 'skipped': 5}
+2026-02-19 22:18:39 │ [32mINFO[0m │ main            │ ainsight.py:209 │ 情报合成: 0 个主题, 5 跳过
+2026-02-19 22:18:39 │ [32mINFO[0m │ main            │ ainsight.py:113 │ 跳过 Telegram 推送
+2026-02-19 22:18:39 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 统计: 主题 5 个, 内容 5 条, 情报包 0 个
+2026-02-19 22:18:39 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 运行完成

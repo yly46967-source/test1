@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}Intelligence - AInsight{% endblock %}
+
+{% block content %}
+<!-- Top Header -->
+<header class="top-header">
+    <div class="header-left">
+        <h1 class="header-title">Intelligence Reports</h1>
+        <div class="header-stats">
+            <div class="stat-item">
+                <span class="stat-value">{{ intel_list|length }}</span>
+                <span>Reports</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Split Feed -->
+<div class="split-feed">
+    <div class="feed-grid">
+        <!-- Column Headers -->
+        <div class="column-header">AI Analysis</div>
+        <div class="column-header">Related Topic</div>
+
+        {% if intel_list %}
+        {% for item in intel_list %}
+        {% set intel = item.intel %}
+        {% set topic = item.topic %}
+        <div class="feed-row">
+            <!-- Intelligence Card (Left) -->
+            <div class="insight-card" data-pair="intel-{{ intel.id }}">
+                <div class="insight-header">
+                    <span class="insight-category category-{{ topic.category.value if topic and topic.category else 'other' }}">
+                        {% if topic and topic.category %}
+                            {% if topic.category.value == 'model_release' %}Model Release
+                            {% elif topic.category.value == 'funding' %}Funding
+                            {% elif topic.category.value == 'product_launch' %}Product Launch
+                            {% elif topic.category.value == 'research' %}Research
+                            {% elif topic.category.value == 'drama' %}Industry Drama
+                            {% elif topic.category.value == 'tutorial' %}Tutorial
+                            {% elif topic.category.value == 'market_signal' %}Market Signal
+                            {% else %}News{% endif %}
+                        {% else %}News{% endif %}
+                    </span>
+                    <span class="insight-time">{{ intel.created_at.strftime('%m-%d %H:%M') if intel.created_at else 'Today' }}</span>
+                </div>
+
+                <h2 class="insight-title">{{ topic.title if topic else 'Intelligence Report #' ~ intel.id }}</h2>
+
+                {% if intel.tldr %}
+                <div class="insight-summary">
+                    <div class="summary-item">
+                        <span class="summary-dot"></span>
+                        <span>{{ intel.tldr }}</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if intel.fact_summary %}
+                <div class="insight-summary">
+                    <div class="summary-item">
+                        <span class="summary-dot"></span>
+                        <span>{{ intel.fact_summary[:200] }}{% if intel.fact_summary|length > 200 %}...{% endif %}</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if intel.action_guide %}
+                <div class="action-guide">
+                    <div class="action-guide-label">Action Guide</div>
+                    <div class="action-guide-text">{{ intel.action_guide }}</div>
+                </div>
+                {% endif %}
+
+                <div class="insight-footer">
+                    {% if topic %}
+                    <a href="/topic/{{ topic.id }}" class="verify-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        View Topic
+                    </a>
+                    {% endif %}
+
+                    <div class="kol-cluster">
+                        <div class="kol-cluster-avatar">{{ intel.source_count }}</div>
+                        <span style="font-size: 12px; color: var(--color-text-muted); margin-left: 4px;">sources</span>
+                    </div>
+
+                    <div class="impact-score">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        Verified
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic Card (Right) -->
+            <div class="evidence-card" data-pair="intel-{{ intel.id }}">
+                <div class="evidence-header">
+                    <div class="evidence-source">
+                        <div class="source-avatar">
+                            {% if topic and topic.category %}
+                                {% if topic.category.value == 'model_release' %}AI
+                                {% elif topic.category.value == 'funding' %}VC
+                                {% elif topic.category.value == 'product_launch' %}PR
+                                {% elif topic.category.value == 'research' %}RX
+                                {% elif topic.category.value == 'drama' %}TW
+                                {% elif topic.category.value == 'tutorial' %}GH
+                                {% elif topic.category.value == 'market_signal' %}MK
+                                {% else %}RS{% endif %}
+                            {% else %}RS{% endif %}
+                        </div>
+                        <div class="source-info">
+                            <span class="source-name">{{ topic.title[:25] if topic else 'Unknown' }}{% if topic and topic.title|length > 25 %}...{% endif %}</span>
+                            <span class="source-handle">{{ intel.source_count }} sources aggregated</span>
+                        </div>
+                    </div>
+                    <span class="match-badge">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                        AI Analyzed
+                    </span>
+                </div>
+
+                <div class="evidence-content">
+                    {% if intel.verdict %}
+                    <strong style="color: var(--color-text-primary);">Verdict:</strong> {{ intel.verdict[:250] }}{% if intel.verdict|length > 250 %}...{% endif %}
+                    {% elif topic and topic.description %}
+                    {{ topic.description[:300] }}{% if topic.description|length > 300 %}...{% endif %}
+                    {% else %}
+                    This intelligence report synthesizes information from {{ intel.source_count }} sources to provide actionable insights.
+                    {% endif %}
+                </div>
+
+                <div class="evidence-meta">
+                    <span class="evidence-time">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                        {{ intel.created_at.strftime('%Y-%m-%d') if intel.created_at else 'Today' }}
+                    </span>
+                    {% if topic %}
+                    <a href="/topic/{{ topic.id }}" class="evidence-link">
+                        Full analysis
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"/>
+                        </svg>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Pagination -->
+        {% if intel_list|length >= 10 or page > 1 %}
+        <div class="date-separator">
+            <div class="date-separator-line"></div>
+            <div style="display: flex; gap: 8px;">
+                {% if page > 1 %}
+                <a href="/intelligence?page={{ page - 1 }}"
+                   class="verify-btn" style="background: var(--color-accent-light); color: var(--color-text-primary);">
+                    Previous
+                </a>
+                {% endif %}
+                <span class="verify-btn" style="background: var(--color-accent);">Page {{ page }}</span>
+                {% if intel_list|length == 10 %}
+                <a href="/intelligence?page={{ page + 1 }}"
+                   class="verify-btn" style="background: var(--color-accent-light); color: var(--color-text-primary);">
+                    Next
+                </a>
+                {% endif %}
+            </div>
+            <div class="date-separator-line"></div>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">AI</div>
+            <h3 class="empty-title">No Intelligence Reports</h3>
+            <p class="empty-text">Intelligence reports are automatically generated when a topic has 3+ sources.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
