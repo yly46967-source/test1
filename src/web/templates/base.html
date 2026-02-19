@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AInsight{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- Marked.js for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <div class="app">
+        <!-- Part 1: Sidebar -->
+        <aside class="sidebar">
+            <a href="/" class="logo">AI</a>
+            <span class="logo-text">AInsight</span>
+
+            <nav class="nav-buttons">
+                <!-- RSS Sources -->
+                <div class="nav-btn" data-modal="rss">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 11a9 9 0 0 1 9 9"/>
+                        <path d="M4 4a16 16 0 0 1 16 16"/>
+                        <circle cx="5" cy="19" r="1"/>
+                    </svg>
+                    <span class="nav-btn-tooltip">RSS 数据源</span>
+                </div>
+
+                <!-- AI Model -->
+                <div class="nav-btn" data-modal="model">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                    <span class="nav-btn-tooltip">AI 模型</span>
+                </div>
+
+                <!-- Telegram -->
+                <div class="nav-btn" data-modal="telegram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13"/>
+                        <path d="M22 2L15 22l-4-9-9-4 20-7z"/>
+                    </svg>
+                    <span class="nav-btn-tooltip">Telegram 推送</span>
+                </div>
+
+                <div style="flex: 1;"></div>
+
+                <!-- Settings -->
+                <div class="nav-btn" data-modal="settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
+                    <span class="nav-btn-tooltip">设置</span>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            {% block content %}{% endblock %}
+
+            <!-- Part 4: Timeline Bar -->
+            <div class="timeline-bar">
+                <div class="timeline-track" id="timeline-track">
+                    <div class="timeline-line"></div>
+                    {% block timeline %}
+                    <!-- Timeline points will be generated dynamically -->
+                    {% endblock %}
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modal-rss">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">RSS 数据源配置</span>
+                <div class="modal-close" onclick="closeModal('rss')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="setting-item">
+                    <div class="setting-label">RSSHub 地址</div>
+                    <input type="text" class="setting-input" value="https://rsshub.app" placeholder="https://rsshub.app">
+                    <div class="setting-hint">自部署请使用 localhost:1200</div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">已启用数据源</div>
+                    <div class="setting-hint">7 位 KOL · 3 个关键词 · 5 个 GitHub 仓库 · 4 个媒体</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-model">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">AI 模型设置</span>
+                <div class="modal-close" onclick="closeModal('model')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="setting-item">
+                    <div class="setting-label">模型名称</div>
+                    <input type="text" class="setting-input" value="qwen-plus" placeholder="qwen-plus">
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">API 密钥</div>
+                    <input type="password" class="setting-input" placeholder="sk-...">
+                    <div class="setting-hint">DashScope API Key（用于 Qwen 模型）</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-telegram">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">Telegram 推送设置</span>
+                <div class="modal-close" onclick="closeModal('telegram')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="setting-item">
+                    <div class="setting-label">Bot Token</div>
+                    <input type="password" class="setting-input" placeholder="123456:ABC-DEF...">
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Chat ID</div>
+                    <input type="text" class="setting-input" placeholder="-100123456789">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-settings">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">系统设置</span>
+                <div class="modal-close" onclick="closeModal('settings')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="setting-item">
+                    <div class="setting-label">数据库</div>
+                    <input type="text" class="setting-input" value="sqlite:///ainsight.db" readonly>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">定时任务</div>
+                    <div class="setting-hint">每日 8:00、12:00、21:00 自动运行</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Modal handlers
+    document.querySelectorAll('.nav-btn[data-modal]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const modalId = btn.dataset.modal;
+            document.getElementById(`modal-${modalId}`).classList.add('active');
+        });
+    });
+
+    function closeModal(id) {
+        document.getElementById(`modal-${id}`).classList.remove('active');
+    }
+
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.classList.remove('active');
+            }
+        });
+    });
+
+    // Timeline scroll with mouse wheel
+    const timelineTrack = document.getElementById('timeline-track');
+    if (timelineTrack) {
+        timelineTrack.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            timelineTrack.scrollLeft += e.deltaY;
+        });
+    }
+
+    // Timeline click handler
+    document.querySelectorAll('.timeline-point').forEach(point => {
+        point.addEventListener('click', () => {
+            document.querySelectorAll('.timeline-point').forEach(p => p.classList.remove('active'));
+            point.classList.add('active');
+        });
+    });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

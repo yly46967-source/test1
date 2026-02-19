@@ -9,6 +9,7 @@ from html import unescape
 
 import feedparser
 import httpx
+import trafilatura
 
 from src.logger import get_logger
 from .source_loader import AInsightSource, SourceType
@@ -185,22 +186,39 @@ class AInsightFetcher:
             if hasattr(entry, "published_parsed") and entry.published_parsed:
                 published_at = datetime(*entry.published_parsed[:6])
 
-            # 内容
+            # 内容 - 优先使用完整内容
             content = ""
-            if hasattr(entry, "summary"):
-                content = entry.summary
+
+            # 1. 尝试 content 字段（通常是完整内容）
+            if hasattr(entry, "content") and entry.content:
+                content = entry.content[0].get("value", "")
+            # 2. 尝试 content_encoded（RSS 2.0 扩展）
+            elif hasattr(entry, "content_encoded"):
+                content = entry.content_encoded
+            # 3. 尝试 description（可能包含更多内容）
             elif hasattr(entry, "description"):
                 content = entry.description
-            elif hasattr(entry, "content") and entry.content:
-                content = entry.content[0].get("value", "")
+            # 4. 最后使用 summary
+            elif hasattr(entry, "summary"):
+                content = entry.summary
 
             # 清理 HTML
             text = self._clean_html(content)
             if title:
                 text = f"{title}\n\n{text}"
 
-            # 提取媒体链接
-            media_urls = self._extract_media(entry)
+            # 如果内容太短（<500字符），尝试抓取完整内容和图片
+            MIN_CONTENT_LENGTH = 500
+            full_page_html = None
+            if len(text) < MIN_CONTENT_LENGTH and link:
+                logger.debug(f"内容太短 ({len(text)} chars)，尝试抓取完整内容: {link}")
+                full_text, full_page_html = self._fetch_full_content_sync(link, source.name)
+                if full_text and len(full_text) > len(text):
+                    text = f"{title}\n\n{full_text}" if title else full_text
+                    logger.info(f"[{source.name}] 抓取完整内容成功: {len(full_text)} chars")
+
+            # 提取媒体链接（优先从完整页面提取）
+            media_urls = self._extract_media(entry, full_page_html, link)
 
             # 提取互动数据（RSSHub 可能包含）
             metrics = self._extract_metrics(entry, content)
@@ -231,41 +249,125 @@ class AInsightFetcher:
             return None
 
     def _clean_html(self, html: str) -> str:
-        """清理 HTML 标签"""
+        """清理 HTML 标签，保留段落结构"""
         if not html:
             return ""
 
-        # 移除 HTML 标签
-        text = re.sub(r'<[^>]+>', ' ', html)
+        # 将块级元素转换为换行
+        html = re.sub(r'</(p|div|br|h[1-6]|li|tr)>', '\n', html, flags=re.IGNORECASE)
+        html = re.sub(r'<br\s*/?>', '\n', html, flags=re.IGNORECASE)
+
+        # 移除所有 HTML 标签
+        text = re.sub(r'<[^>]+>', '', html)
+
         # 解码 HTML 实体
         text = unescape(text)
-        # 清理多余空白
-        text = re.sub(r'\s+', ' ', text).strip()
 
-        return text
+        # 清理多余空白，但保留换行
+        lines = text.split('\n')
+        lines = [re.sub(r'\s+', ' ', line).strip() for line in lines]
+        lines = [line for line in lines if line]  # 移除空行
 
-    def _extract_media(self, entry: Any) -> List[str]:
-        """提取媒体链接"""
+        return '\n\n'.join(lines)
+
+    def _fetch_full_content_sync(self, url: str, source_name: str) -> tuple[Optional[str], Optional[str]]:
+        """使用 trafilatura 抓取完整网页内容（同步版本，输出 Markdown）
+
+        Returns:
+            (extracted_text, html_content)
+        """
+        try:
+            import requests
+
+            response = requests.get(
+                url,
+                headers={"User-Agent": self.user_agent},
+                timeout=15.0,
+                allow_redirects=True,
+            )
+            response.raise_for_status()
+
+            html_content = response.text
+
+            # 使用 trafilatura 提取正文，输出为 Markdown 格式
+            extracted = trafilatura.extract(
+                html_content,
+                include_comments=False,
+                include_tables=True,
+                include_images=True,
+                no_fallback=False,
+                output_format='markdown',  # 输出 Markdown 格式
+                with_metadata=False,
+            )
+
+            return (extracted if extracted else None, html_content)
+
+        except Exception as e:
+            logger.warning(f"[{source_name}] 抓取完整内容失败: {e}")
+            return (None, None)
+
+    def _extract_media(self, entry: Any, full_page_html: Optional[str] = None, page_url: Optional[str] = None) -> List[str]:
+        """提取媒体链接，优先从完整页面提取主图"""
         media_urls = []
 
+        # 1. 如果有完整页面 HTML，提取主图
+        if full_page_html:
+            from urllib.parse import urljoin
+            from lxml import html as lxml_html
+
+            try:
+                tree = lxml_html.fromstring(full_page_html)
+
+                # 提取 og:image (Open Graph)
+                og_image = tree.xpath('//meta[@property="og:image"]/@content')
+                if og_image:
+                    media_urls.extend(og_image[:1])  # 只取第一个
+
+                # 提取 twitter:image
+                twitter_image = tree.xpath('//meta[@name="twitter:image"]/@content')
+                if twitter_image and twitter_image[0] not in media_urls:
+                    media_urls.extend(twitter_image[:1])
+
+                # 提取文章主图 (article 标签内的第一张图)
+                article_imgs = tree.xpath('//article//img/@src | //article//img/@data-src')
+                for img in article_imgs[:3]:
+                    if page_url:
+                        img = urljoin(page_url, img)
+                    if img not in media_urls and img.startswith('http'):
+                        media_urls.append(img)
+
+                # 提取所有大尺寸图片 (宽度 > 400px)
+                large_imgs = tree.xpath('//img[@width>400]/@src | //img[contains(@class, "featured")]/@src')
+                for img in large_imgs[:2]:
+                    if page_url:
+                        img = urljoin(page_url, img)
+                    if img not in media_urls and img.startswith('http'):
+                        media_urls.append(img)
+
+            except Exception as e:
+                logger.debug(f"从完整页面提取图片失败: {e}")
+
+        # 2. 从 RSS entry 提取
         # 检查 enclosures
         if hasattr(entry, "enclosures"):
             for enc in entry.enclosures:
-                if enc.get("href"):
+                if enc.get("href") and enc["href"] not in media_urls:
                     media_urls.append(enc["href"])
 
         # 检查 media_content
         if hasattr(entry, "media_content"):
             for media in entry.media_content:
-                if media.get("url"):
+                if media.get("url") and media["url"] not in media_urls:
                     media_urls.append(media["url"])
 
         # 从内容中提取图片
         content = entry.get("summary", "") or entry.get("description", "")
         img_urls = re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', content)
-        media_urls.extend(img_urls)
+        for img in img_urls:
+            if img not in media_urls:
+                media_urls.append(img)
 
-        return list(set(media_urls))[:5]  # 最多 5 个
+        return media_urls[:5]  # 最多 5 个
 
     def _extract_metrics(self, entry: Any, content: str) -> Dict[str, int]:
         """提取互动数据"""
