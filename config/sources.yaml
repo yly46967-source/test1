@@ -1,16 +1,17 @@
 # AInsight 数据源配置
-# RSSHub 统一数据源 + 传统 RSS
+# 注意：RSS 源已禁用，统一使用 Playwright 抓取 Twitter/X
 
 # ==================== RSSHub 配置 ====================
+# 已禁用 - 使用 Playwright 替代
 rsshub:
-  base_url: "https://rsshub.app"  # 公共实例
-  # base_url: "http://localhost:1200"  # 自部署（推荐，无限流）
+  base_url: "https://rsshub.app"
   timeout: 30
   retry: 3
 
 # ==================== AI KOL 追踪 ====================
-# 通过 RSSHub 获取 X/Twitter 数据
-# 注意：公共 RSSHub 实例限制 Twitter 路由，需自部署
+# 已禁用 RSSHub 路由 - 使用 Playwright 抓取
+# KOL 数据存储在数据库 kols 表中
+# 运行命令: python scripts/run_playwright_twitter.py --from-db
 ai_kols:
   # God Tier - 行业领袖
   - handle: "karpathy"
@@ -18,7 +19,7 @@ ai_kols:
     tier: "god"
     platform: "x"
     rsshub_route: "/twitter/user/karpathy"
-    enabled: false  # 需自部署 RSSHub
+    enabled: false  # 使用 Playwright 替代
     tags: ["AI", "Tesla", "OpenAI"]
 
   - handle: "ylecun"
@@ -80,10 +81,11 @@ ai_kols:
     tags: ["Meta", "AI研究"]
 
 # ==================== AI 关键词追踪 ====================
+# 已禁用 - 使用 Playwright 替代
 ai_keywords:
   - keyword: "GPT-5"
     rsshub_route: "/twitter/search/GPT-5"
-    enabled: false  # 需自部署 RSSHub
+    enabled: false
     category: "model_release"
 
   - keyword: "Claude 4"
@@ -102,12 +104,11 @@ ai_keywords:
     category: "funding"
 
 # ==================== GitHub 追踪 ====================
-# 注意：公共 RSSHub 实例限制 GitHub 路由，需自部署
+# 已禁用 - 需自部署 RSSHub
 github:
-  # Trending
   - name: "GitHub AI Trending"
     rsshub_route: "/github/trending/daily/python"
-    enabled: false  # 需自部署 RSSHub
+    enabled: false
     category: "research"
 
   - name: "GitHub ML Trending"
@@ -115,7 +116,6 @@ github:
     enabled: false
     category: "research"
 
-  # 重点项目
   - name: "LangChain"
     rsshub_route: "/github/repos/langchain-ai/langchain"
     enabled: false
@@ -137,49 +137,51 @@ github:
     category: "product_launch"
 
 # ==================== 科技媒体 ====================
+# 已禁用 RSS - 统一使用 Playwright 抓取 Twitter/X
 tech_media:
   - name: "TechCrunch"
     url: "https://techcrunch.com/feed/"
     type: "rss"
-    enabled: true
+    enabled: false  # 已禁用，使用 Playwright
     category: "news"
 
   - name: "Hacker News"
     url: "https://hnrss.org/frontpage"
     type: "rss"
-    enabled: true
+    enabled: false  # 已禁用，使用 Playwright
     category: "news"
 
   - name: "The Verge AI"
     rsshub_route: "/theverge/ai-artificial-intelligence"
-    enabled: false  # 需自部署 RSSHub
+    enabled: false
     category: "news"
 
   - name: "Ars Technica AI"
     url: "https://feeds.arstechnica.com/arstechnica/technology-lab"
     type: "rss"
-    enabled: true
+    enabled: false  # 已禁用，使用 Playwright
     category: "news"
 
   - name: "MIT Tech Review"
     url: "https://www.technologyreview.com/feed/"
     type: "rss"
-    enabled: true
+    enabled: false  # 已禁用，使用 Playwright
     category: "news"
 
   - name: "Wired AI"
     url: "https://www.wired.com/feed/tag/ai/latest/rss"
     type: "rss"
-    enabled: true
+    enabled: false  # 已禁用，使用 Playwright
     category: "news"
 
   - name: "VentureBeat AI"
     url: "https://venturebeat.com/category/ai/feed/"
     type: "rss"
-    enabled: true
+    enabled: false  # 已禁用，使用 Playwright
     category: "news"
 
 # ==================== 论文追踪 ====================
+# 已禁用 - 需自部署 RSSHub
 papers:
   - name: "arXiv AI"
     rsshub_route: "/arxiv/search_query=cat:cs.AI&sortBy=submittedDate"
@@ -191,7 +193,8 @@ papers:
     enabled: false
     category: "research"
 
-# ==================== 传统新闻源（保留） ====================
+# ==================== 传统新闻源 ====================
+# 已禁用
 china:
   - name: "中国日报"
     url: "https://www.chinadaily.com.cn/rss/china_rss.xml"

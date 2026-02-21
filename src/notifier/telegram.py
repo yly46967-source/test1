@@ -1,12 +1,18 @@
 """Telegram 推送模块"""
 import os
 from typing import List, Optional, Dict, Any
-from telegram import Bot
 
-from src.models import NewsItem, Category
 from src.logger import get_notifier_logger
 
 logger = get_notifier_logger()
+
+# 尝试导入 telegram 库
+try:
+    from telegram import Bot
+    TELEGRAM_AVAILABLE = True
+except ImportError:
+    TELEGRAM_AVAILABLE = False
+    logger.warning("python-telegram-bot 未安装，Telegram 推送功能不可用")
 
 
 class TelegramNotifier:
@@ -30,10 +36,15 @@ class TelegramNotifier:
     def __init__(self, bot_token: str = None, chat_id: str = None):
         self.bot_token = bot_token or os.getenv("TELEGRAM_BOT_TOKEN")
         self.chat_id = chat_id or os.getenv("TELEGRAM_CHAT_ID")
-        self.bot = Bot(token=self.bot_token)
+        self.bot = None
+        if TELEGRAM_AVAILABLE and self.bot_token:
+            self.bot = Bot(token=self.bot_token)
 
     async def send_message(self, text: str, parse_mode: str = "HTML") -> bool:
         """发送单条消息"""
+        if not self.bot:
+            logger.warning("Telegram Bot 未配置")
+            return False
         try:
             await self.bot.send_message(
                 chat_id=self.chat_id,
@@ -46,63 +57,6 @@ class TelegramNotifier:
         except Exception as e:
             logger.error(f"消息发送失败: {e}")
             return False
-
-    async def send_news(self, item: NewsItem) -> bool:
-        """发送单条新闻"""
-        return await self.send_message(item.to_telegram_message())
-
-    async def send_digest(self, items: List[NewsItem], title: str = "📰 新闻摘要") -> bool:
-        """发送新闻摘要，自动分页"""
-        if not items:
-            return await self.send_message(f"{title}\n\n暂无新闻")
-
-        # 按分类分组
-        by_category = {}
-        for item in items:
-            cat = item.category
-            if cat not in by_category:
-                by_category[cat] = []
-            by_category[cat].append(item)
-
-        # 构建消息列表（可能需要分多条发送）
-        messages = []
-        current_msg = f"<b>{title}</b>\n"
-        current_msg += f"共 {len(items)} 条新闻\n"
-        current_msg += "─" * 20 + "\n\n"
-
-        for category in Category:
-            if category not in by_category:
-                continue
-            cat_items = by_category[category]
-
-            section = f"<b>{category.value}</b> ({len(cat_items)})\n"
-            for item in cat_items:
-                section += f"• {item.title}\n"
-                if item.summary:
-                    section += f"  {item.summary}\n"
-                section += f"  🔗 {item.source_name}\n\n"
-
-            # 检查是否超长，需要分页
-            if len(current_msg) + len(section) > self.MAX_MESSAGE_LENGTH:
-                messages.append(current_msg)
-                current_msg = f"<b>{title} (续)</b>\n\n"
-
-            current_msg += section
-
-        if current_msg.strip():
-            messages.append(current_msg)
-
-        # 发送所有消息
-        success = True
-        for i, msg in enumerate(messages, 1):
-            if not await self.send_message(msg):
-                success = False
-                logger.warning(f"第 {i}/{len(messages)} 条消息发送失败")
-
-        if success:
-            logger.info(f"摘要推送完成: {len(items)} 条新闻, {len(messages)} 条消息")
-
-        return success
 
     # ==================== AInsight 情报推送 ====================
 

@@ -1,0 +1,125 @@
+{
+  "common": {
+    "today": "今天",
+    "sources": "个来源",
+    "source": "来源",
+    "viewOriginal": "查看原文",
+    "noContent": "暂无内容",
+    "noTitle": "无标题",
+    "loading": "加载中...",
+    "error": "出错了",
+    "save": "保存",
+    "cancel": "取消",
+    "confirm": "确认",
+    "delete": "删除",
+    "edit": "编辑",
+    "add": "添加"
+  },
+  "home": {
+    "todayIntel": "今日情报",
+    "unclustered": "未分类原文",
+    "rawContent": "原文",
+    "selectToView": "选择一条情报查看详情",
+    "noIntel": "暂无情报",
+    "runCrawler": "运行抓取器开始聚合资讯",
+    "aiInsight": "AI 情报洞察",
+    "topicEmpty": "该主题暂无原文"
+  },
+  "categories": {
+    "model_release": "模型发布",
+    "funding": "融资动态",
+    "product_launch": "产品上线",
+    "research": "学术研究",
+    "drama": "行业动态",
+    "tutorial": "技术教程",
+    "market_signal": "市场信号",
+    "news": "资讯"
+  },
+  "sidebar": {
+    "rssSources": "RSS 数据源",
+    "aiModel": "AI 模型",
+    "telegram": "Telegram 推送",
+    "kolManage": "KOL 管理",
+    "settings": "设置"
+  },
+  "kol": {
+    "title": "KOL 管理",
+    "total": "共 {{count}} 位 KOL",
+    "manageSource": "管理你的信息源",
+    "allTiers": "全部等级",
+    "allCategories": "全部分类",
+    "batchImport": "批量导入",
+    "addKol": "添加 KOL",
+    "weight": "权重",
+    "tier": {
+      "god": "God Tier",
+      "expert": "Expert",
+      "insider": "Insider",
+      "observer": "Observer"
+    },
+    "category": {
+      "ai_researcher": "AI 研究员",
+      "founder_ceo": "创始人/CEO",
+      "vc_investor": "投资人",
+      "engineer": "工程师",
+      "journalist": "记者/媒体",
+      "influencer": "KOL/博主"
+    },
+    "form": {
+      "handle": "X/Twitter Handle",
+      "name": "名称（可选）",
+      "tierLabel": "等级",
+      "categoryLabel": "分类",
+      "weightLabel": "权重",
+      "inputHandles": "输入 X/Twitter Handles（每行一个）",
+      "supportFormat": "支持带或不带 @ 符号，自动去重"
+    },
+    "message": {
+      "addSuccess": "成功添加 KOL",
+      "updateSuccess": "更新成功",
+      "deleteConfirm": "确定要删除吗？",
+      "deleteSuccess": "已删除",
+      "importComplete": "导入完成！",
+      "newCount": "新增",
+      "skipCount": "跳过（已存在）"
+    }
+  },
+  "intel": {
+    "title": "情报分析",
+    "reports": "份报告",
+    "aiAnalysis": "AI 分析",
+    "relatedTopic": "关联主题",
+    "highValue": "高价值",
+    "mediumValue": "中等",
+    "lowValue": "一般",
+    "recommendation": "推荐理由",
+    "actionGuide": "行动指南",
+    "viewTopic": "查看主题",
+    "verified": "已验证",
+    "fullAnalysis": "完整分析",
+    "noReports": "暂无情报报告",
+    "autoGenerate": "当主题收集到 3 个以上来源时，将自动生成情报分析报告。"
+  },
+  "settings": {
+    "rssConfig": "RSS 数据源配置",
+    "rsshubUrl": "RSSHub 地址",
+    "rsshubHint": "自部署请使用 localhost:1200",
+    "enabledSources": "已启用数据源",
+    "modelSettings": "AI 模型设置",
+    "modelName": "模型名称",
+    "apiKey": "API 密钥",
+    "apiKeyHint": "DashScope API Key（用于 Qwen 模型）",
+    "telegramSettings": "Telegram 推送设置",
+    "botToken": "Bot Token",
+    "chatId": "Chat ID",
+    "systemSettings": "系统设置",
+    "database": "数据库",
+    "scheduledTask": "定时任务",
+    "taskHint": "每日 8:00、12:00、21:00 自动运行"
+  },
+  "language": {
+    "label": "语言",
+    "zh": "中文",
+    "en": "English"
+  }
+}

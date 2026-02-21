@@ -1,12 +1,14 @@
 """
-增强版情报合成引擎 - XML 封装 + 低价值拒绝 + 来源映射
+增强版情报合成引擎 - XML 封装 + 低价值拒绝 + 来源映射 + 批量合成
 
 核心改进：
 1. XML 结构化输入 - 更清晰的来源标记，便于 LLM 理解
 2. 低价值拒绝机制 - 自动识别并拒绝合成低价值内容
 3. 1:1 来源映射 - 输出中包含 source_id，可追溯到原始内容
 4. KOL 权重加权 - 高权重 KOL 观点优先采信
+5. 批量合成 - GEMINI_BATCH_SIZE=10 并发处理 (参考 ai-daily-digest)
 """
+import asyncio
 import json
 import re
 from datetime import datetime
@@ -19,6 +21,11 @@ from openai import AsyncOpenAI
 from src.logger import get_logger
 
 logger = get_logger(__name__)
+
+
+# ==================== 批量合成配置 (参考 ai-daily-digest) ====================
+GEMINI_BATCH_SIZE = 10      # 每批处理的主题数
+MAX_CONCURRENT_LLM = 2      # 最大并发 LLM 请求数
 
 
 class ValueLevel(Enum):
@@ -538,3 +545,139 @@ async def enhanced_synthesize_topic(
         sources.append(source)
 
     return await engine.synthesize(topic_title, sources, topic_id)
+
+
+# ==================== 批量合成器 (参考 ai-daily-digest) ====================
+
+@dataclass
+class BatchSynthesisResult:
+    """批量合成结果"""
+    total: int
+    success: int
+    failed: int
+    rejected: int
+    results: List[EnhancedSynthesisResult]
+
+
+class BatchSynthesizer:
+    """批量合成器 - 支持并发处理多个主题
+
+    参考 ai-daily-digest 的并发架构：
+    - GEMINI_BATCH_SIZE = 10
+    - MAX_CONCURRENT_GEMINI = 2
+    """
+
+    def __init__(
+        self,
+        engine: EnhancedSynthesisEngine,
+        batch_size: int = GEMINI_BATCH_SIZE,
+        max_concurrent: int = MAX_CONCURRENT_LLM,
+    ):
+        self.engine = engine
+        self.batch_size = batch_size
+        self.max_concurrent = max_concurrent
+        self.semaphore = asyncio.Semaphore(max_concurrent)
+
+    async def synthesize_topics(
+        self,
+        topics: List[Dict[str, Any]],
+    ) -> BatchSynthesisResult:
+        """
+        批量合成多个主题
+
+        Args:
+            topics: 主题列表，每个主题需要包含:
+                - topic_id: 主题 ID
+                - topic_title: 主题标题
+                - sources: 来源列表
+
+        Returns:
+            BatchSynthesisResult
+        """
+        total = len(topics)
+        logger.info(f"[BatchSynth] 开始批量合成 {total} 个主题")
+
+        # 分批处理
+        all_results = []
+        for i in range(0, total, self.batch_size):
+            batch = topics[i:i + self.batch_size]
+            batch_num = i // self.batch_size + 1
+            total_batches = (total + self.batch_size - 1) // self.batch_size
+
+            logger.info(f"[BatchSynth] 处理批次 {batch_num}/{total_batches}")
+
+            # 并发处理当前批次
+            tasks = [self._synthesize_with_semaphore(topic) for topic in batch]
+            batch_results = await asyncio.gather(*tasks, return_exceptions=True)
+
+            for result in batch_results:
+                if isinstance(result, EnhancedSynthesisResult):
+                    all_results.append(result)
+                elif isinstance(result, Exception):
+                    logger.error(f"[BatchSynth] 合成异常: {result}")
+                    all_results.append(EnhancedSynthesisResult(
+                        success=False,
+                        intel_id="",
+                        synthesis=None,
+                        source_count=0,
+                        kol_count=0,
+                        value_level=ValueLevel.REJECT,
+                        source_mappings=[],
+                        error=str(result)
+                    ))
+
+        # 统计结果
+        success = sum(1 for r in all_results if r.success)
+        rejected = sum(1 for r in all_results if r.value_level in (ValueLevel.REJECT, ValueLevel.LOW))
+        failed = total - success
+
+        logger.info(
+            f"[BatchSynth] 批量合成完成: "
+            f"成功={success}, 失败={failed}, 拒绝={rejected}"
+        )
+
+        return BatchSynthesisResult(
+            total=total,
+            success=success,
+            failed=failed,
+            rejected=rejected,
+            results=all_results
+        )
+
+    async def _synthesize_with_semaphore(
+        self,
+        topic: Dict[str, Any]
+    ) -> EnhancedSynthesisResult:
+        """带信号量的合成"""
+        async with self.semaphore:
+            return await self.engine.synthesize(
+                topic_title=topic.get("topic_title", ""),
+                sources=topic.get("sources", []),
+                topic_id=topic.get("topic_id")
+            )
+
+
+async def batch_synthesize_topics(
+    engine: EnhancedSynthesisEngine,
+    topics: List[Dict[str, Any]],
+    batch_size: int = GEMINI_BATCH_SIZE,
+    max_concurrent: int = MAX_CONCURRENT_LLM,
+) -> BatchSynthesisResult:
+    """
+    便捷函数：批量合成主题
+
+    Args:
+        engine: 合成引擎
+        topics: 主题列表
+        batch_size: 批次大小 (默认 10)
+        max_concurrent: 最大并发数 (默认 2)
+
+    Returns:
+        BatchSynthesisResult
+    """
+    synthesizer = BatchSynthesizer(
+        engine=engine,
+        batch_size=batch_size,
+        max_concurrent=max_concurrent
+    )
+    return await synthesizer.synthesize_topics(topics)

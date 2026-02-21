@@ -1,0 +1,125 @@
+{
+  "common": {
+    "today": "Today",
+    "sources": "sources",
+    "source": "Source",
+    "viewOriginal": "View Original",
+    "noContent": "No content",
+    "noTitle": "Untitled",
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add"
+  },
+  "home": {
+    "todayIntel": "Today's Intel",
+    "unclustered": "Unclustered",
+    "rawContent": "Raw",
+    "selectToView": "Select an item to view details",
+    "noIntel": "No intelligence",
+    "runCrawler": "Run crawler to start aggregating",
+    "aiInsight": "AI Intelligence Insight",
+    "topicEmpty": "No content for this topic"
+  },
+  "categories": {
+    "model_release": "Model Release",
+    "funding": "Funding",
+    "product_launch": "Product Launch",
+    "research": "Research",
+    "drama": "Industry News",
+    "tutorial": "Tutorial",
+    "market_signal": "Market Signal",
+    "news": "News"
+  },
+  "sidebar": {
+    "rssSources": "RSS Sources",
+    "aiModel": "AI Model",
+    "telegram": "Telegram Push",
+    "kolManage": "KOL Management",
+    "settings": "Settings"
+  },
+  "kol": {
+    "title": "KOL Management",
+    "total": "{{count}} KOLs",
+    "manageSource": "Manage your information sources",
+    "allTiers": "All Tiers",
+    "allCategories": "All Categories",
+    "batchImport": "Batch Import",
+    "addKol": "Add KOL",
+    "weight": "Weight",
+    "tier": {
+      "god": "God Tier",
+      "expert": "Expert",
+      "insider": "Insider",
+      "observer": "Observer"
+    },
+    "category": {
+      "ai_researcher": "AI Researcher",
+      "founder_ceo": "Founder/CEO",
+      "vc_investor": "VC/Investor",
+      "engineer": "Engineer",
+      "journalist": "Journalist",
+      "influencer": "Influencer"
+    },
+    "form": {
+      "handle": "X/Twitter Handle",
+      "name": "Name (optional)",
+      "tierLabel": "Tier",
+      "categoryLabel": "Category",
+      "weightLabel": "Weight",
+      "inputHandles": "Enter X/Twitter Handles (one per line)",
+      "supportFormat": "Supports with or without @ symbol, auto-dedupe"
+    },
+    "message": {
+      "addSuccess": "Successfully added KOL",
+      "updateSuccess": "Update successful",
+      "deleteConfirm": "Are you sure you want to delete?",
+      "deleteSuccess": "Deleted",
+      "importComplete": "Import complete!",
+      "newCount": "New",
+      "skipCount": "Skipped (already exists)"
+    }
+  },
+  "intel": {
+    "title": "Intelligence Analysis",
+    "reports": "reports",
+    "aiAnalysis": "AI Analysis",
+    "relatedTopic": "Related Topic",
+    "highValue": "High Value",
+    "mediumValue": "Medium",
+    "lowValue": "Low",
+    "recommendation": "Recommendation",
+    "actionGuide": "Action Guide",
+    "viewTopic": "View Topic",
+    "verified": "Verified",
+    "fullAnalysis": "Full Analysis",
+    "noReports": "No intelligence reports",
+    "autoGenerate": "Reports will be auto-generated when a topic has 3+ sources."
+  },
+  "settings": {
+    "rssConfig": "RSS Source Configuration",
+    "rsshubUrl": "RSSHub URL",
+    "rsshubHint": "Use localhost:1200 for self-hosted",
+    "enabledSources": "Enabled Sources",
+    "modelSettings": "AI Model Settings",
+    "modelName": "Model Name",
+    "apiKey": "API Key",
+    "apiKeyHint": "DashScope API Key (for Qwen model)",
+    "telegramSettings": "Telegram Push Settings",
+    "botToken": "Bot Token",
+    "chatId": "Chat ID",
+    "systemSettings": "System Settings",
+    "database": "Database",
+    "scheduledTask": "Scheduled Task",
+    "taskHint": "Auto-run daily at 8:00, 12:00, 21:00"
+  },
+  "language": {
+    "label": "Language",
+    "zh": "中文",
+    "en": "English"
+  }
+}

@@ -1,28 +1,30 @@
 {% extends "base.html" %}
 
-{% block title %}AInsight{% endblock %}
+{% block title %}AInsight - AI情报聚合{% endblock %}
 
 {% block content %}
 <div class="content-area">
-    <!-- Part 2: AI Summary List -->
+    <!-- 左侧：情报列表 -->
     <div class="summary-panel">
-        <div class="summary-header">今日情报</div>
+        <div class="summary-header" data-i18n="home.todayIntel">今日情报</div>
 
         {% if topics_with_intel %}
         {% for item in topics_with_intel %}
-        <div class="news-item {% if loop.first %}active{% endif %}" data-id="{{ item.topic.id }}">
+        <div class="news-item {% if loop.first %}active{% endif %}" data-id="{{ item.topic.id }}" data-type="topic" data-category="{{ item.topic.category.value if item.topic.category else 'news' }}">
             <div class="news-category">
                 <span class="news-category-dot"></span>
-                {% if item.topic.category %}
-                    {% if item.topic.category.value == 'model_release' %}模型发布
-                    {% elif item.topic.category.value == 'funding' %}融资动态
-                    {% elif item.topic.category.value == 'product_launch' %}产品上线
-                    {% elif item.topic.category.value == 'research' %}学术研究
-                    {% elif item.topic.category.value == 'drama' %}行业动态
-                    {% elif item.topic.category.value == 'tutorial' %}技术教程
-                    {% elif item.topic.category.value == 'market_signal' %}市场信号
+                <span class="category-text" data-category="{{ item.topic.category.value if item.topic.category else 'news' }}">
+                    {% if item.topic.category %}
+                        {% if item.topic.category.value == 'model_release' %}模型发布
+                        {% elif item.topic.category.value == 'funding' %}融资动态
+                        {% elif item.topic.category.value == 'product_launch' %}产品上线
+                        {% elif item.topic.category.value == 'research' %}学术研究
+                        {% elif item.topic.category.value == 'drama' %}行业动态
+                        {% elif item.topic.category.value == 'tutorial' %}技术教程
+                        {% elif item.topic.category.value == 'market_signal' %}市场信号
+                        {% else %}资讯{% endif %}
                     {% else %}资讯{% endif %}
-                {% else %}资讯{% endif %}
+                </span>
             </div>
             <div class="news-title">{{ item.topic.title }}</div>
             <div class="news-summary">
@@ -31,29 +33,52 @@
                 {% elif item.topic.description %}
                 {{ item.topic.description[:120] }}{% if item.topic.description|length > 120 %}...{% endif %}
                 {% else %}
-                来自 {{ item.topic.source_count }} 个信息源的 AI 情报聚合
+                <span class="aggregated-text">来自 {{ item.topic.source_count }} 个信息源的聚合</span>
                 {% endif %}
             </div>
             <div class="news-meta">
                 <span class="news-source">
                     <span class="news-source-avatar">{{ item.topic.source_count }}</span>
-                    个来源
+                    <span data-i18n="common.sources">个来源</span>
                 </span>
-                <span>{{ item.topic.first_seen_at.strftime('%H:%M') if item.topic.first_seen_at else '今天' }}</span>
+                <span>{{ item.topic.first_seen_at.strftime('%H:%M') if item.topic.first_seen_at else '' }}<span class="today-text" style="display: {{ 'none' if item.topic.first_seen_at else 'inline' }};" data-i18n="common.today">今天</span></span>
             </div>
         </div>
         {% endfor %}
-        {% else %}
-        <div class="news-item">
-            <div class="news-title">暂无情报</div>
-            <div class="news-summary">运行抓取器开始从配置的数据源聚合 AI 资讯</div>
+        {% endif %}
+
+        <!-- 未聚类的原文 -->
+        {% if unclustered_contents %}
+        <div class="summary-header unclustered-header" style="margin-top: 20px; border-top: 1px solid var(--border-light); padding-top: 16px;" data-i18n="home.unclustered">
+            未分类原文
+        </div>
+        {% for content in unclustered_contents %}
+        <div class="news-item" data-id="{{ content.id }}" data-type="content">
+            <div class="news-category">
+                <span class="news-category-dot" style="background: #999;"></span>
+                <span data-i18n="home.rawContent">原文</span>
+            </div>
+            <div class="news-title">{{ content.title or '无标题' }}</div>
+            <div class="news-summary">
+                {{ content.text_content[:100] }}{% if content.text_content|length > 100 %}...{% endif %}
+            </div>
+            <div class="news-meta">
+                <span>{{ content.published_at.strftime('%m-%d %H:%M') if content.published_at else '' }}<span class="today-text" style="display: {{ 'none' if content.published_at else 'inline' }};" data-i18n="common.today">今天</span></span>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        {% if not topics_with_intel and not unclustered_contents %}
+        <div class="news-item empty-item">
+            <div class="news-title" data-i18n="home.noIntel">暂无情报</div>
+            <div class="news-summary" data-i18n="home.runCrawler">运行抓取器开始聚合资讯</div>
         </div>
         {% endif %}
     </div>
 
-    <!-- Part 3: Article Detail - 动态渲染容器 -->
+    <!-- 右侧：详情面板 -->
     <div class="article-panel" id="article-panel">
-        <!-- 内容由 JavaScript 动态渲染 -->
         <div class="empty-article">
             <div class="empty-article-icon">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -63,354 +88,393 @@
                     <line x1="16" y1="17" x2="8" y2="17"/>
                 </svg>
             </div>
-            <div class="empty-article-text">选择一篇文章阅读</div>
+            <div class="empty-article-text" data-i18n="home.selectToView">选择一条情报查看详情</div>
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block timeline %}
-<!-- Timeline will be populated by JavaScript -->
 {% endblock %}
 
 {% block scripts %}
 <script>
-// 检查 marked.js 是否加载
-console.log('[Init] marked 对象:', typeof marked !== 'undefined' ? 'loaded' : 'NOT LOADED');
-if (typeof marked !== 'undefined') {
-    console.log('[Init] marked.parse:', typeof marked.parse);
-}
+// 当前选中的来源索引
+let currentSourceIndex = 0;
+let currentContents = [];
+let currentTopicData = null;
+let currentSingleContent = null;
 
-// Category mapping for Chinese display
-const categoryMap = {
-    'model_release': { abbr: 'AI', name: 'AI 资讯' },
-    'funding': { abbr: 'VC', name: '投资动态' },
-    'product_launch': { abbr: 'PH', name: '产品发布' },
-    'research': { abbr: 'RX', name: '学术论文' },
-    'drama': { abbr: 'TW', name: '社交媒体' },
-    'tutorial': { abbr: 'GH', name: '技术博客' },
-    'market_signal': { abbr: 'MK', name: '市场观察' }
-};
+// 翻译缓存
+const translationCache = new Map();
 
-// Store all topics data
-let allTopics = [];
-let topicsByDate = {};
+// 调用翻译 API
+async function translateText(text, targetLang) {
+    if (!text || text.length < 2) return text;
 
-// Initialize timeline
-async function initTimeline() {
+    // 检查缓存
+    const cacheKey = `${text.substring(0, 50)}_${targetLang}`;
+    if (translationCache.has(cacheKey)) {
+        return translationCache.get(cacheKey);
+    }
+
     try {
-        const response = await fetch('/api/topics');
-        const data = await response.json();
-        allTopics = data.topics || [];
-
-        // Group topics by date
-        topicsByDate = {};
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        allTopics.forEach(topic => {
-            const date = topic.first_seen_at ? new Date(topic.first_seen_at) : today;
-            date.setHours(0, 0, 0, 0);
-
-            // Only include today and past dates
-            if (date <= today) {
-                const dateKey = date.toISOString().split('T')[0];
-                if (!topicsByDate[dateKey]) {
-                    topicsByDate[dateKey] = [];
-                }
-                topicsByDate[dateKey].push(topic);
-            }
+        const response = await fetch('/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text, target_lang: targetLang })
         });
 
-        renderTimeline();
-    } catch (error) {
-        console.error('Failed to load timeline data:', error);
+        if (response.ok) {
+            const data = await response.json();
+            translationCache.set(cacheKey, data.translated);
+            return data.translated;
+        }
+    } catch (e) {
+        console.error('Translation failed:', e);
     }
+    return text;
 }
 
-function renderTimeline() {
-    const track = document.getElementById('timeline-track');
-    if (!track) return;
+// 获取分类名称（支持多语言）- 使用 i18next
+function getCategoryName(categoryKey) {
+    return t(`categories.${categoryKey}`) || t('categories.news');
+}
 
-    // Clear existing points (keep the line)
-    track.querySelectorAll('.timeline-point').forEach(p => p.remove());
+// 获取翻译文本 - 使用 i18next
+function getText(key) {
+    return t(key);
+}
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+// 更新页面上的静态文本
+async function updateStaticTexts() {
+    const lang = getCurrentLang();
+    console.log('Updating UI language to:', lang);
 
-    // Generate dates: past 14 days to today
-    const dates = [];
-    for (let i = 14; i >= 0; i--) {
-        const date = new Date(today);
-        date.setDate(date.getDate() - i);
-        dates.push(date);
-    }
+    // 更新所有带 data-i18n 属性的元素
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        const text = t(key);
+        if (text && text !== key) {
+            el.textContent = text;
+        }
+    });
 
-    dates.forEach((date, index) => {
-        const dateKey = date.toISOString().split('T')[0];
-        const topics = topicsByDate[dateKey] || [];
-        const isToday = index === dates.length - 1;
+    // 更新分类文本
+    document.querySelectorAll('.category-text[data-category]').forEach(el => {
+        const category = el.dataset.category;
+        el.textContent = getCategoryName(category);
+    });
 
-        const point = document.createElement('div');
-        point.className = `timeline-point${isToday ? ' active' : ''}`;
-        point.dataset.date = dateKey;
+    // 更新聚合文本
+    document.querySelectorAll('.aggregated-text').forEach(el => {
+        const count = el.closest('.news-item')?.querySelector('.news-source-avatar')?.textContent || '0';
+        el.textContent = lang === 'zh'
+            ? `来自 ${count} 个信息源的聚合`
+            : `Aggregated from ${count} sources`;
+    });
 
-        // Format date label
-        let label;
-        if (isToday) {
-            label = '今天';
-        } else if (index === dates.length - 2) {
-            label = '昨天';
-        } else {
-            label = `${date.getMonth() + 1}/${date.getDate()}`;
+    // 翻译列表中的标题和摘要
+    const targetLang = lang === 'zh' ? 'zh' : 'en';
+    const newsItems = document.querySelectorAll('.news-item');
+
+    for (const item of newsItems) {
+        const titleEl = item.querySelector('.news-title');
+        const summaryEl = item.querySelector('.news-summary');
+
+        if (titleEl && !titleEl.dataset.original) {
+            titleEl.dataset.original = titleEl.textContent;
+        }
+        if (summaryEl && !summaryEl.dataset.original) {
+            summaryEl.dataset.original = summaryEl.textContent;
         }
 
-        point.innerHTML = `
-            <div class="timeline-dot"></div>
-            <div class="timeline-label">${label}</div>
-            <div class="timeline-topics-popup">
-                ${topics.length > 0 ? topics.map(t => `
-                    <div class="timeline-topic-item" data-id="${t.id}">
-                        <div class="timeline-topic-category">
-                            <span class="news-category-dot"></span>
-                            ${getCategoryName(t.category)}
-                        </div>
-                        <div class="timeline-topic-title">${t.title}</div>
-                        <div class="timeline-topic-meta">${t.source_count || 1} 个来源</div>
-                    </div>
-                `).join('') : '<div class="timeline-empty">当日暂无情报</div>'}
-            </div>
-        `;
+        // 翻译标题
+        if (titleEl && titleEl.dataset.original) {
+            const translatedTitle = await translateText(titleEl.dataset.original, targetLang);
+            titleEl.textContent = translatedTitle;
+        }
 
-        track.appendChild(point);
-    });
+        // 翻译摘要（非聚合文本）
+        if (summaryEl && summaryEl.dataset.original && !summaryEl.querySelector('.aggregated-text')) {
+            const translatedSummary = await translateText(summaryEl.dataset.original, targetLang);
+            summaryEl.textContent = translatedSummary;
+        }
+    }
 
-    // Bind click events for timeline topic items
-    document.querySelectorAll('.timeline-topic-item').forEach(item => {
-        item.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            const topicId = item.dataset.id;
-            if (topicId) {
-                await loadTopicById(topicId);
-            }
-        });
-    });
-
-    // Scroll to today (rightmost)
-    track.scrollLeft = track.scrollWidth;
+    // 重新渲染当前内容
+    if (currentTopicData) {
+        await renderTopicPanel(currentTopicData);
+    } else if (currentSingleContent) {
+        await renderContentPanel(currentSingleContent);
+    }
 }
 
-function getCategoryName(category) {
-    const names = {
-        'model_release': '模型发布',
-        'funding': '融资动态',
-        'product_launch': '产品上线',
-        'research': '学术研究',
-        'drama': '行业动态',
-        'tutorial': '技术教程',
-        'market_signal': '市场信号'
-    };
-    return names[category] || '资讯';
-}
+// 监听语言变化事件
+window.addEventListener('languageChanged', (e) => {
+    console.log('Language changed event:', e.detail);
+    updateStaticTexts();
+});
 
-// Load topic by ID and update both panels
-async function loadTopicById(topicId) {
+// 点击列表项
+document.querySelectorAll('.news-item').forEach(item => {
+    item.addEventListener('click', async () => {
+        const id = item.dataset.id;
+        const type = item.dataset.type;
+        if (!id) return;
+
+        // 更新选中状态
+        document.querySelectorAll('.news-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+
+        if (type === 'topic') {
+            await loadTopic(id);
+        } else if (type === 'content') {
+            await loadSingleContent(id);
+        }
+    });
+});
+
+// 加载主题详情
+async function loadTopic(topicId) {
     try {
         const response = await fetch(`/api/topic/${topicId}`);
         const data = await response.json();
 
         if (data.topic) {
-            // Update left panel - highlight the topic
-            document.querySelectorAll('.news-item').forEach(item => {
-                item.classList.remove('active');
-                if (item.dataset.id === topicId) {
-                    item.classList.add('active');
-                }
-            });
-
-            // Update right panel
-            updateArticlePanel(data);
+            currentContents = data.contents || [];
+            currentSourceIndex = 0;
+            currentTopicData = data;
+            currentSingleContent = null;
+            await renderTopicPanel(data);
         }
     } catch (error) {
-        console.error('Failed to load topic:', error);
+        console.error('Load failed:', error);
     }
 }
 
-// Dynamic article loading from news items
-document.querySelectorAll('.news-item').forEach(item => {
-    item.addEventListener('click', async () => {
-        const topicId = item.dataset.id;
-        if (!topicId) return;
+// 加载单条原文
+async function loadSingleContent(contentId) {
+    try {
+        const response = await fetch(`/api/content/${contentId}`);
+        const data = await response.json();
 
-        // Update active state
-        document.querySelectorAll('.news-item').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-
-        // Fetch topic details
-        try {
-            const response = await fetch(`/api/topic/${topicId}`);
-            const data = await response.json();
-
-            if (data.topic) {
-                updateArticlePanel(data);
-            }
-        } catch (error) {
-            console.error('Failed to load article:', error);
+        if (data.content) {
+            currentContents = [data.content];
+            currentSourceIndex = 0;
+            currentTopicData = null;
+            currentSingleContent = data.content;
+            await renderContentPanel(data.content);
         }
-    });
-});
+    } catch (error) {
+        console.error('Load failed:', error);
+    }
+}
 
-function updateArticlePanel(data) {
-    console.log('[updateArticlePanel] 开始渲染，数据:', data);
-
+// 渲染主题面板（X风格）
+async function renderTopicPanel(data) {
     const topic = data.topic;
     const intel = data.intelligence;
     const contents = data.contents || [];
-
-    // 使用 getElementById 确保获取正确的容器
     const panel = document.getElementById('article-panel');
-    if (!panel) {
-        console.error('[updateArticlePanel] 找不到 #article-panel 容器！');
+    const lang = getCurrentLang();
+    const targetLang = lang === 'zh' ? 'zh' : 'en';
+
+    if (contents.length === 0) {
+        const emptyText = t('home.topicEmpty');
+        panel.innerHTML = `
+            <div class="empty-article">
+                <div class="empty-article-text">${emptyText}</div>
+            </div>
+        `;
         return;
     }
-    console.log('[updateArticlePanel] 找到面板容器');
 
-    const cat = categoryMap[topic.category] || { abbr: 'RS', name: 'RSS 订阅' };
+    const catName = getCategoryName(topic.category);
+    const insightTitle = t('home.aiInsight');
 
-    // ========== 1. Intelligence Insight（紫色渐变卡片）==========
+    // 翻译主题标题
+    const translatedTopicTitle = await translateText(topic.title, targetLang);
+
+    // 情报洞察
     let insightHtml = '';
     if (intel && intel.tldr) {
-        const points = intel.tldr.split(/[。.！!]/g).filter(p => p.trim()).slice(0, 3);
-        if (points.length > 0) {
-            insightHtml = `
-                <div class="intelligence-insight">
-                    <div class="insight-header">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                            <path d="M2 17l10 5 10-5"/>
-                            <path d="M2 12l10 5 10-5"/>
-                        </svg>
-                        <span>Intelligence Insight</span>
-                    </div>
-                    <ul class="insight-points">
-                        ${points.map(p => `<li>${p.trim()}。</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-        }
-    }
-    console.log('[updateArticlePanel] Intelligence Insight:', insightHtml ? '已生成' : '无数据');
-
-    // ========== 2. 作者信息卡片（X 风格）==========
-    const authorHtml = `
-        <div class="author-card">
-            <div class="author-avatar">${cat.abbr}</div>
-            <div class="author-info">
-                <div class="author-name">${cat.name}</div>
-                <div class="author-meta">
-                    <span>${topic.first_seen_at || '今天'}</span>
-                    <span>·</span>
-                    <span>${topic.source_count} 个来源</span>
-                </div>
-            </div>
-            ${contents.length > 0 && contents[0].source_url ? `
-                <a href="${contents[0].source_url}" target="_blank" class="view-original-btn">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                        <polyline points="15 3 21 3 21 9"/>
-                        <line x1="10" y1="14" x2="21" y2="3"/>
+        const translatedTldr = await translateText(intel.tldr, targetLang);
+        insightHtml = `
+            <div class="intelligence-insight">
+                <div class="insight-header">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
                     </svg>
-                    查看原文
-                </a>
-            ` : ''}
-        </div>
-    `;
-
-    // ========== 3. 主图（强制打印 media_urls）==========
-    let featuredImageHtml = '';
-    console.log('[updateArticlePanel] contents[0]:', contents.length > 0 ? contents[0] : 'empty');
-    console.log('[updateArticlePanel] media_urls:', contents.length > 0 ? contents[0].media_urls : 'N/A');
-
-    if (contents.length > 0 && contents[0].media_urls && Array.isArray(contents[0].media_urls) && contents[0].media_urls.length > 0) {
-        const imageUrl = contents[0].media_urls[0];
-        console.log('[updateArticlePanel] ✅ 找到主图:', imageUrl);
-        featuredImageHtml = `<img src="${imageUrl}" alt="Featured Image" class="article-featured-image" onerror="console.log('图片加载失败:', this.src); this.style.display='none'">`;
-    } else {
-        console.log('[updateArticlePanel] ❌ 无主图数据');
-    }
-
-    // ========== 4. 文本内容渲染（纯文本转 HTML）==========
-    let contentHtml = '';
-    if (contents.length > 0 && contents[0].text) {
-        const rawText = contents[0].text;
-        console.log('[updateArticlePanel] 原始文本长度:', rawText.length);
-
-        // 将纯文本转换为 HTML 段落
-        // 按双换行分割段落，单换行保持在同一段落内
-        const paragraphs = rawText.split(/\n\n+/);
-        contentHtml = paragraphs
-            .map(para => {
-                const trimmed = para.trim();
-                if (!trimmed) return '';
-
-                // 检查是否是标题（第一行且较短）
-                if (para === paragraphs[0] && trimmed.length < 150) {
-                    return `<h1>${trimmed}</h1>`;
-                }
-
-                // 普通段落：将单换行替换为空格
-                const cleanPara = trimmed.replace(/\n/g, ' ');
-                return `<p>${cleanPara}</p>`;
-            })
-            .filter(p => p)
-            .join('\n');
-
-        console.log('[updateArticlePanel] 渲染后 HTML 段落数:', paragraphs.length);
-    } else {
-        console.log('[updateArticlePanel] 无文本内容，使用默认描述');
-        contentHtml = `
-            <p>${topic.description || '暂无描述'}</p>
-            ${topic.keywords ? `<p><strong>关键词:</strong> ${topic.keywords}</p>` : ''}
-            <p>本主题聚合自 ${topic.source_count} 个不同信息源。</p>
+                    <span>${insightTitle}</span>
+                </div>
+                <p class="insight-text">${translatedTldr}</p>
+            </div>
         `;
     }
 
-    // ========== 5. 组装完整 HTML 并注入 ==========
-    const fullHtml = `
-        ${insightHtml}
-        ${authorHtml}
-        ${featuredImageHtml}
-        <div class="article-content-x">
-            <div class="article-body-x">
-                ${contentHtml}
+    // 来源头像列表
+    const defaultSourceText = t('common.source');
+    const sourcesHtml = contents.map((c, idx) => {
+        const initial = (c.title || defaultSourceText)[0].toUpperCase();
+        const isActive = idx === currentSourceIndex;
+        return `
+            <div class="source-avatar ${isActive ? 'active' : ''}"
+                 data-index="${idx}"
+                 title="${c.title || defaultSourceText + ' ' + (idx + 1)}">
+                <span class="avatar-letter">${initial}</span>
             </div>
+        `;
+    }).join('');
+
+    // 当前选中的内容
+    const currentContent = contents[currentSourceIndex];
+    const contentHtml = await renderContentBody(currentContent);
+
+    const sourcesLabel = lang === 'zh' ? `${t('common.source')} (${contents.length})` : `Sources (${contents.length})`;
+
+    panel.innerHTML = `
+        ${insightHtml}
+
+        <div class="topic-title-bar">
+            <h2 class="topic-main-title">${translatedTopicTitle}</h2>
+            <span class="topic-category-badge">${catName}</span>
+        </div>
+
+        <div class="sources-avatars-bar">
+            <span class="sources-label">${sourcesLabel}</span>
+            <div class="sources-avatars">
+                ${sourcesHtml}
+            </div>
+        </div>
+
+        <div class="current-source-content">
+            ${contentHtml}
         </div>
     `;
 
-    console.log('[updateArticlePanel] 准备注入 HTML，总长度:', fullHtml.length);
-
-    // 使用 innerHTML 注入
-    panel.innerHTML = fullHtml;
-
-    console.log('[updateArticlePanel] ✅ 渲染完成');
+    // 绑定头像点击事件
+    panel.querySelectorAll('.source-avatar').forEach(avatar => {
+        avatar.addEventListener('click', async () => {
+            const idx = parseInt(avatar.dataset.index);
+            if (idx !== currentSourceIndex) {
+                currentSourceIndex = idx;
+                // 更新头像选中状态
+                panel.querySelectorAll('.source-avatar').forEach(a => a.classList.remove('active'));
+                avatar.classList.add('active');
+                // 更新内容
+                const contentArea = panel.querySelector('.current-source-content');
+                contentArea.innerHTML = await renderContentBody(contents[idx]);
+            }
+        });
+    });
 }
 
-// Initialize timeline on page load
-document.addEventListener('DOMContentLoaded', async () => {
-    await initTimeline();
+// 渲染单条内容面板
+async function renderContentPanel(content) {
+    const panel = document.getElementById('article-panel');
+    panel.innerHTML = `
+        <div class="single-content-panel">
+            ${await renderContentBody(content)}
+        </div>
+    `;
+}
 
-    // Auto-load first topic
+// 渲染内容主体（X风格帖子）
+async function renderContentBody(content) {
+    const lang = getCurrentLang();
+    const targetLang = lang === 'zh' ? 'zh' : 'en';
+    const noTitleText = t('common.noTitle');
+    const noContentText = t('common.noContent');
+    const viewOriginalText = t('common.viewOriginal');
+
+    // 作者信息
+    const authorName = content.author_name || content.title || noTitleText;
+    const authorHandle = content.author_handle ? `@${content.author_handle}` : '';
+    const authorAvatar = content.author_avatar || '';
+
+    // 翻译内容
+    const originalText = content.text || '';
+    const text = originalText ? await translateText(originalText, targetLang) : '';
+
+    const sourceUrl = content.source_url || '';
+    const publishedAt = content.published_at
+        ? new Date(content.published_at).toLocaleString(lang === 'zh' ? 'zh-CN' : 'en-US')
+        : '';
+
+    const initial = authorName[0].toUpperCase();
+
+    // 处理文本：分段显示
+    const paragraphs = text.split(/\n\n+/).filter(p => p.trim());
+    const textHtml = paragraphs.map(p => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`).join('');
+
+    // 媒体图片
+    const mediaUrls = content.media_urls || [];
+    const mediaHtml = mediaUrls.length > 0 ? `
+        <div class="x-post-media">
+            ${mediaUrls.slice(0, 4).map(url => `<img src="${url}" alt="media" class="x-media-img" loading="lazy">`).join('')}
+        </div>
+    ` : '';
+
+    // 互动数据
+    const likes = content.likes || 0;
+    const retweets = content.retweets || 0;
+    const replies = content.replies || 0;
+    const hasMetrics = likes > 0 || retweets > 0 || replies > 0;
+
+    const metricsHtml = hasMetrics ? `
+        <div class="x-post-metrics">
+            ${replies > 0 ? `<span class="metric"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>${replies}</span>` : ''}
+            ${retweets > 0 ? `<span class="metric"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>${retweets}</span>` : ''}
+            ${likes > 0 ? `<span class="metric"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${likes}</span>` : ''}
+        </div>
+    ` : '';
+
+    // 头像：优先使用真实头像
+    const avatarHtml = authorAvatar
+        ? `<img src="${authorAvatar}" alt="${authorName}" class="x-avatar-img">`
+        : `<span class="x-avatar-letter">${initial}</span>`;
+
+    return `
+        <div class="x-post-card">
+            <div class="x-post-header">
+                <div class="x-avatar">
+                    ${avatarHtml}
+                </div>
+                <div class="x-author-info">
+                    <div class="x-author-name">${authorName}</div>
+                    <div class="x-author-meta">${authorHandle} · ${publishedAt}</div>
+                </div>
+                ${sourceUrl ? `
+                    <a href="${sourceUrl}" target="_blank" class="x-external-link" title="${viewOriginalText}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                    </a>
+                ` : ''}
+            </div>
+            <div class="x-post-body">
+                ${textHtml || `<p>${noContentText}</p>`}
+            </div>
+            ${mediaHtml}
+            ${metricsHtml}
+        </div>
+    `;
+}
+
+// 页面加载时自动加载第一条
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Page loaded, initializing...');
+    // 初始化语言
+    updateStaticTexts();
+
     const firstItem = document.querySelector('.news-item.active');
-    if (firstItem && firstItem.dataset.id) {
-        try {
-            const response = await fetch(`/api/topic/${firstItem.dataset.id}`);
-            const data = await response.json();
-            if (data.topic) {
-                updateArticlePanel(data);
-            }
-        } catch (error) {
-            console.error('Failed to load first topic:', error);
-        }
+    if (firstItem) {
+        firstItem.click();
     }
 });
 </script>

@@ -421,6 +421,11 @@ class RawContent(Base):
     # KOL 关联
     kol_id = Column(Integer, ForeignKey("kols.id"), comment="关联的 KOL")
 
+    # 作者信息（冗余存储，便于显示）
+    author_name = Column(String(100), comment="作者显示名称")
+    author_handle = Column(String(100), comment="作者用户名 (@xxx)")
+    author_avatar = Column(String(500), comment="作者头像 URL")
+
     # 内容
     title = Column(String(500), comment="标题")
     text_content = Column(Text, nullable=False, comment="文本内容")

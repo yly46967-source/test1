@@ -13,6 +13,122 @@
 <body>
     <!-- Marked.js MUST load before any script that uses it -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- i18next 国际化框架 -->
+    <script src="https://cdn.jsdelivr.net/npm/i18next@23.7.6/i18next.min.js"></script>
+
+    <!-- i18next 初始化 -->
+    <script>
+    // 语言包缓存
+    let i18nResources = { zh: null, en: null };
+    let i18nReady = false;
+
+    // 获取当前语言
+    function getCurrentLang() {
+        return localStorage.getItem('ainsight_lang') || 'zh';
+    }
+
+    // 加载语言包
+    async function loadLocale(lang) {
+        if (i18nResources[lang]) return i18nResources[lang];
+        try {
+            const res = await fetch(`/static/locales/${lang}.json`);
+            i18nResources[lang] = await res.json();
+            return i18nResources[lang];
+        } catch (e) {
+            console.error('Failed to load locale:', lang, e);
+            return null;
+        }
+    }
+
+    // 初始化 i18next
+    async function initI18n() {
+        const lang = getCurrentLang();
+        const [zhData, enData] = await Promise.all([loadLocale('zh'), loadLocale('en')]);
+
+        await i18next.init({
+            lng: lang,
+            fallbackLng: 'zh',
+            debug: false,
+            resources: {
+                zh: { translation: zhData },
+                en: { translation: enData }
+            },
+            interpolation: {
+                escapeValue: false
+            }
+        });
+
+        i18nReady = true;
+        applyLanguage(lang);
+    }
+
+    // 翻译函数 - 兼容旧代码
+    function t(key, options) {
+        if (!i18nReady) {
+            // 降级：返回 key 的最后一部分
+            return key.split('.').pop();
+        }
+        return i18next.t(key, options);
+    }
+
+    // 设置语言
+    async function setLang(lang) {
+        localStorage.setItem('ainsight_lang', lang);
+        if (i18nReady) {
+            await i18next.changeLanguage(lang);
+        }
+        applyLanguage(lang);
+    }
+
+    // 应用语言到页面
+    function applyLanguage(lang) {
+        // 更新 HTML lang 属性
+        document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+
+        // 更新语言切换按钮状态
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.lang === lang);
+        });
+
+        // 更新所有带 data-i18n 属性的元素
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.dataset.i18n;
+            const translated = t(key);
+            if (translated && translated !== key) {
+                el.textContent = translated;
+            }
+        });
+
+        // 更新侧边栏提示
+        document.querySelectorAll('.nav-btn[data-modal]').forEach(btn => {
+            const modal = btn.dataset.modal;
+            const tooltip = btn.querySelector('.nav-btn-tooltip');
+            if (tooltip) {
+                const keyMap = {
+                    'rss': 'sidebar.rssSources',
+                    'model': 'sidebar.aiModel',
+                    'telegram': 'sidebar.telegram',
+                    'settings': 'sidebar.settings'
+                };
+                if (keyMap[modal]) {
+                    tooltip.textContent = t(keyMap[modal]);
+                }
+            }
+        });
+
+        // KOL 管理链接
+        const kolLink = document.querySelector('a.nav-link .nav-btn-tooltip');
+        if (kolLink) {
+            kolLink.textContent = t('sidebar.kolManage');
+        }
+
+        // 触发自定义事件，让页面组件响应语言变化
+        window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
+    }
+
+    // 页面加载时初始化
+    document.addEventListener('DOMContentLoaded', initI18n);
+    </script>
 
     <div class="app">
         <!-- Part 1: Sidebar -->
@@ -76,6 +192,14 @@
 
         <!-- Main Content -->
         <main class="main-content">
+            <!-- 顶部语言切换栏 -->
+            <div class="top-lang-bar">
+                <div class="lang-switcher-horizontal">
+                    <button class="lang-btn" data-lang="zh" onclick="setLang('zh')" title="中文">中文</button>
+                    <button class="lang-btn" data-lang="en" onclick="setLang('en')" title="English">EN</button>
+                </div>
+            </div>
+
             {% block content %}{% endblock %}
 
             <!-- Part 4: Timeline Bar -->

@@ -6,6 +6,7 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional, Tuple
 from dataclasses import dataclass, field
 from html import unescape
+from concurrent.futures import ThreadPoolExecutor
 
 import feedparser
 import httpx
@@ -15,6 +16,9 @@ from src.logger import get_logger
 from .source_loader import AInsightSource, SourceType
 
 logger = get_logger(__name__)
+
+# 线程池用于执行同步的 trafilatura 操作
+_executor = ThreadPoolExecutor(max_workers=3)
 
 
 @dataclass
@@ -86,7 +90,7 @@ class AInsightFetcher:
             # 根据源类型解析
             items = []
             for entry in feed.entries[:self.max_items]:
-                item = self._parse_entry(entry, source)
+                item = await self._parse_entry(entry, source)
                 if item:
                     items.append(item)
 
@@ -167,7 +171,7 @@ class AInsightFetcher:
         logger.error(f"[{name}] 重试 {self.max_retries} 次后失败")
         return None
 
-    def _parse_entry(
+    async def _parse_entry(
         self,
         entry: Any,
         source: AInsightSource
@@ -212,7 +216,7 @@ class AInsightFetcher:
             full_page_html = None
             if len(text) < MIN_CONTENT_LENGTH and link:
                 logger.debug(f"内容太短 ({len(text)} chars)，尝试抓取完整内容: {link}")
-                full_text, full_page_html = self._fetch_full_content_sync(link, source.name)
+                full_text, full_page_html = await self._fetch_full_content_async(link, source.name)
                 if full_text and len(full_text) > len(text):
                     text = f"{title}\n\n{full_text}" if title else full_text
                     logger.info(f"[{source.name}] 抓取完整内容成功: {len(full_text)} chars")
@@ -270,12 +274,8 @@ class AInsightFetcher:
 
         return '\n\n'.join(lines)
 
-    def _fetch_full_content_sync(self, url: str, source_name: str) -> tuple[Optional[str], Optional[str]]:
-        """使用 trafilatura 抓取完整网页内容（同步版本，输出 Markdown）
-
-        Returns:
-            (extracted_text, html_content)
-        """
+    def _fetch_full_content_sync(self, url: str, source_name: str) -> Tuple[Optional[str], Optional[str]]:
+        """使用 trafilatura 抓取完整网页内容（同步版本，在线程池中执行）"""
         try:
             import requests
 
@@ -289,14 +289,14 @@ class AInsightFetcher:
 
             html_content = response.text
 
-            # 使用 trafilatura 提取正文，输出为 Markdown 格式
+            # 使用 trafilatura 提取正文
             extracted = trafilatura.extract(
                 html_content,
                 include_comments=False,
                 include_tables=True,
                 include_images=True,
                 no_fallback=False,
-                output_format='markdown',  # 输出 Markdown 格式
+                output_format='markdown',
                 with_metadata=False,
             )
 
@@ -305,6 +305,16 @@ class AInsightFetcher:
         except Exception as e:
             logger.warning(f"[{source_name}] 抓取完整内容失败: {e}")
             return (None, None)
+
+    async def _fetch_full_content_async(self, url: str, source_name: str) -> Tuple[Optional[str], Optional[str]]:
+        """异步抓取完整网页内容（使用线程池避免阻塞）"""
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(
+            _executor,
+            self._fetch_full_content_sync,
+            url,
+            source_name
+        )
 
     def _extract_media(self, entry: Any, full_page_html: Optional[str] = None, page_url: Optional[str] = None) -> List[str]:
         """提取媒体链接，优先从完整页面提取主图"""

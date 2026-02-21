@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Intelligence - AInsight{% endblock %}
+{% block title %}情报分析 - AInsight{% endblock %}
 
 {% block content %}
 <!-- Top Header -->
 <header class="top-header">
     <div class="header-left">
-        <h1 class="header-title">Intelligence Reports</h1>
+        <h1 class="header-title">情报分析</h1>
         <div class="header-stats">
             <div class="stat-item">
                 <span class="stat-value">{{ intel_list|length }}</span>
-                <span>Reports</span>
+                <span>份报告</span>
             </div>
         </div>
     </div>
@@ -20,8 +20,8 @@
 <div class="split-feed">
     <div class="feed-grid">
         <!-- Column Headers -->
-        <div class="column-header">AI Analysis</div>
-        <div class="column-header">Related Topic</div>
+        <div class="column-header">AI 分析</div>
+        <div class="column-header">关联主题</div>
 
         {% if intel_list %}
         {% for item in intel_list %}
@@ -31,29 +31,56 @@
             <!-- Intelligence Card (Left) -->
             <div class="insight-card" data-pair="intel-{{ intel.id }}">
                 <div class="insight-header">
+                    <!-- 分类标签 + emoji -->
                     <span class="insight-category category-{{ topic.category.value if topic and topic.category else 'other' }}">
                         {% if topic and topic.category %}
-                            {% if topic.category.value == 'model_release' %}Model Release
-                            {% elif topic.category.value == 'funding' %}Funding
-                            {% elif topic.category.value == 'product_launch' %}Product Launch
-                            {% elif topic.category.value == 'research' %}Research
-                            {% elif topic.category.value == 'drama' %}Industry Drama
-                            {% elif topic.category.value == 'tutorial' %}Tutorial
-                            {% elif topic.category.value == 'market_signal' %}Market Signal
-                            {% else %}News{% endif %}
-                        {% else %}News{% endif %}
+                            {% if topic.category.value == 'model_release' %}🤖 模型发布
+                            {% elif topic.category.value == 'funding' %}💰 融资动态
+                            {% elif topic.category.value == 'product_launch' %}🚀 产品上线
+                            {% elif topic.category.value == 'research' %}📚 学术研究
+                            {% elif topic.category.value == 'drama' %}🔥 行业动态
+                            {% elif topic.category.value == 'tutorial' %}📖 技术教程
+                            {% elif topic.category.value == 'market_signal' %}📈 市场信号
+                            {% else %}📰 资讯{% endif %}
+                        {% else %}📰 资讯{% endif %}
                     </span>
-                    <span class="insight-time">{{ intel.created_at.strftime('%m-%d %H:%M') if intel.created_at else 'Today' }}</span>
+
+                    <!-- 价值等级标签 -->
+                    {% if intel.value_level %}
+                    <span class="score-badge score-{{ intel.value_level }}">
+                        {% if intel.value_level == 'high' %}⭐ 高价值
+                        {% elif intel.value_level == 'medium' %}✓ 中等
+                        {% else %}○ 一般{% endif %}
+                    </span>
+                    {% endif %}
+
+                    <span class="insight-time">{{ intel.created_at.strftime('%m-%d %H:%M') if intel.created_at else '今天' }}</span>
                 </div>
 
-                <h2 class="insight-title">{{ topic.title if topic else 'Intelligence Report #' ~ intel.id }}</h2>
+                <h2 class="insight-title">{{ topic.title if topic else '情报报告 #' ~ intel.id }}</h2>
 
+                <!-- TLDR 要点总结 (突出显示) -->
                 {% if intel.tldr %}
-                <div class="insight-summary">
-                    <div class="summary-item">
-                        <span class="summary-dot"></span>
-                        <span>{{ intel.tldr }}</span>
-                    </div>
+                <div class="insight-tldr">
+                    <span class="tldr-icon">💡</span>
+                    <span class="tldr-text">{{ intel.tldr }}</span>
+                </div>
+                {% endif %}
+
+                <!-- 推荐理由 -->
+                {% if intel.verdict %}
+                <div class="insight-reason">
+                    <span class="reason-label">📌 推荐理由</span>
+                    <span class="reason-text">{{ intel.verdict[:150] }}{% if intel.verdict|length > 150 %}...{% endif %}</span>
+                </div>
+                {% endif %}
+
+                <!-- 关键词标签 -->
+                {% if intel.keywords %}
+                <div class="insight-keywords">
+                    {% for kw in intel.keywords[:4] %}
+                    <span class="keyword-tag">{{ kw }}</span>
+                    {% endfor %}
                 </div>
                 {% endif %}
 
@@ -68,7 +95,7 @@
 
                 {% if intel.action_guide %}
                 <div class="action-guide">
-                    <div class="action-guide-label">Action Guide</div>
+                    <div class="action-guide-label">行动指南</div>
                     <div class="action-guide-text">{{ intel.action_guide }}</div>
                 </div>
                 {% endif %}
@@ -81,20 +108,20 @@
                             <polyline points="15 3 21 3 21 9"/>
                             <line x1="10" y1="14" x2="21" y2="3"/>
                         </svg>
-                        View Topic
+                        查看主题
                     </a>
                     {% endif %}
 
                     <div class="kol-cluster">
                         <div class="kol-cluster-avatar">{{ intel.source_count }}</div>
-                        <span style="font-size: 12px; color: var(--color-text-muted); margin-left: 4px;">sources</span>
+                        <span style="font-size: 12px; color: var(--color-text-muted); margin-left: 4px;">个来源</span>
                     </div>
 
                     <div class="impact-score">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                         </svg>
-                        Verified
+                        已验证
                     </div>
                 </div>
             </div>
@@ -116,25 +143,25 @@
                             {% else %}RS{% endif %}
                         </div>
                         <div class="source-info">
-                            <span class="source-name">{{ topic.title[:25] if topic else 'Unknown' }}{% if topic and topic.title|length > 25 %}...{% endif %}</span>
-                            <span class="source-handle">{{ intel.source_count }} sources aggregated</span>
+                            <span class="source-name">{{ topic.title[:25] if topic else '未知' }}{% if topic and topic.title|length > 25 %}...{% endif %}</span>
+                            <span class="source-handle">聚合自 {{ intel.source_count }} 个来源</span>
                         </div>
                     </div>
                     <span class="match-badge">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                         </svg>
-                        AI Analyzed
+                        AI 分析
                     </span>
                 </div>
 
                 <div class="evidence-content">
                     {% if intel.verdict %}
-                    <strong style="color: var(--color-text-primary);">Verdict:</strong> {{ intel.verdict[:250] }}{% if intel.verdict|length > 250 %}...{% endif %}
+                    <strong style="color: var(--color-text-primary);">结论：</strong> {{ intel.verdict[:250] }}{% if intel.verdict|length > 250 %}...{% endif %}
                     {% elif topic and topic.description %}
                     {{ topic.description[:300] }}{% if topic.description|length > 300 %}...{% endif %}
                     {% else %}
-                    This intelligence report synthesizes information from {{ intel.source_count }} sources to provide actionable insights.
+                    本情报报告综合了 {{ intel.source_count }} 个来源的信息，提供可操作的洞察。
                     {% endif %}
                 </div>
 
@@ -144,11 +171,11 @@
                             <circle cx="12" cy="12" r="10"/>
                             <path d="M12 6v6l4 2"/>
                         </svg>
-                        {{ intel.created_at.strftime('%Y-%m-%d') if intel.created_at else 'Today' }}
+                        {{ intel.created_at.strftime('%Y-%m-%d') if intel.created_at else '今天' }}
                     </span>
                     {% if topic %}
                     <a href="/topic/{{ topic.id }}" class="evidence-link">
-                        Full analysis
+                        完整分析
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="9 18 15 12 9 6"/>
                         </svg>
@@ -167,14 +194,14 @@
                 {% if page > 1 %}
                 <a href="/intelligence?page={{ page - 1 }}"
                    class="verify-btn" style="background: var(--color-accent-light); color: var(--color-text-primary);">
-                    Previous
+                    上一页
                 </a>
                 {% endif %}
-                <span class="verify-btn" style="background: var(--color-accent);">Page {{ page }}</span>
+                <span class="verify-btn" style="background: var(--color-accent);">第 {{ page }} 页</span>
                 {% if intel_list|length == 10 %}
                 <a href="/intelligence?page={{ page + 1 }}"
                    class="verify-btn" style="background: var(--color-accent-light); color: var(--color-text-primary);">
-                    Next
+                    下一页
                 </a>
                 {% endif %}
             </div>
@@ -185,8 +212,8 @@
         {% else %}
         <div class="empty-state">
             <div class="empty-icon">AI</div>
-            <h3 class="empty-title">No Intelligence Reports</h3>
-            <p class="empty-text">Intelligence reports are automatically generated when a topic has 3+ sources.</p>
+            <h3 class="empty-title">暂无情报报告</h3>
+            <p class="empty-text">当主题收集到 3 个以上来源时，将自动生成情报分析报告。</p>
         </div>
         {% endif %}
     </div>

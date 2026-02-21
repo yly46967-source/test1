@@ -1,5 +1,7 @@
 """AInsight Web UI - FastAPI 应用"""
 import os
+import re
+import httpx
 from datetime import datetime
 from typing import Optional, List
 
@@ -48,11 +50,14 @@ async def shutdown():
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     """首页 - 情报概览"""
+    from sqlalchemy import select, or_
+    from src.database.models import RawContent
+
     # 获取统计
     stats = await db.get_clustering_stats()
 
     # 获取热门主题
-    topics = await db.get_active_topics(limit=10)
+    topics = await db.get_active_topics(limit=20)
 
     # 为每个主题获取情报包
     topics_with_intel = []
@@ -63,10 +68,20 @@ async def index(request: Request):
             "intel": intel,
         })
 
+    # 获取未关联主题的原文
+    async with db.session() as session:
+        result = await session.execute(
+            select(RawContent).where(
+                or_(RawContent.topic_id == None, RawContent.is_clustered == False)
+            ).order_by(RawContent.published_at.desc()).limit(20)
+        )
+        unclustered_contents = result.scalars().all()
+
     return templates.TemplateResponse("index.html", {
         "request": request,
         "stats": stats,
         "topics_with_intel": topics_with_intel,
+        "unclustered_contents": unclustered_contents,
         "now": datetime.now(),
     })
 
@@ -231,7 +246,13 @@ async def api_topic_detail(topic_id: int):
                 "source_url": c.source_url,
                 "source_type": c.source_type.value if c.source_type else None,
                 "published_at": c.published_at.isoformat() if c.published_at else None,
-                "media_urls": c.media_urls if hasattr(c, 'media_urls') and c.media_urls else [],
+                "media_urls": c.media_urls if c.media_urls else [],
+                "author_name": c.author_name,
+                "author_handle": c.author_handle,
+                "author_avatar": c.author_avatar,
+                "likes": c.likes or 0,
+                "retweets": c.retweets or 0,
+                "replies": c.replies or 0,
             }
             for c in contents
         ],
@@ -242,6 +263,33 @@ async def api_topic_detail(topic_id: int):
             "verdict": intel.verdict if intel else None,
         } if intel else None,
     }
+
+
+@app.get("/api/content/{content_id}")
+async def api_content_detail(content_id: int):
+    """获取单条原文详情"""
+    from sqlalchemy import select
+    from src.database.models import RawContent
+
+    async with db.session() as session:
+        result = await session.execute(
+            select(RawContent).where(RawContent.id == content_id)
+        )
+        content = result.scalar_one_or_none()
+
+        if not content:
+            return {"error": "Content not found"}
+
+        return {
+            "content": {
+                "id": content.id,
+                "title": content.title,
+                "text": content.text_content,
+                "source_url": content.source_url,
+                "source_type": content.source_type.value if content.source_type else None,
+                "published_at": content.published_at.isoformat() if content.published_at else None,
+            }
+        }
 
 
 # ==================== KOL 管理页面 ====================
@@ -562,3 +610,71 @@ async def api_delete_kol(kol_id: int):
         await session.delete(kol)
 
     return {"success": True, "message": f"KOL @{handle} 已删除"}
+
+
+# ==================== 翻译 API ====================
+
+class TranslateRequest(BaseModel):
+    """翻译请求"""
+    text: str
+    target_lang: str = "en"  # en 或 zh
+
+
+@app.post("/api/translate")
+async def api_translate(req: TranslateRequest):
+    """翻译文本 - 使用 Google Translate 免费 API"""
+    text = req.text[:5000]  # 限制长度
+    target = req.target_lang
+
+    # 检测源语言
+    # 简单判断：如果包含中文字符，源语言是中文
+    has_chinese = bool(re.search(r'[\u4e00-\u9fff]', text))
+
+    if target == "zh" and has_chinese:
+        # 已经是中文，不需要翻译
+        return {"translated": text, "source_lang": "zh", "target_lang": "zh"}
+    elif target == "en" and not has_chinese:
+        # 已经是英文，不需要翻译
+        return {"translated": text, "source_lang": "en", "target_lang": "en"}
+
+    source_lang = "zh" if has_chinese else "en"
+
+    try:
+        # 使用 Google Translate 免费 API
+        async with httpx.AsyncClient(timeout=10) as client:
+            # Google Translate 免费端点
+            url = "https://translate.googleapis.com/translate_a/single"
+            params = {
+                "client": "gtx",
+                "sl": "zh-CN" if source_lang == "zh" else "en",
+                "tl": "en" if target == "en" else "zh-CN",
+                "dt": "t",
+                "q": text
+            }
+
+            response = await client.get(url, params=params)
+            response.raise_for_status()
+
+            # 解析响应
+            result = response.json()
+            translated_text = ""
+            if result and result[0]:
+                for item in result[0]:
+                    if item[0]:
+                        translated_text += item[0]
+
+            return {
+                "translated": translated_text,
+                "source_lang": source_lang,
+                "target_lang": target
+            }
+
+    except Exception as e:
+        # 翻译失败，返回原文
+        return {
+            "translated": text,
+            "source_lang": source_lang,
+            "target_lang": target,
+            "error": str(e)
+        }
+

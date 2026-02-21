@@ -1,17 +1,16 @@
 """数据库服务层 - 提供数据库操作接口"""
 import hashlib
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 from contextlib import asynccontextmanager
 
 from sqlalchemy import select, update, and_, or_, text, func as sql_func
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
-from sqlalchemy.dialects.postgresql import insert as pg_insert
+from sqlalchemy.orm import selectinload
 
 from .models import (
     Base, NewsArticle, NewsSource, FetchLog, User, UserSubscription,
     CategoryEnum, RegionEnum,
-    # AInsight Pro 新增模型
     KOL, Topic, RawContent, IntelligencePackage, IntelSource, IntelRelation,
     KOLTierEnum, KOLRoleEnum, KOLCategoryEnum, SourceTypeEnum, IntelCategoryEnum, TopicStatusEnum,
     create_fts_tables
@@ -527,10 +526,14 @@ class DatabaseService:
         category: Optional[IntelCategoryEnum] = None,
         limit: int = 50,
         offset: int = 0
-    ) -> list[Topic]:
-        """获取活跃主题列表"""
+    ) -> List[Topic]:
+        """获取活跃主题列表（预加载关联数据）"""
         async with self.session() as session:
-            query = select(Topic).where(Topic.status == TopicStatusEnum.ACTIVE)
+            query = (
+                select(Topic)
+                .options(selectinload(Topic.raw_contents))
+                .where(Topic.status == TopicStatusEnum.ACTIVE)
+            )
             if category:
                 query = query.where(Topic.category == category)
             query = query.order_by(Topic.heat_score.desc(), Topic.last_updated_at.desc())
@@ -684,7 +687,7 @@ class DatabaseService:
         self,
         topic_id: int,
         unsynthesized_only: bool = False
-    ) -> list[RawContent]:
+    ) -> List[RawContent]:
         """获取主题下的原始内容"""
         async with self.session() as session:
             query = select(RawContent).where(RawContent.topic_id == topic_id)
@@ -694,7 +697,17 @@ class DatabaseService:
             result = await session.execute(query)
             return list(result.scalars().all())
 
-    async def mark_contents_synthesized(self, content_ids: list[int]):
+    async def get_topic_raw_contents(self, topic_id: int) -> List[RawContent]:
+        """获取主题下的原始内容（用于合成）"""
+        async with self.session() as session:
+            result = await session.execute(
+                select(RawContent)
+                .where(RawContent.topic_id == topic_id)
+                .order_by(RawContent.published_at.desc())
+            )
+            return list(result.scalars().all())
+
+    async def mark_contents_synthesized(self, content_ids: List[int]):
         """标记内容已合成"""
         async with self.session() as session:
             await session.execute(
@@ -812,59 +825,39 @@ class DatabaseService:
     # ==================== AInsight Pro: 统计信息 ====================
 
     async def get_clustering_stats(self) -> dict:
-        """获取聚类统计信息"""
+        """获取聚类统计信息（优化：单次查询）"""
         async with self.session() as session:
-            # 主题统计
-            topics_total = await session.execute(
-                select(sql_func.count(Topic.id))
+            # 使用单次查询获取所有统计
+            result = await session.execute(
+                text("""
+                    SELECT
+                        (SELECT COUNT(*) FROM topics) as topics_total,
+                        (SELECT COUNT(*) FROM topics WHERE status = 'active') as topics_active,
+                        (SELECT COUNT(*) FROM raw_contents) as contents_total,
+                        (SELECT COUNT(*) FROM raw_contents WHERE is_clustered = 1) as contents_clustered,
+                        (SELECT COUNT(*) FROM raw_contents WHERE is_synthesized = 1) as contents_synthesized,
+                        (SELECT COUNT(*) FROM intelligence_packages) as intel_total,
+                        (SELECT COUNT(*) FROM intelligence_packages WHERE is_published = 1) as intel_published,
+                        (SELECT COUNT(*) FROM kols) as kols_total
+                """)
             )
-            topics_active = await session.execute(
-                select(sql_func.count(Topic.id))
-                .where(Topic.status == TopicStatusEnum.ACTIVE)
-            )
-
-            # 原始内容统计
-            contents_total = await session.execute(
-                select(sql_func.count(RawContent.id))
-            )
-            contents_clustered = await session.execute(
-                select(sql_func.count(RawContent.id))
-                .where(RawContent.is_clustered == True)
-            )
-            contents_synthesized = await session.execute(
-                select(sql_func.count(RawContent.id))
-                .where(RawContent.is_synthesized == True)
-            )
-
-            # 情报包统计
-            intel_total = await session.execute(
-                select(sql_func.count(IntelligencePackage.id))
-            )
-            intel_published = await session.execute(
-                select(sql_func.count(IntelligencePackage.id))
-                .where(IntelligencePackage.is_published == True)
-            )
-
-            # KOL 统计
-            kols_total = await session.execute(
-                select(sql_func.count(KOL.id))
-            )
+            row = result.fetchone()
 
             return {
                 "topics": {
-                    "total": topics_total.scalar(),
-                    "active": topics_active.scalar()
+                    "total": row[0] or 0,
+                    "active": row[1] or 0
                 },
                 "raw_contents": {
-                    "total": contents_total.scalar(),
-                    "clustered": contents_clustered.scalar(),
-                    "synthesized": contents_synthesized.scalar()
+                    "total": row[2] or 0,
+                    "clustered": row[3] or 0,
+                    "synthesized": row[4] or 0
                 },
                 "intelligence_packages": {
-                    "total": intel_total.scalar(),
-                    "published": intel_published.scalar()
+                    "total": row[5] or 0,
+                    "published": row[6] or 0
                 },
                 "kols": {
-                    "total": kols_total.scalar()
+                    "total": row[7] or 0
                 }
             }

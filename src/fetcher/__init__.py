@@ -1,5 +1,4 @@
-from .base import BaseFetcher
-from .rss import RSSFetcher
+"""数据抓取模块"""
 from .source_loader import (
     load_sources as load_ainsight_sources,
     AInsightSource,
@@ -25,10 +24,22 @@ from .twitter_fetcher import (
     TwitterContent,
     fetch_twitter_kols,
 )
+from .fxtwitter_fetcher import (
+    FxTwitterFetcher,
+    FxTweetContent,
+    fetch_tweet,
+    fetch_tweets_batch,
+)
+from .playwright_twitter import (
+    PlaywrightTwitterFetcher,
+    TwitterPost,
+    FetchResult,
+    fetch_twitter_with_playwright,
+    convert_to_raw_content,
+    filter_today_tweets,
+)
 
 __all__ = [
-    "BaseFetcher",
-    "RSSFetcher",
     # AInsight
     "load_ainsight_sources",
     "AInsightSource",
@@ -49,4 +60,16 @@ __all__ = [
     "TwitterFetcher",
     "TwitterContent",
     "fetch_twitter_kols",
+    # FxTwitter Fetcher
+    "FxTwitterFetcher",
+    "FxTweetContent",
+    "fetch_tweet",
+    "fetch_tweets_batch",
+    # Playwright Twitter (推荐)
+    "PlaywrightTwitterFetcher",
+    "TwitterPost",
+    "FetchResult",
+    "fetch_twitter_with_playwright",
+    "convert_to_raw_content",
+    "filter_today_tweets",
 ]

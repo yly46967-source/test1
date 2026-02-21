@@ -1,330 +1,154 @@
-# News Funnel 📰
+# AInsight - AI 情报聚合系统
 
-一个自动化新闻聚合系统，从多个 RSS 源抓取新闻，通过 AI 进行智能总结和分类，并推送到 Telegram。
-
-## 功能特性
-
-- 🔄 **多源聚合** - 支持 14+ 个新闻源（BBC、CNN、NYT、中国日报等）
-- 🤖 **AI 处理** - 使用阿里云 Qwen Plus 模型进行新闻总结和分类
-- 📱 **Telegram 推送** - 自动推送新闻摘要到 Telegram
-- ⏰ **定时任务** - 支持早/午/晚报自动推送
-- 🏷️ **智能分类** - 8 大类别（科技、政治、经济、社会、国际、体育、娱乐、其他）
-- 🗄️ **数据持久化** - PostgreSQL/SQLite 数据库支持，自动去重
-- ⚡ **并发抓取** - 支持并发抓取，性能提升 50%+
-- 🔁 **错误重试** - 网络请求自动重试，指数退避策略
-- 📝 **日志系统** - 完整的日志记录，支持文件输出和日志轮转
-
-## 项目结构
-
-```
-news-funnel/
-├── main.py                 # 主程序入口
-├── requirements.txt        # Python 依赖
-├── .env                    # 环境变量配置
-├── config/
-│   └── sources.yaml        # 新闻源配置
-├── logs/                   # 日志目录
-│   ├── news_funnel.log     # 主日志文件
-│   └── error.log           # 错误日志
-├── scripts/
-│   ├── init_db.py          # 数据库初始化脚本
-│   └── test_db.py          # 数据库测试脚本
-└── src/
-    ├── models.py           # 数据模型
-    ├── logger.py           # 日志配置
-    ├── utils.py            # 工具函数（重试、并发）
-    ├── database/           # 数据库模块
-    │   ├── models.py       # ORM 模型
-    │   └── service.py      # 数据库服务层
-    ├── fetcher/            # 新闻抓取模块
-    │   ├── base.py         # 抓取器基类
-    │   └── rss.py          # RSS 抓取器（支持重试）
-    ├── processor/          # AI 处理模块
-    │   ├── summarizer.py   # 新闻总结
-    │   └── classifier.py   # 新闻分类
-    └── notifier/           # 通知模块
-        └── telegram.py     # Telegram 推送
-```
-
-## 技术栈
-
-- **Python 3.10+**
-- **SQLAlchemy 2.0** - ORM 框架
-- **PostgreSQL** - 生产数据库（阿里云 RDS）
-- **SQLite** - 开发数据库
-- **asyncpg** - PostgreSQL 异步驱动
-- **feedparser** - RSS 解析
-- **httpx** - 异步 HTTP 客户端
-- **openai** - DashScope API 客户端
-- **python-telegram-bot** - Telegram Bot API
-- **apscheduler** - 定时任务调度
+从 Twitter/X KOL、RSS 等多源抓取 AI 领域资讯，通过 AI 聚类分析生成情报洞察。
 
 ## 快速开始
 
-### 1. 安装依赖
-
 ```bash
+# 1. 安装依赖
 pip install -r requirements.txt
+
+# 2. 配置环境变量
+cp .env.example .env
+# 编辑 .env 填入 API Key
+
+# 3. 初始化数据库
+python scripts/init_db.py
+
+# 4. 启动 Web UI
+python run_web.py
+# 访问 http://localhost:8001
+
+# 5. 运行抓取 + 聚类 + 情报生成
+python ainsight.py
 ```
 
-### 2. 配置环境变量
+## 项目架构
 
-复制 `.env.example` 为 `.env`，填入你的配置：
+```
+news-funnel/
+├── src/
+│   ├── database/           # 数据库层
+│   │   ├── models.py       # ORM 模型 (Topic, RawContent, Intelligence, KOL)
+│   │   └── service.py      # 数据库服务
+│   ├── fetcher/            # 数据抓取
+│   │   ├── nitter_gateway.py   # Nitter RSS 网关 (抓取 Twitter)
+│   │   ├── twitter_fetcher.py  # Twitter 抓取器
+│   │   └── rss.py              # RSS 抓取器
+│   ├── clustering/         # 聚类分析
+│   │   ├── deduplicator.py     # 内容去重 (SimHash)
+│   │   ├── topic_cluster.py    # 主题聚类 (Embedding + DBSCAN)
+│   │   ├── content_scorer.py   # 内容评分
+│   │   └── enhanced_pipeline.py # 完整聚类流水线
+│   ├── processor/          # AI 处理
+│   │   ├── enhanced_synthesis.py # 情报生成 (Qwen)
+│   │   └── classifier.py       # 分类器
+│   ├── web/                # Web UI
+│   │   ├── app.py              # FastAPI 应用
+│   │   ├── templates/          # Jinja2 模板
+│   │   └── static/             # 静态资源 (CSS, JS, i18n)
+│   └── notifier/           # 通知推送
+│       └── telegram.py
+├── config/
+│   └── sources.yaml        # RSS 源配置
+├── ainsight.py             # 主程序入口
+├── run_web.py              # Web 服务启动
+└── main.py                 # 旧版入口 (兼容)
+```
+
+## 核心数据模型
+
+```
+KOL (Twitter 博主)
+ └── RawContent (原始内容)
+       └── Topic (聚类主题)
+             └── Intelligence (情报洞察)
+```
+
+| 模型 | 说明 |
+|------|------|
+| `KOL` | Twitter 博主，含 tier(等级)、category(分类)、weight(权重) |
+| `RawContent` | 抓取的原始内容，含 content_hash 去重 |
+| `Topic` | 聚类后的主题，多条 RawContent 聚合为一个 Topic |
+| `Intelligence` | AI 生成的情报洞察，含 tldr、verdict、keywords |
+
+## 主要功能模块
+
+### 1. KOL 管理 (`/kols`)
+- 批量导入 Twitter handle
+- 分级管理 (God/Expert/Insider/Observer)
+- 分类标签 (研究员/创始人/投资人/工程师/媒体/博主)
+
+### 2. 内容抓取 (`src/fetcher/`)
+- **Nitter 网关**: 通过 Nitter 实例抓取 Twitter RSS
+- **去重机制**: SimHash 相似度检测，避免重复入库
+
+### 3. 聚类分析 (`src/clustering/`)
+- **Embedding**: 使用 DashScope text-embedding-v3 生成向量
+- **聚类算法**: DBSCAN 基于密度聚类
+- **主题生成**: AI 生成主题标题和分类
+
+### 4. 情报生成 (`src/processor/enhanced_synthesis.py`)
+- 当主题关联 3+ 条原文时自动生成
+- 输出: tldr(一句话总结)、verdict(结论)、keywords(关键词)
+
+### 5. Web UI (`src/web/`)
+- 首页: 今日情报列表 + 详情面板
+- KOL 管理页: 增删改查 + 批量导入
+- 多语言: i18next 支持中英切换
+
+## 环境变量 (.env)
 
 ```env
-# DashScope API
-DASHSCOPE_API_KEY=your_api_key
-DASHSCOPE_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
+# 数据库
+DATABASE_URL=sqlite+aiosqlite:///./ainsight.db
+
+# DashScope (阿里云 AI)
+DASHSCOPE_API_KEY=sk-xxx
 DASHSCOPE_MODEL=qwen-plus
 
-# Telegram Bot
-TELEGRAM_BOT_TOKEN=your_bot_token
-TELEGRAM_CHAT_ID=your_chat_id
-
-# Database
-# 开发环境 (SQLite)
-DATABASE_URL=sqlite+aiosqlite:///./news_funnel.db
-
-# 生产环境 (PostgreSQL - 阿里云 RDS)
-# DATABASE_URL=postgresql+asyncpg://user:password@host:5432/news_funnel
+# Telegram 推送 (可选)
+TELEGRAM_BOT_TOKEN=xxx
+TELEGRAM_CHAT_ID=xxx
 ```
 
-### 3. 初始化数据库
+## 常用命令
 
 ```bash
-python scripts/init_db.py
+# 完整流程: 抓取 → 去重 → 聚类 → 情报生成
+python ainsight.py
+
+# 仅抓取 KOL 内容
+python ainsight.py --fetch-only
+
+# 仅运行聚类
+python ainsight.py --cluster-only
+
+# 启动 Web UI (开发模式，自动重载)
+python run_web.py
 ```
 
-### 4. 运行
+## API 端点
 
-```bash
-# 单次运行
-python main.py
-
-# 测试模式（只处理 3 条新闻）
-python main.py --test
-
-# 跳过 AI 处理
-python main.py --skip-ai
-
-# 跳过 Telegram 推送
-python main.py --skip-telegram
-
-# 启动定时任务模式
-python main.py --schedule
-```
-
-## 命令行参数
-
-| 参数 | 说明 | 默认值 |
-|------|------|--------|
-| `--test` | 测试模式，只处理 3 条新闻 | - |
-| `--skip-ai` | 跳过 AI 处理 | - |
-| `--skip-telegram` | 跳过 Telegram 推送 | - |
-| `--skip-db` | 跳过数据库（不保存、不去重） | - |
-| `--schedule` | 启动定时任务模式 | - |
-| `--concurrency N` | 并发抓取数 | 5 |
-| `--log-level` | 日志级别 (DEBUG/INFO/WARNING/ERROR) | INFO |
-| `--no-log-file` | 不输出日志到文件 | - |
-
-## 性能优化
-
-### 并发抓取
-
-默认使用 5 并发抓取新闻源，可通过 `--concurrency` 调整：
-
-```bash
-# 使用 10 并发
-python main.py --concurrency 10
-
-# 串行抓取（调试用）
-python main.py --concurrency 1
-```
-
-性能对比（14 个新闻源）：
-
-| 模式 | 耗时 | 提升 |
+| 端点 | 方法 | 说明 |
 |------|------|------|
-| 串行 (concurrency=1) | ~20s | - |
-| 并发 (concurrency=5) | ~8s | **60%** |
+| `/` | GET | 首页 |
+| `/kols` | GET | KOL 管理页 |
+| `/api/kols` | POST | 添加 KOL |
+| `/api/kols/batch` | POST | 批量导入 KOL |
+| `/api/kols/{id}` | PUT/DELETE | 更新/删除 KOL |
+| `/api/topic/{id}` | GET | 获取主题详情 |
+| `/api/translate` | POST | 翻译文本 (Google Translate) |
 
-### 错误重试
+## 技术栈
 
-RSS 抓取支持自动重试：
-- 最大重试次数：3 次
-- 重试间隔：指数退避（1s → 2s → 4s）
-- 可重试错误：超时、连接错误、读取错误
+- **后端**: FastAPI + SQLAlchemy 2.0 + asyncio
+- **前端**: Jinja2 + Vanilla JS + i18next
+- **AI**: 阿里云 DashScope (Qwen-Plus, text-embedding-v3)
+- **数据库**: SQLite (开发) / PostgreSQL (生产)
 
-## 日志系统
+## 开发注意事项
 
-日志文件位于 `logs/` 目录：
-
-| 文件 | 说明 |
-|------|------|
-| `news_funnel.log` | 所有日志（DEBUG 及以上） |
-| `error.log` | 仅错误日志（ERROR 及以上） |
-
-日志特性：
-- 彩色控制台输出
-- 自动轮转（单文件最大 10MB，保留 5 个备份）
-- 第三方库日志静音
-
-## 定时任务
-
-启用 `--schedule` 后，系统将在以下时间自动推送（北京时间）：
-
-| 时间 | 说明 |
-|------|------|
-| 08:00 | 早报 |
-| 12:00 | 午报 |
-| 21:00 | 晚报 |
-
-## 数据库设计
-
-### ER 图
-
-```
-┌─────────────────┐       ┌─────────────────┐
-│  news_sources   │       │     users       │
-├─────────────────┤       ├─────────────────┤
-│ id              │       │ id              │
-│ name            │       │ username        │
-│ url             │       │ email           │
-│ region          │       │ password_hash   │
-│ source_type     │       │ telegram_chat_id│
-│ enabled         │       │ is_admin        │
-│ fetch_interval  │       └────────┬────────┘
-│ last_fetch_at   │                │
-└────────┬────────┘                │
-         │                         │
-         │ 1:N                     │ 1:1
-         ▼                         ▼
-┌─────────────────┐       ┌─────────────────┐
-│ news_articles   │       │user_subscriptions│
-├─────────────────┤       ├─────────────────┤
-│ id              │       │ id              │
-│ title           │       │ user_id         │
-│ url             │       │ categories      │
-│ url_hash (唯一) │       │ regions         │
-│ content         │       │ sources         │
-│ summary         │       │ push_enabled    │
-│ category        │       │ push_times      │
-│ region          │       └─────────────────┘
-│ source_id (FK)  │
-│ is_processed    │
-│ is_sent         │
-│ published_at    │
-└────────┬────────┘
-         │
-         │ N:1
-         ▼
-┌─────────────────┐
-│   fetch_logs    │
-├─────────────────┤
-│ id              │
-│ source_id (FK)  │
-│ status          │
-│ items_fetched   │
-│ items_new       │
-│ error_message   │
-│ duration_ms     │
-└─────────────────┘
-```
-
-### 核心表说明
-
-| 表名 | 说明 |
-|------|------|
-| `news_sources` | 新闻源配置，支持动态管理 |
-| `news_articles` | 新闻文章，通过 url_hash 去重 |
-| `fetch_logs` | 抓取日志，记录每次抓取结果 |
-| `users` | 用户表（WebUI 预留） |
-| `user_subscriptions` | 用户订阅配置（WebUI 预留） |
-
-## 新闻源配置
-
-编辑 `config/sources.yaml` 添加或修改新闻源：
-
-```yaml
-sources:
-  - name: "BBC World"
-    url: "https://feeds.bbci.co.uk/news/world/rss.xml"
-    region: "world"
-    type: "rss"
-    enabled: true
-```
-
-## 新闻分类
-
-系统支持 8 种新闻分类：
-
-- 🔬 科技 (Technology)
-- 🏛️ 政治 (Politics)
-- 💰 经济 (Economy)
-- 👥 社会 (Society)
-- 🌍 国际 (International)
-- ⚽ 体育 (Sports)
-- 🎬 娱乐 (Entertainment)
-- 📌 其他 (Other)
-
-## 数据流
-
-```
-                    ┌─────────────┐
-                    │  RSS 源     │
-                    └──────┬──────┘
-                           │
-                           ▼
-┌──────────────────────────────────────────┐
-│              Fetcher 模块                │
-│  - 并发抓取 (可配置并发数)               │
-│  - 自动重试 (指数退避)                   │
-│  - URL 去重 (数据库)                     │
-│  - 保存到 news_articles                  │
-└──────────────────┬───────────────────────┘
-                   │
-                   ▼
-┌──────────────────────────────────────────┐
-│             Processor 模块               │
-│  - AI 总结 (Qwen Plus)                   │
-│  - AI 分类                               │
-│  - 更新 is_processed                     │
-└──────────────────┬───────────────────────┘
-                   │
-                   ▼
-┌──────────────────────────────────────────┐
-│             Notifier 模块                │
-│  - 推送到 Telegram                       │
-│  - 更新 is_sent                          │
-└──────────────────────────────────────────┘
-```
-
-## 部署到阿里云
-
-### 推荐配置
-
-- **ECS**: 1 核 2G 即可
-- **RDS PostgreSQL**: 基础版
-- **定时任务**: 使用 systemd 或 cron
-
-### PostgreSQL 连接配置
-
-```env
-DATABASE_URL=postgresql+asyncpg://username:password@rm-xxx.pg.rds.aliyuncs.com:5432/news_funnel
-```
-
-## 未来规划
-
-- [x] 日志系统
-- [x] 并发抓取
-- [x] 错误重试机制
-- [ ] WebUI 管理界面
-- [ ] 用户注册/登录
-- [ ] 个性化订阅
-- [ ] 更多新闻源类型（API、网页爬虫）
-- [ ] 新闻搜索功能
-- [ ] 数据统计分析
-
-## License
-
-MIT
+1. **翻译 API**: 需重启服务器才能生效 (`python run_web.py`)
+2. **Nitter 实例**: 默认使用 `nitter.privacydev.net`，可在代码中修改
+3. **聚类参数**: `eps=0.3, min_samples=2`，可在 `topic_cluster.py` 调整
