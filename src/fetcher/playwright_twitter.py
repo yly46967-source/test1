@@ -42,6 +42,8 @@ class TwitterPost:
     text: str
     author_handle: str
     author_name: str = ""
+    author_avatar: str = ""  # 作者头像 URL
+    is_verified: bool = False  # 是否认证账号（蓝V）
     post_url: str = ""
     published_at: Optional[datetime] = None
     likes: int = 0
@@ -322,6 +324,14 @@ class PlaywrightTwitterFetcher:
                         const authorHandle = authorMatch ? authorMatch[1] : '';
                         const authorName = authorText.split('\\n')[0] || '';
 
+                        // 提取头像
+                        const avatarEl = article.querySelector('[data-testid="Tweet-User-Avatar"] img');
+                        const authorAvatar = avatarEl ? avatarEl.src : '';
+
+                        // 检查是否认证（蓝V）- 查找认证图标
+                        const verifiedEl = article.querySelector('[data-testid="User-Name"] svg[aria-label*="Verified"], [data-testid="User-Name"] svg[data-testid="icon-verified"]');
+                        const isVerified = !!verifiedEl;
+
                         // 提取互动数据
                         const getMetric = (testId) => {
                             const el = article.querySelector(`[data-testid="${testId}"]`);
@@ -353,6 +363,8 @@ class PlaywrightTwitterFetcher:
                                 link,
                                 authorHandle,
                                 authorName,
+                                authorAvatar,
+                                isVerified,
                                 replies,
                                 retweets,
                                 likes,
@@ -385,6 +397,8 @@ class PlaywrightTwitterFetcher:
                     text=data.get('text', ''),
                     author_handle=data.get('authorHandle', username),
                     author_name=data.get('authorName', ''),
+                    author_avatar=data.get('authorAvatar', ''),
+                    is_verified=data.get('isVerified', False),
                     post_url=data.get('link', ''),
                     published_at=published_at,
                     likes=data.get('likes', 0),

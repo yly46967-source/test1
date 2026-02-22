@@ -12,12 +12,43 @@ from .models import (
     Base, NewsArticle, NewsSource, FetchLog, User, UserSubscription,
     CategoryEnum, RegionEnum,
     KOL, Topic, RawContent, IntelligencePackage, IntelSource, IntelRelation,
-    KOLTierEnum, KOLRoleEnum, KOLCategoryEnum, SourceTypeEnum, IntelCategoryEnum, TopicStatusEnum,
+    KOLTierEnum, KOLRoleEnum, SourceTypeEnum, IntelCategoryEnum, TopicStatusEnum,
     create_fts_tables
 )
 from src.logger import get_database_logger
 
 logger = get_database_logger()
+
+
+def get_tier_by_followers(followers: int) -> KOLTierEnum:
+    """
+    根据粉丝数自动判断 KOL 等级
+
+    AI 领域标准：
+    - god: >= 50000 粉丝
+    - expert: >= 30000 粉丝
+    - insider: >= 10000 粉丝
+    - observer: < 10000 粉丝
+    """
+    if followers >= 50000:
+        return KOLTierEnum.GOD
+    elif followers >= 30000:
+        return KOLTierEnum.EXPERT
+    elif followers >= 10000:
+        return KOLTierEnum.INSIDER
+    else:
+        return KOLTierEnum.OBSERVER
+
+
+def get_weight_by_tier(tier: KOLTierEnum) -> float:
+    """根据等级获取权重"""
+    weights = {
+        KOLTierEnum.GOD: 3.0,
+        KOLTierEnum.EXPERT: 2.0,
+        KOLTierEnum.INSIDER: 1.5,
+        KOLTierEnum.OBSERVER: 1.0,
+    }
+    return weights.get(tier, 1.0)
 
 
 class DatabaseService:
@@ -525,9 +556,17 @@ class DatabaseService:
         self,
         category: Optional[IntelCategoryEnum] = None,
         limit: int = 50,
-        offset: int = 0
+        offset: int = 0,
+        sort_by: str = "heat"
     ) -> List[Topic]:
-        """获取活跃主题列表（预加载关联数据）"""
+        """获取活跃主题列表（预加载关联数据）
+
+        Args:
+            category: 分类筛选
+            limit: 返回数量
+            offset: 偏移量
+            sort_by: 排序方式 - heat(热度)/time(时间)/sources(来源数)
+        """
         async with self.session() as session:
             query = (
                 select(Topic)
@@ -536,7 +575,15 @@ class DatabaseService:
             )
             if category:
                 query = query.where(Topic.category == category)
-            query = query.order_by(Topic.heat_score.desc(), Topic.last_updated_at.desc())
+
+            # 根据排序方式排序
+            if sort_by == "time":
+                query = query.order_by(Topic.last_updated_at.desc(), Topic.heat_score.desc())
+            elif sort_by == "sources":
+                query = query.order_by(Topic.source_count.desc(), Topic.heat_score.desc())
+            else:  # heat (默认)
+                query = query.order_by(Topic.heat_score.desc(), Topic.last_updated_at.desc())
+
             query = query.offset(offset).limit(limit)
             result = await session.execute(query)
             return list(result.scalars().all())

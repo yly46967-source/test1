@@ -676,3 +676,206 @@ sqlalchemy.exc.DatabaseError: (raised as a result of Query-invoked autoflush; co
 [SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, fetched_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
 [parameters: ('NEWS', 'https://techcrunch.com/2026/02/20/ukrainian-man-jailed-for-identity-theft-that-helped-north-koreans-get-jobs-at-us-companies/', '7f8323185fe01dc4fb1c630070e9ff4332182ebc6b2a73b6d0a81060adfab64c', None, None, None, None, 'Ukrainian man jailed for identity theft  that helped North Koreans get jobs at US companies', "Ukrainian man jailed for identity theft  that helped North Koreans get jobs at US companies\n\nA U.S. federal court has sentenced a Ukrainian man to  ... (2337 characters truncated) ... ate recruiters and VCs in efforts to trick unsuspecting high-profile and net-worth victims into granting access to their computers, including crypto.", '["https://techcrunch.com/wp-content/uploads/2026/02/laptop-farm-upscale.jpeg?resize=1200,802", "https://techcrunch.com/wp-content/uploads/2026/02/laptop-farm-upscale.jpeg?w=1024", "https://techcrunch.com/wp-content/uploads/2026/02/upsell.jpg?w=680"]', None, 0, 0, 0, 0, 0, None, 0.0, 0, 0, '2026-02-20 17:38:59.000000', '2026-02-21 02:11:30.012895', None, '{"source_name": "TechCrunch", "category": "news", "tags": ["media"]}')]
 (Background on this error at: https://sqlalche.me/e/20/4xp6)
+2026-02-22 00:47:22 │ [31mERROR[0m │ database        │ service.py:101 │ 数据库事务回滚: (sqlite3.OperationalError) no such column: kols.is_verified
+[SQL: SELECT kols.id, kols.name, kols.handle, kols.platform, kols.avatar_url, kols.is_verified, kols.bio, kols.role, kols.tier, kols.credibility_score, kols.weight, kols.followers, kols.following, kols.rss_url, kols.is_active, kols.last_fetched_at, kols.extra_data, kols.created_at, kols.updated_at 
+FROM kols 
+WHERE kols.is_active = 1 AND kols.platform = ? ORDER BY kols.tier, kols.followers DESC]
+[parameters: ('x',)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-02-22 00:47:22 │ [31mERROR[0m │ main            │ ainsight.py:130 │ 运行出错: (sqlite3.OperationalError) no such column: kols.is_verified
+[SQL: SELECT kols.id, kols.name, kols.handle, kols.platform, kols.avatar_url, kols.is_verified, kols.bio, kols.role, kols.tier, kols.credibility_score, kols.weight, kols.followers, kols.following, kols.rss_url, kols.is_active, kols.last_fetched_at, kols.extra_data, kols.created_at, kols.updated_at 
+FROM kols 
+WHERE kols.is_active = 1 AND kols.platform = ? ORDER BY kols.tier, kols.followers DESC]
+[parameters: ('x',)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 182, in execute
+    self._adapt_connection._handle_exception(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 342, in _handle_exception
+    raise error
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 164, in execute
+    self.await_(_cursor.execute(operation, parameters))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\cursor.py", line 40, in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\cursor.py", line 32, in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\core.py", line 160, in _execute
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\core.py", line 63, in _connection_worker_thread
+    result = function()
+sqlite3.OperationalError: no such column: kols.is_verified
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 75, in run_ainsight
+    twitter_items = await run_twitter_fetch(limit=twitter_limit, test_mode=test_mode)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 144, in run_twitter_fetch
+    kols = await db.get_active_kols(platform="x")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\VibeCoding Skills\news-funnel\src\database\service.py", line 534, in get_active_kols
+    result = await session.execute(query)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\ext\asyncio\session.py", line 449, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\session.py", line 2351, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\session.py", line 2249, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 182, in execute
+    self._adapt_connection._handle_exception(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 342, in _handle_exception
+    raise error
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 164, in execute
+    self.await_(_cursor.execute(operation, parameters))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\cursor.py", line 40, in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\cursor.py", line 32, in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\core.py", line 160, in _execute
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\core.py", line 63, in _connection_worker_thread
+    result = function()
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: kols.is_verified
+[SQL: SELECT kols.id, kols.name, kols.handle, kols.platform, kols.avatar_url, kols.is_verified, kols.bio, kols.role, kols.tier, kols.credibility_score, kols.weight, kols.followers, kols.following, kols.rss_url, kols.is_active, kols.last_fetched_at, kols.extra_data, kols.created_at, kols.updated_at 
+FROM kols 
+WHERE kols.is_active = 1 AND kols.platform = ? ORDER BY kols.tier, kols.followers DESC]
+[parameters: ('x',)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-02-22 00:49:01 │ [31mERROR[0m │ database        │ service.py:101 │ 数据库事务回滚: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [31mERROR[0m │ main            │ ainsight.py:130 │ 运行出错: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 103, in run_ainsight
+    await run_clustering_from_db()
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 355, in run_clustering_from_db
+    await session.commit()
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\ext\asyncio\session.py", line 1000, in commit
+    await greenlet_spawn(self.sync_session.commit)
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 190, in greenlet_spawn
+    result = context.switch(*args, **kwargs)
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "<string>", line 2, in commit
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\state_changes.py", line 101, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\session.py", line 971, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)

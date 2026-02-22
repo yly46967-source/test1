@@ -1456,6 +1456,27 @@ a {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.verified-badge {
+    flex-shrink: 0;
+    margin-left: 2px;
+}
+
+.kol-tier-badge {
+    flex-shrink: 0;
+    margin-left: 4px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 .x-author-meta {

@@ -108,6 +108,19 @@ let currentSingleContent = null;
 // 翻译缓存
 const translationCache = new Map();
 
+// 格式化数字（1000 -> 1K, 1000000 -> 1M）
+function formatNumber(num) {
+    if (num === null || num === undefined) return '0';
+    num = parseInt(num) || 0;
+    if (num >= 1000000) {
+        return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    }
+    if (num >= 1000) {
+        return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    }
+    return num.toString();
+}
+
 // 调用翻译 API
 async function translateText(text, targetLang) {
     if (!text || text.length < 2) return text;
@@ -390,13 +403,39 @@ async function renderContentBody(content) {
     const noContentText = t('common.noContent');
     const viewOriginalText = t('common.viewOriginal');
 
+    // 原始数据（提前定义，避免引用错误）
+    const rawData = content.raw_data || {};
+
     // 作者信息
     const authorName = content.author_name || content.title || noTitleText;
     const authorHandle = content.author_handle ? `@${content.author_handle}` : '';
     const authorAvatar = content.author_avatar || '';
+    const isVerified = content.is_verified || false;
 
-    // 翻译内容
-    const originalText = content.text || '';
+    // 认证蓝勾 SVG
+    const verifiedBadge = isVerified ? `
+        <svg class="verified-badge" width="18" height="18" viewBox="0 0 22 22" fill="#1d9bf0">
+            <path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/>
+        </svg>
+    ` : '';
+
+    // KOL 等级图标 - 根据 kol_tier 显示不同颜色的徽章
+    const kolTier = content.kol_tier || rawData.kol_tier || 'observer';
+    const tierConfig = {
+        god: { color: '#FFD700', icon: '👑', label: 'God' },      // 金色
+        expert: { color: '#9B59B6', icon: '🎯', label: 'Expert' }, // 紫色
+        insider: { color: '#3498DB', icon: '🔮', label: 'Insider' }, // 蓝色
+        observer: { color: '#95A5A6', icon: '👀', label: '' }      // 灰色（不显示）
+    };
+    const tier = tierConfig[kolTier] || tierConfig.observer;
+    const tierBadge = kolTier !== 'observer' ? `
+        <span class="kol-tier-badge" style="background: ${tier.color}; color: white;" title="${tier.label} Tier">
+            ${tier.icon}
+        </span>
+    ` : '';
+
+    // 翻译内容 - 优先使用 raw_data 中的格式化文本
+    const originalText = rawData.formatted_text || content.text || '';
     const text = originalText ? await translateText(originalText, targetLang) : '';
 
     const sourceUrl = content.source_url || '';
@@ -406,9 +445,22 @@ async function renderContentBody(content) {
 
     const initial = authorName[0].toUpperCase();
 
-    // 处理文本：分段显示
-    const paragraphs = text.split(/\n\n+/).filter(p => p.trim());
-    const textHtml = paragraphs.map(p => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`).join('');
+    // 处理文本：优先使用 raw_data 中的段落，保留原始格式
+    let textHtml = '';
+    if (rawData.paragraphs && rawData.paragraphs.length > 0) {
+        // 使用预分段的数据
+        const translatedParagraphs = await Promise.all(
+            rawData.paragraphs.map(p => translateText(p, targetLang))
+        );
+        textHtml = translatedParagraphs
+            .filter(p => p.trim())
+            .map(p => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`)
+            .join('');
+    } else {
+        // 降级：手动分段
+        const paragraphs = text.split(/\n\n+/).filter(p => p.trim());
+        textHtml = paragraphs.map(p => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`).join('');
+    }
 
     // 媒体图片
     const mediaUrls = content.media_urls || [];
@@ -426,9 +478,9 @@ async function renderContentBody(content) {
 
     const metricsHtml = hasMetrics ? `
         <div class="x-post-metrics">
-            ${replies > 0 ? `<span class="metric"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>${replies}</span>` : ''}
-            ${retweets > 0 ? `<span class="metric"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>${retweets}</span>` : ''}
-            ${likes > 0 ? `<span class="metric"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${likes}</span>` : ''}
+            ${replies > 0 ? `<span class="metric"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>${formatNumber(replies)}</span>` : ''}
+            ${retweets > 0 ? `<span class="metric"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>${formatNumber(retweets)}</span>` : ''}
+            ${likes > 0 ? `<span class="metric"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${formatNumber(likes)}</span>` : ''}
         </div>
     ` : '';
 
@@ -444,7 +496,7 @@ async function renderContentBody(content) {
                     ${avatarHtml}
                 </div>
                 <div class="x-author-info">
-                    <div class="x-author-name">${authorName}</div>
+                    <div class="x-author-name">${authorName}${verifiedBadge}${tierBadge}</div>
                     <div class="x-author-meta">${authorHandle} · ${publishedAt}</div>
                 </div>
                 ${sourceUrl ? `

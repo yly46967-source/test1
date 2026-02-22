@@ -135,6 +135,51 @@ class EnhancedClusteringPipeline:
         await self.session.commit()
         return topic_id
 
+    async def cluster_existing_content(
+        self,
+        content: Dict[str, Any],
+    ) -> Optional[int]:
+        """
+        对已存在的内容进行聚类（不创建新的 RawContent）
+
+        Args:
+            content: 内容字典，必须包含 text, source_url
+
+        Returns:
+            topic_id 或 None
+        """
+        text = content.get("text", "")
+        source_url = content.get("source_url", "")
+
+        if not text or not source_url:
+            logger.warning("内容缺少必填字段")
+            return None
+
+        # 1. 获取 KOL 信息和权重
+        kol_weight = await self._get_kol_weight(content)
+        content["_kol_weight"] = kol_weight
+
+        # 2. FTS 快速匹配候选主题
+        candidates = await self._fts_match(text)
+        logger.info(f"FTS 匹配到 {len(candidates)} 个候选主题")
+
+        # 3. 聚类决策（考虑 KOL 权重）
+        result = await self._weighted_cluster(content, candidates)
+        logger.info(f"聚类决策: {result.action.value}, 相关度: {result.relevance_score:.2f}")
+
+        # 4. 执行决策（只创建/合并主题，不创建 RawContent）
+        topic_id = await self._execute_decision(result, content)
+
+        # 5. 更新主题统计
+        if topic_id:
+            await self._update_topic_stats(topic_id)
+
+        # 6. 检查多源触发条件
+        if topic_id:
+            await self._check_multi_source_trigger(topic_id)
+
+        return topic_id
+
     async def process_batch(
         self,
         contents: List[Dict[str, Any]],
@@ -544,9 +589,31 @@ class EnhancedClusteringPipeline:
         """更新主题统计"""
         stats = await self._get_topic_source_stats(topic_id)
 
-        # 计算热度：来源数 * 10 + 不同 KOL 数 * 5
+        # 获取主题下所有原文的互动数据
+        engagement_stmt = select(
+            sql_func.sum(RawContent.likes).label('total_likes'),
+            sql_func.sum(RawContent.retweets).label('total_retweets'),
+            sql_func.sum(RawContent.replies).label('total_replies'),
+        ).where(RawContent.topic_id == topic_id)
+        engagement_result = await self.session.execute(engagement_stmt)
+        engagement = engagement_result.first()
+
+        total_likes = engagement.total_likes or 0
+        total_retweets = engagement.total_retweets or 0
+        total_replies = engagement.total_replies or 0
+
+        # 计算热度：
+        # - 点赞数权重最高 (1分/100赞)
+        # - 转发数次之 (1分/50转)
+        # - 评论数 (1分/30评)
+        # - 来源数 (5分/来源)
+        # - 不同 KOL 数 (3分/KOL)
         heat_score = min(
-            stats["source_count"] * 10 + stats["unique_kols"] * 5,
+            int(total_likes / 100) +
+            int(total_retweets / 50) +
+            int(total_replies / 30) +
+            stats["source_count"] * 5 +
+            stats["unique_kols"] * 3,
             100
         )
 

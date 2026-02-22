@@ -200,7 +200,8 @@ async def run_twitter_fetch(limit: int = 10, test_mode: bool = False) -> List[di
                         kol_id=kol.id if kol else None,
                         author_name=tweet.author_name or (kol.name if kol else tweet.author_handle),
                         author_handle=tweet.author_handle,
-                        author_avatar=kol.avatar_url if kol else None,
+                        author_avatar=tweet.author_avatar or (kol.avatar_url if kol else None),
+                        is_verified=tweet.is_verified,
                         title=None,
                         text_content=tweet.text or "",
                         media_urls=tweet.media_urls or [],
@@ -212,6 +213,10 @@ async def run_twitter_fetch(limit: int = 10, test_mode: bool = False) -> List[di
                         is_clustered=False,
                         is_synthesized=False,
                         raw_data={
+                            # 原文格式化数据（保留段落）
+                            "formatted_text": tweet.text or "",
+                            "paragraphs": (tweet.text or "").split("\n\n") if tweet.text else [],
+                            # 元数据
                             "is_retweet": tweet.is_retweet,
                             "is_reply": tweet.is_reply,
                             "views": tweet.views,
@@ -298,14 +303,6 @@ async def run_clustering_from_db():
     logger.info("聚类处理")
     logger.info("=" * 50)
 
-    # 获取未聚类的内容
-    unclustered = await db.get_unclustered_contents(limit=50)
-    if not unclustered:
-        logger.info("没有待聚类的内容")
-        return
-
-    logger.info(f"待聚类内容: {len(unclustered)} 条")
-
     llm_client = AsyncOpenAI(
         api_key=os.getenv("DASHSCOPE_API_KEY"),
         base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
@@ -317,6 +314,18 @@ async def run_clustering_from_db():
     )
 
     async with db.session() as session:
+        # 在同一个 session 中获取未聚类内容
+        from sqlalchemy import select
+        query = select(RawContent).where(RawContent.is_clustered == False).limit(50)
+        result = await session.execute(query)
+        unclustered = result.scalars().all()
+
+        if not unclustered:
+            logger.info("没有待聚类的内容")
+            return
+
+        logger.info(f"待聚类内容: {len(unclustered)} 条")
+
         pipeline = EnhancedClusteringPipeline(session, clusterer)
 
         processed = 0
@@ -334,17 +343,22 @@ async def run_clustering_from_db():
                     "kol_handle": content.author_handle,
                 }
 
-                topic_id = await pipeline.process_content(content_dict)
+                # 使用 cluster_existing_content 而不是 process_content
+                # 这样不会创建新的 RawContent，只做聚类决策
+                topic_id = await pipeline.cluster_existing_content(content_dict)
                 if topic_id:
-                    # 更新内容的 topic_id
+                    # 更新内容的 topic_id 和聚类状态
                     content.topic_id = topic_id
                     content.is_clustered = True
+                    content.clustered_at = datetime.now()
                     processed += 1
+                    logger.debug(f"内容 {content.id} 聚类到主题 {topic_id}")
                 else:
                     skipped += 1
 
             except Exception as e:
                 logger.warning(f"处理内容失败: {e}")
+                await session.rollback()
                 skipped += 1
 
         await session.commit()

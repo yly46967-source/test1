@@ -295,18 +295,6 @@ class KOLRoleEnum(enum.Enum):
     INFLUENCER = "influencer"       # 意见领袖/博主
 
 
-class KOLCategoryEnum(enum.Enum):
-    """KOL 关注领域"""
-    LLM = "llm"                     # 大语言模型
-    CV = "cv"                       # 计算机视觉
-    ROBOTICS = "robotics"           # 机器人
-    INFRA = "infra"                 # AI 基础设施
-    PRODUCT = "product"             # AI 产品
-    RESEARCH = "research"           # 前沿研究
-    STARTUP = "startup"             # 创业/商业
-    GENERAL = "general"             # 综合
-
-
 class KOL(Base):
     """KOL 表 - 关键意见领袖"""
     __tablename__ = "kols"
@@ -318,11 +306,11 @@ class KOL(Base):
     handle = Column(String(100), unique=True, nullable=False, comment="唯一标识 (@karpathy)")
     platform = Column(String(20), default="x", comment="平台: x/github/blog")
     avatar_url = Column(String(500), comment="头像 URL")
+    is_verified = Column(Boolean, default=False, comment="是否认证账号（蓝V）")
     bio = Column(Text, comment="简介")
 
-    # 角色与分类 (新增)
+    # 角色
     role = Column(SQLEnum(KOLRoleEnum), default=KOLRoleEnum.INFLUENCER, comment="KOL 角色")
-    category = Column(SQLEnum(KOLCategoryEnum), default=KOLCategoryEnum.GENERAL, comment="关注领域")
 
     # 等级与权重
     tier = Column(SQLEnum(KOLTierEnum), default=KOLTierEnum.OBSERVER, comment="KOL 等级")
@@ -353,7 +341,7 @@ class KOL(Base):
         Index("idx_kols_platform", "platform"),
         Index("idx_kols_handle", "handle"),
         Index("idx_kols_role", "role"),
-        Index("idx_kols_category", "category"),
+        Index("idx_kols_followers", "followers"),
     )
 
     def __repr__(self):
@@ -425,6 +413,7 @@ class RawContent(Base):
     author_name = Column(String(100), comment="作者显示名称")
     author_handle = Column(String(100), comment="作者用户名 (@xxx)")
     author_avatar = Column(String(500), comment="作者头像 URL")
+    is_verified = Column(Boolean, default=False, comment="是否认证账号（蓝V）")
 
     # 内容
     title = Column(String(500), comment="标题")

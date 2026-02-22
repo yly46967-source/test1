@@ -13,7 +13,7 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 
 from src.database import DatabaseService
-from src.database.models import TopicStatusEnum, IntelCategoryEnum, KOL, KOLTierEnum, KOLRoleEnum, KOLCategoryEnum
+from src.database.models import TopicStatusEnum, IntelCategoryEnum, KOL, KOLTierEnum, KOLRoleEnum
 
 load_dotenv()
 
@@ -90,6 +90,7 @@ async def index(request: Request):
 async def topics_page(
     request: Request,
     category: Optional[str] = None,
+    sort: str = Query("heat", description="排序方式: heat/time/sources"),
     page: int = Query(1, ge=1),
 ):
     """主题列表页"""
@@ -104,7 +105,7 @@ async def topics_page(
         except ValueError:
             pass
 
-    topics = await db.get_active_topics(category=cat_enum, limit=limit, offset=offset)
+    topics = await db.get_active_topics(category=cat_enum, limit=limit, offset=offset, sort_by=sort)
 
     # 分类列表
     categories = [
@@ -122,6 +123,7 @@ async def topics_page(
         "topics": topics,
         "categories": categories,
         "current_category": category,
+        "current_sort": sort,
         "page": page,
     })
 
@@ -250,9 +252,12 @@ async def api_topic_detail(topic_id: int):
                 "author_name": c.author_name,
                 "author_handle": c.author_handle,
                 "author_avatar": c.author_avatar,
+                "is_verified": getattr(c, 'is_verified', False),
+                "kol_tier": c.raw_data.get('kol_tier', 'observer') if c.raw_data else 'observer',
                 "likes": c.likes or 0,
                 "retweets": c.retweets or 0,
                 "replies": c.replies or 0,
+                "raw_data": c.raw_data if c.raw_data else {},
             }
             for c in contents
         ],
@@ -288,6 +293,16 @@ async def api_content_detail(content_id: int):
                 "source_url": content.source_url,
                 "source_type": content.source_type.value if content.source_type else None,
                 "published_at": content.published_at.isoformat() if content.published_at else None,
+                "media_urls": content.media_urls if content.media_urls else [],
+                "author_name": content.author_name,
+                "author_handle": content.author_handle,
+                "author_avatar": content.author_avatar,
+                "is_verified": getattr(content, 'is_verified', False),
+                "kol_tier": content.raw_data.get('kol_tier', 'observer') if content.raw_data else 'observer',
+                "likes": content.likes or 0,
+                "retweets": content.retweets or 0,
+                "replies": content.replies or 0,
+                "raw_data": content.raw_data if content.raw_data else {},
             }
         }
 
@@ -315,11 +330,7 @@ async def kols_page(
         except ValueError:
             pass
 
-    if category:
-        try:
-            stmt = stmt.where(KOL.category == KOLCategoryEnum(category))
-        except ValueError:
-            pass
+    # category 字段已删除，跳过筛选
 
     stmt = stmt.order_by(KOL.weight.desc(), KOL.created_at.desc())
     stmt = stmt.offset(offset).limit(limit)
@@ -404,11 +415,7 @@ async def api_list_kols(
         except ValueError:
             pass
 
-    if category:
-        try:
-            stmt = stmt.where(KOL.category == KOLCategoryEnum(category))
-        except ValueError:
-            pass
+    # category 字段已删除
 
     if is_active is not None:
         stmt = stmt.where(KOL.is_active == is_active)
@@ -466,20 +473,12 @@ async def api_create_kol(kol_data: KOLCreate):
             except ValueError:
                 pass
 
-        category = None
-        if kol_data.category:
-            try:
-                category = KOLCategoryEnum(kol_data.category)
-            except ValueError:
-                pass
-
         # 创建 KOL
         kol = KOL(
             handle=handle,
             name=kol_data.name or handle,
             tier=tier,
             role=role,
-            category=category,
             weight=kol_data.weight,
             rss_url=f"{NITTER_INSTANCE}/{handle}/rss",
             is_active=True,
@@ -576,11 +575,7 @@ async def api_update_kol(kol_id: int, kol_data: KOLUpdate):
             except ValueError:
                 pass
 
-        if kol_data.category is not None:
-            try:
-                kol.category = KOLCategoryEnum(kol_data.category)
-            except ValueError:
-                pass
+        # category 字段已删除
 
         if kol_data.weight is not None:
             kol.weight = kol_data.weight

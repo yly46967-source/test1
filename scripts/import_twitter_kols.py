@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from src.database import DatabaseService
-from src.database.models import KOL, KOLTierEnum, KOLRoleEnum, KOLCategoryEnum
+from src.database.models import KOL, KOLTierEnum, KOLRoleEnum
 from src.logger import setup_logging, get_main_logger
 
 # 默认 KOL 列表
@@ -135,7 +135,6 @@ async def import_kols(clear_existing: bool = False):
                     platform="x",
                     tier=tier,
                     role=KOLRoleEnum.INFLUENCER,
-                    category=KOLCategoryEnum.GENERAL,
                     is_active=True,
                     weight=_get_weight_by_tier(tier),
                 )

@@ -15610,3 +15610,573 @@ sqlalchemy.exc.DatabaseError: (raised as a result of Query-invoked autoflush; co
 2026-02-21 02:54:16 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 跳过 Telegram 推送
 2026-02-21 02:54:16 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 统计: 主题 0 个, 内容 52 条, 情报包 0 个
 2026-02-21 02:54:16 │ [32mINFO[0m │ main            │ ainsight.py:127 │ 运行完成
+2026-02-22 00:47:22 │ [32mINFO[0m │ main            │ ainsight.py:52 │ ==================================================
+2026-02-22 00:47:22 │ [32mINFO[0m │ main            │ ainsight.py:53 │ AInsight 启动
+2026-02-22 00:47:22 │ [32mINFO[0m │ main            │ ainsight.py:54 │ ==================================================
+2026-02-22 00:47:22 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-22 00:47:22 │ [32mINFO[0m │ main            │ ainsight.py:139 │ ==================================================
+2026-02-22 00:47:22 │ [32mINFO[0m │ main            │ ainsight.py:140 │ Twitter 抓取
+2026-02-22 00:47:22 │ [32mINFO[0m │ main            │ ainsight.py:141 │ ==================================================
+2026-02-22 00:47:22 │ [31mERROR[0m │ database        │ service.py:101 │ 数据库事务回滚: (sqlite3.OperationalError) no such column: kols.is_verified
+[SQL: SELECT kols.id, kols.name, kols.handle, kols.platform, kols.avatar_url, kols.is_verified, kols.bio, kols.role, kols.tier, kols.credibility_score, kols.weight, kols.followers, kols.following, kols.rss_url, kols.is_active, kols.last_fetched_at, kols.extra_data, kols.created_at, kols.updated_at 
+FROM kols 
+WHERE kols.is_active = 1 AND kols.platform = ? ORDER BY kols.tier, kols.followers DESC]
+[parameters: ('x',)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-02-22 00:47:22 │ [31mERROR[0m │ main            │ ainsight.py:130 │ 运行出错: (sqlite3.OperationalError) no such column: kols.is_verified
+[SQL: SELECT kols.id, kols.name, kols.handle, kols.platform, kols.avatar_url, kols.is_verified, kols.bio, kols.role, kols.tier, kols.credibility_score, kols.weight, kols.followers, kols.following, kols.rss_url, kols.is_active, kols.last_fetched_at, kols.extra_data, kols.created_at, kols.updated_at 
+FROM kols 
+WHERE kols.is_active = 1 AND kols.platform = ? ORDER BY kols.tier, kols.followers DESC]
+[parameters: ('x',)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 182, in execute
+    self._adapt_connection._handle_exception(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 342, in _handle_exception
+    raise error
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 164, in execute
+    self.await_(_cursor.execute(operation, parameters))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\cursor.py", line 40, in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\cursor.py", line 32, in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\core.py", line 160, in _execute
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\core.py", line 63, in _connection_worker_thread
+    result = function()
+sqlite3.OperationalError: no such column: kols.is_verified
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 75, in run_ainsight
+    twitter_items = await run_twitter_fetch(limit=twitter_limit, test_mode=test_mode)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 144, in run_twitter_fetch
+    kols = await db.get_active_kols(platform="x")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\VibeCoding Skills\news-funnel\src\database\service.py", line 534, in get_active_kols
+    result = await session.execute(query)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\ext\asyncio\session.py", line 449, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\session.py", line 2351, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\session.py", line 2249, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 182, in execute
+    self._adapt_connection._handle_exception(error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 342, in _handle_exception
+    raise error
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 164, in execute
+    self.await_(_cursor.execute(operation, parameters))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\cursor.py", line 40, in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\cursor.py", line 32, in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\core.py", line 160, in _execute
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\aiosqlite\core.py", line 63, in _connection_worker_thread
+    result = function()
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: kols.is_verified
+[SQL: SELECT kols.id, kols.name, kols.handle, kols.platform, kols.avatar_url, kols.is_verified, kols.bio, kols.role, kols.tier, kols.credibility_score, kols.weight, kols.followers, kols.following, kols.rss_url, kols.is_active, kols.last_fetched_at, kols.extra_data, kols.created_at, kols.updated_at 
+FROM kols 
+WHERE kols.is_active = 1 AND kols.platform = ? ORDER BY kols.tier, kols.followers DESC]
+[parameters: ('x',)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-02-22 00:48:18 │ [32mINFO[0m │ main            │ ainsight.py:52 │ ==================================================
+2026-02-22 00:48:18 │ [32mINFO[0m │ main            │ ainsight.py:53 │ AInsight 启动
+2026-02-22 00:48:18 │ [32mINFO[0m │ main            │ ainsight.py:54 │ ==================================================
+2026-02-22 00:48:18 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-22 00:48:18 │ [32mINFO[0m │ main            │ ainsight.py:139 │ ==================================================
+2026-02-22 00:48:18 │ [32mINFO[0m │ main            │ ainsight.py:140 │ Twitter 抓取
+2026-02-22 00:48:18 │ [32mINFO[0m │ main            │ ainsight.py:141 │ ==================================================
+2026-02-22 00:48:18 │ [32mINFO[0m │ main            │ ainsight.py:154 │ 将抓取 3 个 Twitter 用户
+2026-02-22 00:48:19 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:178 │ Playwright browser initialized
+2026-02-22 00:48:19 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:443 │ Processing batch 1/1 (3 users)
+2026-02-22 00:48:20 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:240 │ Fetching @williamlong...
+2026-02-22 00:48:35 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:280 │ @williamlong: 12 tweets fetched
+2026-02-22 00:48:35 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:240 │ Fetching @BrendanEich...
+2026-02-22 00:48:46 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:280 │ @BrendanEich: 10 tweets fetched
+2026-02-22 00:48:47 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:240 │ Fetching @Fenng...
+2026-02-22 00:48:58 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:280 │ @Fenng: 8 tweets fetched
+2026-02-22 00:48:58 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:465 │ Fetch completed: 3/3 users, 30 tweets
+2026-02-22 00:48:58 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:188 │ Playwright browser closed
+2026-02-22 00:48:58 │ [32mINFO[0m │ main            │ ainsight.py:229 │ @williamlong: 12 条推文
+2026-02-22 00:48:58 │ [32mINFO[0m │ main            │ ainsight.py:229 │ @BrendanEich: 10 条推文
+2026-02-22 00:48:58 │ [32mINFO[0m │ main            │ ainsight.py:229 │ @Fenng: 8 条推文
+2026-02-22 00:48:58 │ [32mINFO[0m │ main            │ ainsight.py:242 │ Twitter 抓取完成: 保存 2 条新推文
+2026-02-22 00:48:58 │ [32mINFO[0m │ main            │ ainsight.py:76 │ Twitter 抓取: 2 条
+2026-02-22 00:48:58 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 0 个数据源
+2026-02-22 00:48:58 │ [32mINFO[0m │ main            │ ainsight.py:302 │ ==================================================
+2026-02-22 00:48:58 │ [32mINFO[0m │ main            │ ainsight.py:303 │ 聚类处理
+2026-02-22 00:48:58 │ [32mINFO[0m │ main            │ ainsight.py:304 │ ==================================================
+2026-02-22 00:48:58 │ [32mINFO[0m │ main            │ ainsight.py:312 │ 待聚类内容: 50 条
+2026-02-22 00:48:59 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:91 │ 内容缺少必填字段
+2026-02-22 00:48:59 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:401 │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"这本书太牛逼了"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-02-22 00:48:59 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:113 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:48:59 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:49:01 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:117 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:49:01 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:471 │ 创建新主题: 这本书太牛逼了 (ID: 1)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:91 │ 内容缺少必填字段
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:91 │ 内容缺少必填字段
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [33mWARNING[0m │ main            │ ainsight.py:352 │ 处理内容失败: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [31mERROR[0m │ database        │ service.py:101 │ 数据库事务回滚: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:49:01 │ [31mERROR[0m │ main            │ ainsight.py:130 │ 运行出错: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+Traceback (most recent call last):
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 103, in run_ainsight
+    await run_clustering_from_db()
+  File "D:\VibeCoding Skills\news-funnel\ainsight.py", line 355, in run_clustering_from_db
+    await session.commit()
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\ext\asyncio\session.py", line 1000, in commit
+    await greenlet_spawn(self.sync_session.commit)
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 190, in greenlet_spawn
+    result = context.switch(*args, **kwargs)
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "<string>", line 2, in commit
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\state_changes.py", line 101, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yyl\AppData\Roaming\Python\Python314\site-packages\sqlalchemy\orm\session.py", line 971, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) UNIQUE constraint failed: raw_contents.source_url_hash
+[SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
+[parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-22 00:51:19 │ [32mINFO[0m │ main            │ import_twitter_kols.py:112 │ 已清空 0 个现有 KOL
+2026-02-22 00:51:19 │ [32mINFO[0m │ main            │ import_twitter_kols.py:145 │ 导入完成: 222 个新 KOL, 0 个已存在
+2026-02-22 00:51:39 │ [32mINFO[0m │ main            │ ainsight.py:52 │ ==================================================
+2026-02-22 00:51:39 │ [32mINFO[0m │ main            │ ainsight.py:53 │ AInsight 启动
+2026-02-22 00:51:39 │ [32mINFO[0m │ main            │ ainsight.py:54 │ ==================================================
+2026-02-22 00:51:39 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-22 00:51:39 │ [32mINFO[0m │ main            │ ainsight.py:139 │ ==================================================
+2026-02-22 00:51:39 │ [32mINFO[0m │ main            │ ainsight.py:140 │ Twitter 抓取
+2026-02-22 00:51:39 │ [32mINFO[0m │ main            │ ainsight.py:141 │ ==================================================
+2026-02-22 00:51:39 │ [32mINFO[0m │ main            │ ainsight.py:154 │ 将抓取 3 个 Twitter 用户
+2026-02-22 00:51:39 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:178 │ Playwright browser initialized
+2026-02-22 00:51:39 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:443 │ Processing batch 1/1 (3 users)
+2026-02-22 00:51:39 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:240 │ Fetching @williamlong...
+2026-02-22 00:51:56 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:280 │ @williamlong: 11 tweets fetched
+2026-02-22 00:51:56 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:240 │ Fetching @BrendanEich...
+2026-02-22 00:52:06 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:280 │ @BrendanEich: 10 tweets fetched
+2026-02-22 00:52:07 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:240 │ Fetching @Fenng...
+2026-02-22 00:52:16 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:280 │ @Fenng: 8 tweets fetched
+2026-02-22 00:52:16 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:465 │ Fetch completed: 3/3 users, 29 tweets
+2026-02-22 00:52:16 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ playwright_twitter.py:188 │ Playwright browser closed
+2026-02-22 00:52:16 │ [32mINFO[0m │ main            │ ainsight.py:229 │ @williamlong: 11 条推文
+2026-02-22 00:52:17 │ [32mINFO[0m │ main            │ ainsight.py:229 │ @BrendanEich: 10 条推文
+2026-02-22 00:52:17 │ [32mINFO[0m │ main            │ ainsight.py:229 │ @Fenng: 8 条推文
+2026-02-22 00:52:17 │ [32mINFO[0m │ main            │ ainsight.py:242 │ Twitter 抓取完成: 保存 29 条新推文
+2026-02-22 00:52:17 │ [32mINFO[0m │ main            │ ainsight.py:76 │ Twitter 抓取: 29 条
+2026-02-22 00:52:17 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 0 个数据源
+2026-02-22 00:52:17 │ [32mINFO[0m │ main            │ ainsight.py:302 │ ==================================================
+2026-02-22 00:52:17 │ [32mINFO[0m │ main            │ ainsight.py:303 │ 聚类处理
+2026-02-22 00:52:17 │ [32mINFO[0m │ main            │ ainsight.py:304 │ ==================================================
+2026-02-22 00:52:17 │ [32mINFO[0m │ main            │ ainsight.py:312 │ 待聚类内容: 29 条
+2026-02-22 00:52:17 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:155 │ 内容缺少必填字段
+2026-02-22 00:52:17 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:17 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:19 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:19 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 老舅定律：门诊多药处方的合理性质疑 (ID: 1)
+2026-02-22 00:52:19 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:19 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:21 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:21 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 罗翔原话出处考证 (ID: 2)
+2026-02-22 00:52:21 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:21 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:23 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:23 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 金庸小说丐帮爱国设定的黑色幽默 (ID: 3)
+2026-02-22 00:52:23 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:23 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:25 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:25 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 业界最全原研药（进口药）目录发布 (ID: 4)
+2026-02-22 00:52:25 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:25 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:27 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:27 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 奥威尔名言的当代意义 (ID: 5)
+2026-02-22 00:52:27 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:27 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:29 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:29 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 疫情下的幽默社会观察 (ID: 6)
+2026-02-22 00:52:29 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:29 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:31 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:31 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 黑粉心理与网络对抗行为分析 (ID: 7)
+2026-02-22 00:52:31 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:155 │ 内容缺少必填字段
+2026-02-22 00:52:31 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:155 │ 内容缺少必填字段
+2026-02-22 00:52:31 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:31 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:33 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:33 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: GitHub联合创始人动态 (ID: 8)
+2026-02-22 00:52:33 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:33 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:35 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:35 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 社交媒体言论引发政治信任危机 (ID: 9)
+2026-02-22 00:52:35 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:35 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:37 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:37 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 社交平台疑似批量传播疫情言论的机器人活动 (ID: 10)
+2026-02-22 00:52:37 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:37 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:39 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:39 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 怀旧情绪：90年代文化回潮 (ID: 11)
+2026-02-22 00:52:39 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:39 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:40 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:40 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: Brave浏览器：用户注意力变现新范式 (ID: 12)
+2026-02-22 00:52:40 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:40 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:42 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:42 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: JavaScript隐私风险与反追踪实践 (ID: 13)
+2026-02-22 00:52:42 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:42 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:44 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:44 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: Firefox用户数据授权条款引争议 (ID: 14)
+2026-02-22 00:52:44 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:44 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:46 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:46 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: Brave推出Premium Search订阅服务 (ID: 15)
+2026-02-22 00:52:46 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:46 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:48 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:48 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 华为员工离职争议引发消费者抵制 (ID: 16)
+2026-02-22 00:52:48 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:48 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:50 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:50 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 涉俄政治言论的客观性与事实核查 (ID: 17)
+2026-02-22 00:52:50 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:50 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:52 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:52 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 公众对辩证法认知与接受度讨论 (ID: 18)
+2026-02-22 00:52:52 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:52 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:54 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:54 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 手机号查机主姓名的合规操作教程 (ID: 19)
+2026-02-22 00:52:54 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:54 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:56 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:56 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 小城市养老风险与法治困境讨论 (ID: 20)
+2026-02-22 00:52:56 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:56 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:52:58 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:52:58 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 俄乌冲突中的国际法与舆论分化 (ID: 21)
+2026-02-22 00:52:58 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:52:58 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:53:00 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:53:00 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 批判借爱国之名物化女性的错误思潮 (ID: 22)
+2026-02-22 00:53:00 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:53:00 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:53:02 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:53:02 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: Grok推出番号推荐功能引热议 (ID: 23)
+2026-02-22 00:53:02 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:53:02 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:53:04 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:53:04 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 电影内容与法西斯主义意识形态关联分析 (ID: 24)
+2026-02-22 00:53:04 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:53:04 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:53:06 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:53:06 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: 知乎问答平台内容生态分析 (ID: 25)
+2026-02-22 00:53:06 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:53:06 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:53:08 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:53:08 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:516 │ 创建新主题: Grok 3越狱提示词绕过内容限制 (ID: 26)
+2026-02-22 00:53:08 │ [32mINFO[0m │ main            │ ainsight.py:362 │ 聚类完成: 26 处理, 3 跳过
+2026-02-22 00:53:08 │ [32mINFO[0m │ main            │ ainsight.py:367 │ 检查情报合成触发条件...
+2026-02-22 00:53:09 │ [32mINFO[0m │ main            │ ainsight.py:409 │ 情报合成: 0 个主题
+2026-02-22 00:53:09 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 跳过 Telegram 推送
+2026-02-22 00:53:09 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 统计: 主题 0 个, 内容 29 条, 情报包 0 个
+2026-02-22 00:53:09 │ [32mINFO[0m │ main            │ ainsight.py:127 │ 运行完成
+2026-02-22 00:54:17 │ [32mINFO[0m │ main            │ ainsight.py:52 │ ==================================================
+2026-02-22 00:54:17 │ [32mINFO[0m │ main            │ ainsight.py:53 │ AInsight 启动
+2026-02-22 00:54:17 │ [32mINFO[0m │ main            │ ainsight.py:54 │ ==================================================
+2026-02-22 00:54:17 │ [32mINFO[0m │ main            │ ainsight.py:68 │ 数据库已连接
+2026-02-22 00:54:17 │ [32mINFO[0m │ main            │ ainsight.py:78 │ 跳过 Twitter 抓取
+2026-02-22 00:54:17 │ [32mINFO[0m │ src.fetcher.source_loader │ source_loader.py:174 │ 加载 0 个数据源
+2026-02-22 00:54:17 │ [32mINFO[0m │ main            │ ainsight.py:302 │ ==================================================
+2026-02-22 00:54:17 │ [32mINFO[0m │ main            │ ainsight.py:303 │ 聚类处理
+2026-02-22 00:54:17 │ [32mINFO[0m │ main            │ ainsight.py:304 │ ==================================================
+2026-02-22 00:54:18 │ [32mINFO[0m │ main            │ ainsight.py:327 │ 待聚类内容: 29 条
+2026-02-22 00:54:18 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:164 │ FTS 匹配到 0 个候选主题
+2026-02-22 00:54:18 │ [32mINFO[0m │ src.clustering.topic_cluster │ topic_cluster.py:113 │ 无候选主题，创建新主题
+2026-02-22 00:54:20 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ enhanced_pipeline.py:168 │ 聚类决策: create, 相关度: 0.00
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: (sqlite3.IntegrityError) UNIQUE constraint failed: topics.slug
+[SQL: INSERT INTO topics (title, slug, description, keywords, category, tags, heat_score, source_count, status, merged_into_id, first_seen_at, last_updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: ('Grok 3越狱提示词绕过内容限制', 'grok-3-023ff7', None, 'Grok 3 越狱 提示词 jailbreak 绕过限制 content policy AI safety 大模型安全', 'DRAMA', '["Grok3", "\\u8d8a\\u72f1\\u63d0\\u793a\\u8bcd", "AI\\u5b89\\u5168", "\\u5185\\u5bb9\\u9650\\u5236", "\\u5927\\u6a21\\u578b\\u4f26\\u7406"]', 1, 0, 'ACTIVE', None, '2026-02-22 00:54:20.760452', '2026-02-22 00:54:20.760453')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [33mWARNING[0m │ main            │ ainsight.py:360 │ 处理内容失败: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2026-02-22 00:54:20 │ [32mINFO[0m │ main            │ ainsight.py:366 │ 聚类完成: 0 处理, 29 跳过
+2026-02-22 00:54:20 │ [32mINFO[0m │ main            │ ainsight.py:111 │ 跳过情报合成
+2026-02-22 00:54:20 │ [32mINFO[0m │ main            │ ainsight.py:117 │ 跳过 Telegram 推送
+2026-02-22 00:54:20 │ [32mINFO[0m │ main            │ ainsight.py:121 │ 统计: 主题 0 个, 内容 29 条, 情报包 0 个
+2026-02-22 00:54:20 │ [32mINFO[0m │ main            │ ainsight.py:127 │ 运行完成
