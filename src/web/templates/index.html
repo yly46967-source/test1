@@ -121,6 +121,70 @@ function formatNumber(num) {
     return num.toString();
 }
 
+// 格式化日期时间
+// 中文格式：下午10:40 · 2023年8月26日
+// 英文格式：10:40 PM · Aug 26, 2023
+function formatDateTime(dateStr, lang) {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return dateStr;
+
+    if (lang === 'zh') {
+        const hours = date.getHours();
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const period = hours >= 12 ? '下午' : '上午';
+        const hour12 = hours % 12 || 12;
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        return `${period}${hour12}:${minutes} · ${year}年${month}月${day}日`;
+    } else {
+        const options = {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        };
+        const formatted = date.toLocaleString('en-US', options);
+        // 转换为 "10:40 PM · Aug 26, 2023" 格式
+        const parts = formatted.split(', ');
+        if (parts.length >= 2) {
+            const timePart = parts[0].split(' at ').pop() || parts[0];
+            const datePart = parts.slice(1).join(', ');
+            return `${timePart} · ${datePart}`;
+        }
+        return formatted;
+    }
+}
+
+// 检测文本语言（简单判断是否包含中文）
+function detectLanguage(text) {
+    if (!text) return 'unknown';
+    // 检查是否包含中文字符
+    const chineseRegex = /[\u4e00-\u9fa5]/;
+    if (chineseRegex.test(text)) return 'zh';
+    return 'en';
+}
+
+// 智能翻译：根据内容语言设置和原文语言决定是否翻译
+async function smartTranslate(text, contentLang) {
+    if (!text || text.length < 2) return text;
+
+    // 如果选择显示原文，直接返回
+    if (contentLang === 'original') return text;
+
+    // 检测原文语言
+    const sourceLang = detectLanguage(text);
+
+    // 如果原文语言和目标语言相同，不翻译
+    if (sourceLang === contentLang) return text;
+
+    // 调用翻译 API
+    return await translateText(text, contentLang);
+}
+
 // 调用翻译 API
 async function translateText(text, targetLang) {
     if (!text || text.length < 2) return text;
@@ -328,16 +392,21 @@ async function renderTopicPanel(data) {
         `;
     }
 
-    // 来源头像列表
+    // 来源头像列表 - 使用真实头像
     const defaultSourceText = t('common.source');
     const sourcesHtml = contents.map((c, idx) => {
-        const initial = (c.title || defaultSourceText)[0].toUpperCase();
+        const authorName = c.author_name || c.title || defaultSourceText;
+        const initial = authorName[0].toUpperCase();
+        const authorAvatar = c.author_avatar || '';
         const isActive = idx === currentSourceIndex;
+        const avatarContent = authorAvatar
+            ? `<img src="${authorAvatar}" alt="${authorName}" class="source-avatar-img">`
+            : `<span class="avatar-letter">${initial}</span>`;
         return `
             <div class="source-avatar ${isActive ? 'active' : ''}"
                  data-index="${idx}"
-                 title="${c.title || defaultSourceText + ' ' + (idx + 1)}">
-                <span class="avatar-letter">${initial}</span>
+                 title="${authorName}">
+                ${avatarContent}
             </div>
         `;
     }).join('');
@@ -398,7 +467,7 @@ async function renderContentPanel(content) {
 // 渲染内容主体（X风格帖子）
 async function renderContentBody(content) {
     const lang = getCurrentLang();
-    const targetLang = lang === 'zh' ? 'zh' : 'en';
+    const contentLang = getContentLang(); // 获取内容显示语言设置
     const noTitleText = t('common.noTitle');
     const noContentText = t('common.noContent');
     const viewOriginalText = t('common.viewOriginal');
@@ -434,32 +503,42 @@ async function renderContentBody(content) {
         </span>
     ` : '';
 
-    // 翻译内容 - 优先使用 raw_data 中的格式化文本
+    // 翻译内容 - 使用智能翻译
     const originalText = rawData.formatted_text || content.text || '';
-    const text = originalText ? await translateText(originalText, targetLang) : '';
+    const text = originalText ? await smartTranslate(originalText, contentLang) : '';
 
     const sourceUrl = content.source_url || '';
-    const publishedAt = content.published_at
-        ? new Date(content.published_at).toLocaleString(lang === 'zh' ? 'zh-CN' : 'en-US')
-        : '';
+    // 格式化时间：中文格式为 "下午10:40 · 2023年8月26日"
+    const publishedAt = content.published_at ? formatDateTime(content.published_at, lang) : '';
 
     const initial = authorName[0].toUpperCase();
 
     // 处理文本：优先使用 raw_data 中的段落，保留原始格式
+    // 支持简单的 Markdown 格式（加粗、斜体）
+    function processMarkdown(text) {
+        if (!text) return '';
+        return text
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')  // **bold**
+            .replace(/__(.+?)__/g, '<strong>$1</strong>')       // __bold__
+            .replace(/\*(.+?)\*/g, '<em>$1</em>')               // *italic*
+            .replace(/_(.+?)_/g, '<em>$1</em>')                 // _italic_
+            .replace(/\n/g, '<br>');
+    }
+
     let textHtml = '';
     if (rawData.paragraphs && rawData.paragraphs.length > 0) {
         // 使用预分段的数据
         const translatedParagraphs = await Promise.all(
-            rawData.paragraphs.map(p => translateText(p, targetLang))
+            rawData.paragraphs.map(p => smartTranslate(p, contentLang))
         );
         textHtml = translatedParagraphs
             .filter(p => p.trim())
-            .map(p => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`)
+            .map(p => `<p>${processMarkdown(p.trim())}</p>`)
             .join('');
     } else {
         // 降级：手动分段
         const paragraphs = text.split(/\n\n+/).filter(p => p.trim());
-        textHtml = paragraphs.map(p => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`).join('');
+        textHtml = paragraphs.map(p => `<p>${processMarkdown(p.trim())}</p>`).join('');
     }
 
     // 媒体图片
@@ -470,17 +549,19 @@ async function renderContentBody(content) {
         </div>
     ` : '';
 
-    // 互动数据
+    // 互动数据 - 添加 views
     const likes = content.likes || 0;
     const retweets = content.retweets || 0;
     const replies = content.replies || 0;
-    const hasMetrics = likes > 0 || retweets > 0 || replies > 0;
+    const views = rawData.views || 0;
+    const hasMetrics = likes > 0 || retweets > 0 || replies > 0 || views > 0;
 
     const metricsHtml = hasMetrics ? `
         <div class="x-post-metrics">
             ${replies > 0 ? `<span class="metric"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>${formatNumber(replies)}</span>` : ''}
             ${retweets > 0 ? `<span class="metric"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>${formatNumber(retweets)}</span>` : ''}
             ${likes > 0 ? `<span class="metric"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${formatNumber(likes)}</span>` : ''}
+            ${views > 0 ? `<span class="metric"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>${formatNumber(views)}</span>` : ''}
         </div>
     ` : '';
 
@@ -527,6 +608,58 @@ document.addEventListener('DOMContentLoaded', () => {
     const firstItem = document.querySelector('.news-item.active');
     if (firstItem) {
         firstItem.click();
+    }
+
+    // 初始化内容语言按钮状态
+    const contentLang = getContentLang();
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === contentLang);
+    });
+});
+
+// 监听内容语言变化，重新渲染当前内容
+window.addEventListener('contentLanguageChanged', async (e) => {
+    // 重新渲染当前显示的内容
+    if (currentTopicData) {
+        await renderTopicPanel(currentTopicData.topic, currentTopicData.contents, currentTopicData.intel);
+    } else if (currentSingleContent) {
+        await renderContentPanel(currentSingleContent);
+    }
+});
+
+// 图片查看器功能
+function openImageViewer(imgSrc) {
+    // 创建查看器覆盖层
+    const overlay = document.createElement('div');
+    overlay.className = 'image-viewer-overlay';
+    overlay.innerHTML = `
+        <button class="image-viewer-close">&times;</button>
+        <img src="${imgSrc}" alt="Full size image">
+    `;
+
+    // 点击关闭
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay || e.target.classList.contains('image-viewer-close')) {
+            overlay.remove();
+        }
+    });
+
+    // ESC 键关闭
+    const escHandler = (e) => {
+        if (e.key === 'Escape') {
+            overlay.remove();
+            document.removeEventListener('keydown', escHandler);
+        }
+    };
+    document.addEventListener('keydown', escHandler);
+
+    document.body.appendChild(overlay);
+}
+
+// 为图片添加点击事件（使用事件委托）
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('x-media-img')) {
+        openImageViewer(e.target.src);
     }
 });
 </script>

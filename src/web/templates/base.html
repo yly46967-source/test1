@@ -71,7 +71,23 @@
         return i18next.t(key, options);
     }
 
-    // 设置语言
+    // 获取内容显示语言（original/zh/en）
+    function getContentLang() {
+        return localStorage.getItem('ainsight_content_lang') || 'original';
+    }
+
+    // 设置内容显示语言
+    function setContentLang(lang) {
+        localStorage.setItem('ainsight_content_lang', lang);
+        // 更新按钮状态
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.lang === lang);
+        });
+        // 触发内容语言变化事件
+        window.dispatchEvent(new CustomEvent('contentLanguageChanged', { detail: { lang } }));
+    }
+
+    // 设置 UI 语言（用于界面元素）
     async function setLang(lang) {
         localStorage.setItem('ainsight_lang', lang);
         if (i18nReady) {
@@ -84,11 +100,6 @@
     function applyLanguage(lang) {
         // 更新 HTML lang 属性
         document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-
-        // 更新语言切换按钮状态
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.lang === lang);
-        });
 
         // 更新所有带 data-i18n 属性的元素
         document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -195,8 +206,9 @@
             <!-- 顶部语言切换栏 -->
             <div class="top-lang-bar">
                 <div class="lang-switcher-horizontal">
-                    <button class="lang-btn" data-lang="zh" onclick="setLang('zh')" title="中文">中文</button>
-                    <button class="lang-btn" data-lang="en" onclick="setLang('en')" title="English">EN</button>
+                    <button class="lang-btn active" data-lang="original" onclick="setContentLang('original')" title="原文">原文</button>
+                    <button class="lang-btn" data-lang="zh" onclick="setContentLang('zh')" title="中文">中文</button>
+                    <button class="lang-btn" data-lang="en" onclick="setContentLang('en')" title="English">EN</button>
                 </div>
             </div>
 
@@ -322,9 +334,22 @@
         });
     });
 
-    function closeModal(id) {
-        document.getElementById(`modal-${id}`).classList.remove('active');
-    }
+    // 通用模态框关闭函数
+    window.closeModal = function(id) {
+        // 尝试两种格式的模态框 ID
+        let modal = document.getElementById(id);
+        if (modal) {
+            // kols.html 风格：直接设置 display
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        } else {
+            // base.html 风格：使用 modal-{id} 格式和 active 类
+            modal = document.getElementById(`modal-${id}`);
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+    };
 
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', (e) => {

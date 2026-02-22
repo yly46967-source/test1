@@ -103,6 +103,7 @@
 
     <!-- 分页 -->
     {% if total > 50 %}
+    {% set total_pages = (total + 49) // 50 %}
     <div class="pagination">
         {% if page > 1 %}
         <a href="?page={{ page - 1 }}{% if current_tier %}&tier={{ current_tier }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}" class="btn btn-secondary">
@@ -110,7 +111,7 @@
         </a>
         {% endif %}
 
-        <span class="page-info">第 {{ page }} 页</span>
+        <span class="page-info">第 {{ page }} / {{ total_pages }} 页 · 共 {{ total }} 位</span>
 
         {% if kols|length == 50 %}
         <a href="?page={{ page + 1 }}{% if current_tier %}&tier={{ current_tier }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}" class="btn btn-secondary">
@@ -126,7 +127,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h2>添加 KOL</h2>
-            <button class="modal-close" onclick="closeModal('addKolModal')">&times;</button>
+            <button type="button" class="modal-close" onclick="window.closeModal('addKolModal');return false;">&times;</button>
         </div>
         <form id="addKolForm" onsubmit="submitAddKol(event)">
             <div class="form-group">
@@ -165,7 +166,7 @@
                 <input type="number" name="weight" value="1.0" min="0.1" max="5.0" step="0.1">
             </div>
             <div class="form-actions">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('addKolModal')">取消</button>
+                <button type="button" class="btn btn-secondary" onclick="window.closeModal('addKolModal');return false;">取消</button>
                 <button type="submit" class="btn btn-primary">添加</button>
             </div>
         </form>
@@ -177,7 +178,7 @@
     <div class="modal-content modal-large">
         <div class="modal-header">
             <h2>批量导入 KOL</h2>
-            <button class="modal-close" onclick="closeModal('batchImportModal')">&times;</button>
+            <button type="button" class="modal-close" onclick="window.closeModal('batchImportModal');return false;">&times;</button>
         </div>
         <form id="batchImportForm" onsubmit="submitBatchImport(event)">
             <div class="form-group">
@@ -189,7 +190,7 @@
             </div>
             <p class="form-hint">支持带或不带 @ 符号，自动去重</p>
             <div class="form-actions">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('batchImportModal')">取消</button>
+                <button type="button" class="btn btn-secondary" onclick="window.closeModal('batchImportModal');return false;">取消</button>
                 <button type="submit" class="btn btn-primary">导入</button>
             </div>
         </form>
@@ -201,7 +202,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h2>编辑 KOL</h2>
-            <button class="modal-close" onclick="closeModal('editKolModal')">&times;</button>
+            <button type="button" class="modal-close" onclick="window.closeModal('editKolModal');return false;">&times;</button>
         </div>
         <form id="editKolForm" onsubmit="submitEditKol(event)">
             <input type="hidden" name="id" id="editKolId">
@@ -241,7 +242,7 @@
                 <input type="number" name="weight" id="editKolWeight" min="0.1" max="5.0" step="0.1">
             </div>
             <div class="form-actions">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('editKolModal')">取消</button>
+                <button type="button" class="btn btn-secondary" onclick="window.closeModal('editKolModal');return false;">取消</button>
                 <button type="submit" class="btn btn-primary">保存</button>
             </div>
         </form>
@@ -254,6 +255,8 @@
     max-width: 1400px;
     margin: 0 auto;
     padding: 2rem;
+    height: 100%;
+    overflow-y: auto;
 }
 
 .page-header {
@@ -439,27 +442,52 @@
     background: var(--border-color);
 }
 
-/* 弹窗 */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
+/* 弹窗 - 修复居中和关闭问题 */
+/* 使用 !important 覆盖 style.css 中的冲突样式 */
+/* 注意：不要设置 display: flex !important，否则会覆盖 display: none */
+.kol-page .modal,
+#addKolModal,
+#batchImportModal,
+#editKolModal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 99999 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    max-width: none !important;
+    max-height: none !important;
+    overflow: hidden !important;
 }
 
-.modal-content {
-    background: var(--bg-primary);
-    border-radius: 16px;
-    width: 90%;
-    max-width: 480px;
-    max-height: 90vh;
-    overflow-y: auto;
+/* 当模态框显示时（通过 JS 设置 display: flex）*/
+#addKolModal[style*="display: flex"],
+#batchImportModal[style*="display: flex"],
+#editKolModal[style*="display: flex"] {
+    display: flex !important;
+}
+
+.kol-page .modal-content,
+#addKolModal .modal-content,
+#batchImportModal .modal-content,
+#editKolModal .modal-content {
+    background: var(--bg-primary) !important;
+    border-radius: 16px !important;
+    width: 90% !important;
+    max-width: 480px !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    position: relative !important;
+    margin: 0 auto !important;
 }
 
 .modal-large {
@@ -485,6 +513,18 @@
     font-size: 1.5rem;
     cursor: pointer;
     color: var(--text-secondary);
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.modal-close:hover {
+    background: var(--bg-tertiary);
 }
 
 .modal-content form {
@@ -564,15 +604,15 @@ function applyFilters() {
 
 // 弹窗控制
 function showAddKol() {
-    document.getElementById('addKolModal').style.display = 'flex';
+    const modal = document.getElementById('addKolModal');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
 }
 
 function showBatchImport() {
-    document.getElementById('batchImportModal').style.display = 'flex';
-}
-
-function closeModal(id) {
-    document.getElementById(id).style.display = 'none';
+    const modal = document.getElementById('batchImportModal');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
 }
 
 // 添加 KOL
@@ -705,8 +745,21 @@ document.querySelectorAll('.modal').forEach(modal => {
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.style.display = 'none';
+            document.body.style.overflow = '';
         }
     });
+});
+
+// ESC 键关闭弹窗
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        document.querySelectorAll('.modal').forEach(modal => {
+            if (modal.style.display === 'flex') {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        });
+    }
 });
 </script>
 {% endblock %}
