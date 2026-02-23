@@ -1,19 +1,16 @@
 """AInsight Web UI - FastAPI 应用"""
 import os
-import re
-import httpx
-from datetime import datetime
 from typing import Optional, List
 
 from fastapi import FastAPI, Request, Query, HTTPException, Form
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
 from src.database import DatabaseService
-from src.database.models import TopicStatusEnum, IntelCategoryEnum, KOL, KOLTierEnum, KOLRoleEnum
+from src.database.models import KOL, KOLTierEnum, KOLRoleEnum
 
 load_dotenv()
 
@@ -23,6 +20,44 @@ app = FastAPI(title="AInsight", description="AI 情报聚合器")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+
+
+# 自定义 Jinja2 过滤器：格式化数字
+def format_number(value):
+    """格式化数字：1000+ 显示为 1.2k，1000000+ 显示为 1.2M"""
+    if value is None:
+        return "0"
+    try:
+        value = int(value)
+    except (ValueError, TypeError):
+        return "0"
+    if value >= 1000000:
+        return f"{value / 1000000:.1f}M"
+    elif value >= 1000:
+        return f"{value / 1000:.1f}k"
+    return str(value)
+
+
+# 自定义 Jinja2 过滤器：中文时间格式
+def format_chinese_time(dt):
+    """格式化时间为中文格式：上午1:40 · 2026年2月23日"""
+    if dt is None:
+        return ""
+    try:
+        hour = dt.hour
+        if hour < 12:
+            period = "上午"
+            display_hour = hour if hour != 0 else 12
+        else:
+            period = "下午"
+            display_hour = hour - 12 if hour != 12 else 12
+        return f"{period}{display_hour}:{dt.minute:02d} · {dt.year}年{dt.month}月{dt.day}日"
+    except (AttributeError, TypeError):
+        return ""
+
+
+templates.env.filters["format_number"] = format_number
+templates.env.filters["format_chinese_time"] = format_chinese_time
 
 # 数据库
 db: Optional[DatabaseService] = None
@@ -49,134 +84,60 @@ async def shutdown():
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
-    """首页 - 情报概览"""
-    from sqlalchemy import select, or_
-    from src.database.models import RawContent
+    """首页 - MVP X风格三栏布局"""
+    from sqlalchemy import select
+    from src.database.models import RawContent, IntelligencePackage
 
-    # 获取统计
-    stats = await db.get_clustering_stats()
-
-    # 获取热门主题
-    topics = await db.get_active_topics(limit=20)
-
-    # 为每个主题获取情报包
-    topics_with_intel = []
-    for topic in topics:
-        intel = await db.get_topic_intelligence(topic.id)
-        topics_with_intel.append({
-            "topic": topic,
-            "intel": intel,
-        })
-
-    # 获取未关联主题的原文
+    # 获取有价值的帖子（按评分排序，显示所有）
     async with db.session() as session:
-        result = await session.execute(
-            select(RawContent).where(
-                or_(RawContent.topic_id == None, RawContent.is_clustered == False)
-            ).order_by(RawContent.published_at.desc()).limit(20)
+        # 帖子 - 移除 limit 限制
+        posts_result = await session.execute(
+            select(RawContent)
+            .where(RawContent.value_score > 0)
+            .order_by(RawContent.value_score.desc())
         )
-        unclustered_contents = result.scalars().all()
+        posts = posts_result.scalars().all()
 
-    return templates.TemplateResponse("index.html", {
+        # 情报
+        intels_result = await session.execute(
+            select(IntelligencePackage)
+            .where(IntelligencePackage.is_published == True)
+            .order_by(IntelligencePackage.published_at.desc())
+            .limit(5)
+        )
+        intels = intels_result.scalars().all()
+
+        # 为情报添加来源头像
+        intels_with_avatars = []
+        for intel in intels:
+            # 获取相关帖子的头像
+            if intel.topic_id:
+                avatars_result = await session.execute(
+                    select(RawContent.author_avatar)
+                    .where(RawContent.topic_id == intel.topic_id)
+                    .where(RawContent.author_avatar != None)
+                    .limit(5)
+                )
+                avatars = [r[0] for r in avatars_result.fetchall() if r[0]]
+            else:
+                avatars = []
+
+            intels_with_avatars.append({
+                "tldr": intel.tldr,
+                "signal": intel.signal or "",
+                "shift": intel.shift or "",
+                "alpha": intel.alpha or [],
+                "source_count": intel.source_count,
+                "source_avatars": avatars,
+            })
+
+    return templates.TemplateResponse("feed.html", {
         "request": request,
-        "stats": stats,
-        "topics_with_intel": topics_with_intel,
-        "unclustered_contents": unclustered_contents,
-        "now": datetime.now(),
+        "posts": posts,
+        "intels": intels_with_avatars,
     })
 
 
-@app.get("/topics", response_class=HTMLResponse)
-async def topics_page(
-    request: Request,
-    category: Optional[str] = None,
-    sort: str = Query("heat", description="排序方式: heat/time/sources"),
-    page: int = Query(1, ge=1),
-):
-    """主题列表页"""
-    limit = 20
-    offset = (page - 1) * limit
-
-    # 解析分类
-    cat_enum = None
-    if category:
-        try:
-            cat_enum = IntelCategoryEnum(category)
-        except ValueError:
-            pass
-
-    topics = await db.get_active_topics(category=cat_enum, limit=limit, offset=offset, sort_by=sort)
-
-    # 分类列表
-    categories = [
-        {"value": "model_release", "label": "模型发布", "emoji": "🚀"},
-        {"value": "funding", "label": "融资消息", "emoji": "💰"},
-        {"value": "product_launch", "label": "产品发布", "emoji": "📦"},
-        {"value": "research", "label": "研究论文", "emoji": "📚"},
-        {"value": "drama", "label": "行业八卦", "emoji": "🎭"},
-        {"value": "tutorial", "label": "教程分享", "emoji": "📖"},
-        {"value": "market_signal", "label": "市场信号", "emoji": "📊"},
-    ]
-
-    return templates.TemplateResponse("topics.html", {
-        "request": request,
-        "topics": topics,
-        "categories": categories,
-        "current_category": category,
-        "current_sort": sort,
-        "page": page,
-    })
-
-
-@app.get("/topic/{topic_id}", response_class=HTMLResponse)
-async def topic_detail(request: Request, topic_id: int):
-    """主题详情页"""
-    topic = await db.get_topic_by_id(topic_id)
-    if not topic:
-        return templates.TemplateResponse("404.html", {
-            "request": request,
-            "message": "主题不存在"
-        }, status_code=404)
-
-    # 获取相关内容
-    contents = await db.get_topic_contents(topic_id)
-
-    # 获取情报包
-    intel = await db.get_topic_intelligence(topic_id)
-
-    return templates.TemplateResponse("topic_detail.html", {
-        "request": request,
-        "topic": topic,
-        "contents": contents,
-        "intel": intel,
-    })
-
-
-@app.get("/intelligence", response_class=HTMLResponse)
-async def intelligence_page(
-    request: Request,
-    page: int = Query(1, ge=1),
-):
-    """情报包列表页"""
-    limit = 10
-    offset = (page - 1) * limit
-
-    intel_packages = await db.get_published_intelligence(limit=limit, offset=offset)
-
-    # 获取关联的主题信息
-    intel_with_topics = []
-    for intel in intel_packages:
-        topic = await db.get_topic_by_id(intel.topic_id)
-        intel_with_topics.append({
-            "intel": intel,
-            "topic": topic,
-        })
-
-    return templates.TemplateResponse("intelligence.html", {
-        "request": request,
-        "intel_list": intel_with_topics,
-        "page": page,
-    })
 
 
 # ==================== API 路由 ====================
@@ -185,89 +146,6 @@ async def intelligence_page(
 async def api_stats():
     """获取统计数据"""
     return await db.get_clustering_stats()
-
-
-@app.get("/api/topics")
-async def api_topics(
-    category: Optional[str] = None,
-    limit: int = Query(20, le=100),
-    offset: int = Query(0, ge=0),
-):
-    """获取主题列表"""
-    cat_enum = None
-    if category:
-        try:
-            cat_enum = IntelCategoryEnum(category)
-        except ValueError:
-            pass
-
-    topics = await db.get_active_topics(category=cat_enum, limit=limit, offset=offset)
-
-    result = []
-    for t in topics:
-        intel = await db.get_topic_intelligence(t.id)
-        result.append({
-            "id": t.id,
-            "title": t.title,
-            "category": t.category.value if t.category else None,
-            "heat_score": t.heat_score,
-            "source_count": t.source_count,
-            "first_seen_at": t.first_seen_at.isoformat() if t.first_seen_at else None,
-            "tldr": intel.tldr if intel else None,
-        })
-
-    return {"topics": result}
-
-
-@app.get("/api/topic/{topic_id}")
-async def api_topic_detail(topic_id: int):
-    """获取主题详情"""
-    topic = await db.get_topic_by_id(topic_id)
-    if not topic:
-        return {"error": "Topic not found"}
-
-    contents = await db.get_topic_contents(topic_id)
-    intel = await db.get_topic_intelligence(topic_id)
-
-    return {
-        "topic": {
-            "id": topic.id,
-            "title": topic.title,
-            "category": topic.category.value if topic.category else None,
-            "description": topic.description,
-            "keywords": topic.keywords,
-            "heat_score": topic.heat_score,
-            "source_count": topic.source_count,
-            "first_seen_at": topic.first_seen_at.isoformat() if topic.first_seen_at else None,
-        },
-        "contents": [
-            {
-                "id": c.id,
-                "title": c.title,
-                "text": c.text_content,
-                "source_url": c.source_url,
-                "source_type": c.source_type.value if c.source_type else None,
-                "published_at": c.published_at.isoformat() if c.published_at else None,
-                "media_urls": c.media_urls if c.media_urls else [],
-                "author_name": c.author_name,
-                "author_handle": c.author_handle,
-                "author_avatar": c.author_avatar,
-                "is_verified": getattr(c, 'is_verified', False),
-                "kol_tier": c.raw_data.get('kol_tier', 'observer') if c.raw_data else 'observer',
-                "likes": c.likes or 0,
-                "retweets": c.retweets or 0,
-                "replies": c.replies or 0,
-                "raw_data": c.raw_data if c.raw_data else {},
-            }
-            for c in contents
-        ],
-        "intelligence": {
-            "tldr": intel.tldr if intel else None,
-            "fact_summary": intel.fact_summary if intel else None,
-            "action_guide": intel.action_guide if intel else None,
-            "verdict": intel.verdict if intel else None,
-        } if intel else None,
-    }
 
 
 @app.get("/api/content/{content_id}")
@@ -401,17 +279,19 @@ async def api_list_kols(
     tier: Optional[str] = None,
     category: Optional[str] = None,
     is_active: Optional[bool] = None,
-    limit: int = Query(50, le=200),
+    limit: int = Query(50, ge=1),
     offset: int = Query(0, ge=0),
 ):
     """获取 KOL 列表"""
-    from sqlalchemy import select
+    from sqlalchemy import select, func as sql_func
 
     stmt = select(KOL)
+    count_stmt = select(sql_func.count(KOL.id))
 
     if tier:
         try:
             stmt = stmt.where(KOL.tier == KOLTierEnum(tier))
+            count_stmt = count_stmt.where(KOL.tier == KOLTierEnum(tier))
         except ValueError:
             pass
 
@@ -419,12 +299,16 @@ async def api_list_kols(
 
     if is_active is not None:
         stmt = stmt.where(KOL.is_active == is_active)
+        count_stmt = count_stmt.where(KOL.is_active == is_active)
 
     stmt = stmt.order_by(KOL.weight.desc()).offset(offset).limit(limit)
 
     async with db.session() as session:
         result = await session.execute(stmt)
         kols = result.scalars().all()
+
+        count_result = await session.execute(count_stmt)
+        total = count_result.scalar() or 0
 
     return {
         "kols": [
@@ -434,13 +318,15 @@ async def api_list_kols(
                 "name": k.name,
                 "tier": k.tier.value if k.tier else None,
                 "role": k.role.value if k.role else None,
-                "category": k.category.value if k.category else None,
                 "weight": k.weight,
                 "is_active": k.is_active,
                 "rss_url": f"{NITTER_INSTANCE}/{k.handle}/rss" if k.handle else None,
             }
             for k in kols
-        ]
+        ],
+        "total": total,
+        "limit": limit,
+        "offset": offset
     }
 
 
@@ -605,71 +491,4 @@ async def api_delete_kol(kol_id: int):
         await session.delete(kol)
 
     return {"success": True, "message": f"KOL @{handle} 已删除"}
-
-
-# ==================== 翻译 API ====================
-
-class TranslateRequest(BaseModel):
-    """翻译请求"""
-    text: str
-    target_lang: str = "en"  # en 或 zh
-
-
-@app.post("/api/translate")
-async def api_translate(req: TranslateRequest):
-    """翻译文本 - 使用 Google Translate 免费 API"""
-    text = req.text[:5000]  # 限制长度
-    target = req.target_lang
-
-    # 检测源语言
-    # 简单判断：如果包含中文字符，源语言是中文
-    has_chinese = bool(re.search(r'[\u4e00-\u9fff]', text))
-
-    if target == "zh" and has_chinese:
-        # 已经是中文，不需要翻译
-        return {"translated": text, "source_lang": "zh", "target_lang": "zh"}
-    elif target == "en" and not has_chinese:
-        # 已经是英文，不需要翻译
-        return {"translated": text, "source_lang": "en", "target_lang": "en"}
-
-    source_lang = "zh" if has_chinese else "en"
-
-    try:
-        # 使用 Google Translate 免费 API
-        async with httpx.AsyncClient(timeout=10) as client:
-            # Google Translate 免费端点
-            url = "https://translate.googleapis.com/translate_a/single"
-            params = {
-                "client": "gtx",
-                "sl": "zh-CN" if source_lang == "zh" else "en",
-                "tl": "en" if target == "en" else "zh-CN",
-                "dt": "t",
-                "q": text
-            }
-
-            response = await client.get(url, params=params)
-            response.raise_for_status()
-
-            # 解析响应
-            result = response.json()
-            translated_text = ""
-            if result and result[0]:
-                for item in result[0]:
-                    if item[0]:
-                        translated_text += item[0]
-
-            return {
-                "translated": translated_text,
-                "source_lang": source_lang,
-                "target_lang": target
-            }
-
-    except Exception as e:
-        # 翻译失败，返回原文
-        return {
-            "translated": text,
-            "source_lang": source_lang,
-            "target_lang": target,
-            "error": str(e)
-        }
 

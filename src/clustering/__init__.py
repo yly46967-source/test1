@@ -1,29 +1,25 @@
 """主题聚类模块"""
-from .topic_cluster import TopicClusterer, ClusterResult, ClusterAction
+# 新版简化流水线
+from .pipeline import SimplePipeline, ClusterDecision, ClusterResult
+from .content_filter import ContentFilter, FilterResult, filter_contents
+
+# 兼容旧版导入
+from .topic_cluster import TopicClusterer, ClusterAction
 from .deduplicator import SimHash, ContentDeduplicator
 from .enhanced_pipeline import EnhancedClusteringPipeline
-from .content_scorer import (
-    ContentScorer,
-    ContentScore,
-    ContentFilter,
-    CategoryId,
-    score_and_filter,
-    score_and_rank,
-)
 
 __all__ = [
-    "TopicClusterer",
+    # 新版
+    "SimplePipeline",
+    "ClusterDecision",
     "ClusterResult",
+    "ContentFilter",
+    "FilterResult",
+    "filter_contents",
+    # 兼容旧版
+    "TopicClusterer",
     "ClusterAction",
-    # 增强版
     "SimHash",
     "ContentDeduplicator",
     "EnhancedClusteringPipeline",
-    # 三维评分
-    "ContentScorer",
-    "ContentScore",
-    "ContentFilter",
-    "CategoryId",
-    "score_and_filter",
-    "score_and_rank",
 ]

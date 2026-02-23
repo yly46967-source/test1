@@ -1,0 +1,621 @@
+{% extends "base_feed.html" %}
+
+{% block title %}XInsight - 热度排行{% endblock %}
+
+{% block content %}
+<div class="x-layout">
+    <!-- 左栏：导航与功能 -->
+    <aside class="x-sidebar">
+        <div class="sidebar-logo">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+            <span class="sidebar-logo-text">XInsight</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="/" class="nav-item active">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                <span>首页</span>
+            </a>
+
+            <a href="#" class="nav-item" onclick="openModal('kol'); return false;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                <span>KOL 管理</span>
+            </a>
+
+            <div class="nav-divider"></div>
+
+            <a href="#" class="nav-item" onclick="openModal('rss'); return false;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 11a9 9 0 0 1 9 9"/>
+                    <path d="M4 4a16 16 0 0 1 16 16"/>
+                    <circle cx="5" cy="19" r="1"/>
+                </svg>
+                <span>RSS 数据源</span>
+            </a>
+
+            <a href="#" class="nav-item" onclick="openModal('model'); return false;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                </svg>
+                <span>AI 模型</span>
+            </a>
+
+            <a href="#" class="nav-item" onclick="openModal('telegram'); return false;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13"/>
+                    <path d="M22 2L15 22l-4-9-9-4 20-7z"/>
+                </svg>
+                <span>Telegram</span>
+            </a>
+
+            <div class="sidebar-spacer"></div>
+
+            <a href="#" class="nav-item" onclick="openModal('settings'); return false;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                <span>设置</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- 中栏：热度排行 -->
+    <main class="x-feed">
+        <header class="feed-header">
+            <h1>热度排行</h1>
+            <span class="feed-count">{{ posts|length }} 条</span>
+        </header>
+
+        <div class="feed-list">
+            {% if posts %}
+            {% for post in posts %}
+            <article class="x-post" data-id="{{ post.id }}">
+                <div class="post-avatar">
+                    {% if post.author_avatar %}
+                    <img src="{{ post.author_avatar }}" alt="{{ post.author_name }}">
+                    {% else %}
+                    <span class="avatar-letter">{{ (post.author_name or 'U')[0]|upper }}</span>
+                    {% endif %}
+                </div>
+                <div class="post-content">
+                    <div class="post-header">
+                        <span class="post-author">{{ post.author_name or post.author_handle }}</span>
+                        {% if post.is_verified %}
+                        <svg class="verified-badge" width="16" height="16" viewBox="0 0 22 22" fill="#1d9bf0">
+                            <path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/>
+                        </svg>
+                        {% endif %}
+                        <span class="post-handle">@{{ post.author_handle }}</span>
+                        <span class="post-time">· {{ post.published_at|format_chinese_time }}</span>
+                    </div>
+                    <div class="post-text">{{ post.text_content }}</div>
+                    {% if post.source_url %}
+                    <a href="{{ post.source_url }}" target="_blank" class="post-link" onclick="event.stopPropagation()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        <span>查看原文</span>
+                    </a>
+                    {% endif %}
+                    {% if post.media_urls %}
+                    <div class="post-media">
+                        {% for url in post.media_urls[:4] %}
+                        <img src="{{ url }}" alt="media" loading="lazy">
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <div class="post-metrics">
+                        <span class="metric">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                            </svg>
+                            {{ (post.replies or 0)|format_number }}
+                        </span>
+                        <span class="metric">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                            </svg>
+                            {{ (post.retweets or 0)|format_number }}
+                        </span>
+                        <span class="metric">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                            </svg>
+                            {{ (post.likes or 0)|format_number }}
+                        </span>
+                        <span class="metric score" title="价值评分">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                            </svg>
+                            {{ "%.1f"|format(post.value_score or 0) }}
+                        </span>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+            {% else %}
+            <div class="empty-feed">
+                <p>暂无热门帖子</p>
+                <p class="hint">运行 <code>python ainsight.py</code> 开始抓取</p>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <!-- 右栏：情报 -->
+    <aside class="x-intel">
+        <header class="intel-header">
+            <h2>今日情报</h2>
+        </header>
+
+        <div class="intel-list">
+            {% if intels %}
+            {% for intel in intels[:5] %}
+            <article class="intel-card">
+                <div class="intel-sources">
+                    {% for avatar in intel.source_avatars[:3] %}
+                    <img src="{{ avatar }}" alt="source" class="source-avatar">
+                    {% endfor %}
+                    {% if intel.source_count > 3 %}
+                    <span class="source-more">+{{ intel.source_count - 3 }}</span>
+                    {% endif %}
+                </div>
+                <h3 class="intel-title">{{ intel.tldr }}</h3>
+                <div class="intel-signal">
+                    <strong>核心信号</strong>
+                    <p>{{ intel.signal[:120] }}{% if intel.signal|length > 120 %}...{% endif %}</p>
+                </div>
+                <div class="intel-shift">
+                    <strong>利益重构</strong>
+                    <p>{{ intel.shift[:80] }}{% if intel.shift|length > 80 %}...{% endif %}</p>
+                </div>
+                {% if intel.alpha %}
+                <div class="intel-alpha">
+                    <strong>行动灵感</strong>
+                    <ul>
+                        {% for action in intel.alpha[:2] %}
+                        <li>{{ action[:60] }}{% if action|length > 60 %}...{% endif %}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </article>
+            {% endfor %}
+            {% else %}
+            <div class="empty-intel">
+                <p>暂无情报</p>
+                <p class="hint">需要 2+ 帖子讨论同一主题</p>
+            </div>
+            {% endif %}
+        </div>
+    </aside>
+</div>
+
+<!-- 模态框 -->
+<div class="modal-overlay" id="modal-rss">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="modal-title">RSS 数据源</span>
+            <div class="modal-close" onclick="closeModal('rss')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="setting-item">
+                <div class="setting-label">Nitter 实例</div>
+                <input type="text" class="setting-input" value="https://nitter.privacydev.net" placeholder="Nitter 实例地址">
+                <div class="setting-hint">用于获取 X/Twitter RSS 订阅</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-model">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="modal-title">AI 模型设置</span>
+            <div class="modal-close" onclick="closeModal('model')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="setting-item">
+                <div class="setting-label">模型名称</div>
+                <input type="text" class="setting-input" value="qwen-plus" placeholder="qwen-plus">
+            </div>
+            <div class="setting-item">
+                <div class="setting-label">API 密钥</div>
+                <input type="password" class="setting-input" placeholder="sk-...">
+                <div class="setting-hint">DashScope API Key</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-telegram">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="modal-title">Telegram 推送</span>
+            <div class="modal-close" onclick="closeModal('telegram')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="setting-item">
+                <div class="setting-label">Bot Token</div>
+                <input type="password" class="setting-input" placeholder="123456:ABC-DEF...">
+            </div>
+            <div class="setting-item">
+                <div class="setting-label">Chat ID</div>
+                <input type="text" class="setting-input" placeholder="-100123456789">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-settings">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="modal-title">系统设置</span>
+            <div class="modal-close" onclick="closeModal('settings')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="setting-item">
+                <div class="setting-label">数据库</div>
+                <input type="text" class="setting-input" value="sqlite:///ainsight.db" readonly>
+            </div>
+            <div class="setting-item">
+                <div class="setting-label">版本</div>
+                <div class="setting-hint">XInsight MVP v1.0</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- KOL 管理弹窗 -->
+<div class="modal-overlay" id="modal-kol">
+    <div class="modal modal-large">
+        <div class="modal-header">
+            <div class="modal-tabs">
+                <button class="modal-tab active" onclick="switchKolTab('list')">KOL 库</button>
+                <button class="modal-tab" onclick="switchKolTab('import')">导入</button>
+            </div>
+            <div class="modal-close" onclick="closeModal('kol')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </div>
+        </div>
+        <div class="modal-body">
+            <!-- KOL 列表 -->
+            <div id="kol-tab-list" class="kol-tab-content active">
+                <div class="kol-grid-container" id="kol-list">
+                    <div class="kol-loading">加载中...</div>
+                </div>
+                <div class="kol-pagination" id="kol-pagination"></div>
+            </div>
+            <!-- 导入 KOL -->
+            <div id="kol-tab-import" class="kol-tab-content">
+                <div class="setting-item">
+                    <div class="setting-label">KOL 账号（支持批量导入）</div>
+                    <textarea class="setting-textarea" id="kol-import-input" rows="6" placeholder="输入 X/Twitter 用户名，每行一个&#10;例如：&#10;elonmusk&#10;sama&#10;karpathy"></textarea>
+                    <div class="setting-hint">每行输入一个用户名（不需要 @ 符号），支持批量导入</div>
+                </div>
+                <button class="kol-import-btn" onclick="importKol()">确定导入</button>
+                <div id="kol-import-result" class="kol-import-result"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- KOL 编辑弹窗 -->
+<div class="modal-overlay" id="modal-kol-edit">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="modal-title">编辑 KOL</span>
+            <div class="modal-close" onclick="closeModal('kol-edit')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </div>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="kol-edit-id">
+            <div class="setting-item">
+                <div class="setting-label">名称</div>
+                <input type="text" class="setting-input" id="kol-edit-name" placeholder="显示名称">
+            </div>
+            <div class="setting-item">
+                <div class="setting-label">用户名</div>
+                <input type="text" class="setting-input" id="kol-edit-handle" readonly>
+            </div>
+            <button class="kol-import-btn" onclick="saveKolEdit()">保存</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// 模态框控制
+function openModal(id) {
+    document.getElementById('modal-' + id).classList.add('active');
+    if (id === 'kol') {
+        loadKolList();
+    }
+}
+
+function closeModal(id) {
+    document.getElementById('modal-' + id).classList.remove('active');
+}
+
+// 点击遮罩关闭
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            overlay.classList.remove('active');
+        }
+    });
+});
+
+// 帖子点击跳转
+document.querySelectorAll('.x-post').forEach(post => {
+    post.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return;
+        const link = post.querySelector('.post-link');
+        if (link) {
+            window.open(link.href, '_blank');
+        }
+    });
+});
+
+// KOL 管理功能
+let kolCurrentPage = 1;
+const kolPageSize = 24;
+
+function switchKolTab(tab) {
+    document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.kol-tab-content').forEach(c => c.classList.remove('active'));
+
+    if (tab === 'list') {
+        document.querySelector('.modal-tab:first-child').classList.add('active');
+        document.getElementById('kol-tab-list').classList.add('active');
+    } else {
+        document.querySelector('.modal-tab:last-child').classList.add('active');
+        document.getElementById('kol-tab-import').classList.add('active');
+    }
+}
+
+async function loadKolList(page = 1) {
+    kolCurrentPage = page;
+    const container = document.getElementById('kol-list');
+    const pagination = document.getElementById('kol-pagination');
+    container.innerHTML = '<div class="kol-loading">加载中...</div>';
+
+    try {
+        const offset = (page - 1) * kolPageSize;
+        const response = await fetch(`/api/kols?limit=${kolPageSize}&offset=${offset}`);
+        const data = await response.json();
+
+        if (data.kols && data.kols.length > 0) {
+            container.innerHTML = `<div class="kol-grid">${data.kols.map(kol => `
+                <div class="kol-card" data-id="${kol.id}">
+                    <div class="kol-card-avatar">${(kol.name || kol.handle)[0].toUpperCase()}</div>
+                    <div class="kol-card-info">
+                        <div class="kol-card-name">${kol.name || kol.handle}</div>
+                        <div class="kol-card-handle">@${kol.handle}</div>
+                    </div>
+                    <div class="kol-card-actions">
+                        <button class="kol-action-btn kol-edit-btn" onclick="openKolEdit(${kol.id}, '${kol.handle}', '${kol.name || kol.handle}')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                        </button>
+                        <button class="kol-action-btn kol-delete-btn" onclick="deleteKol(${kol.id}, '${kol.handle}')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            `).join('')}</div>`;
+
+            // 渲染分页
+            const totalPages = Math.ceil(data.total / kolPageSize);
+            if (totalPages > 1) {
+                let paginationHtml = '<div class="pagination-info">共 ' + data.total + ' 个 KOL</div><div class="pagination-btns">';
+
+                if (page > 1) {
+                    paginationHtml += `<button class="page-btn" onclick="loadKolList(${page - 1})">上一页</button>`;
+                }
+
+                // 显示页码
+                const startPage = Math.max(1, page - 2);
+                const endPage = Math.min(totalPages, page + 2);
+
+                if (startPage > 1) {
+                    paginationHtml += `<button class="page-btn" onclick="loadKolList(1)">1</button>`;
+                    if (startPage > 2) paginationHtml += '<span class="page-dots">...</span>';
+                }
+
+                for (let i = startPage; i <= endPage; i++) {
+                    paginationHtml += `<button class="page-btn ${i === page ? 'active' : ''}" onclick="loadKolList(${i})">${i}</button>`;
+                }
+
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) paginationHtml += '<span class="page-dots">...</span>';
+                    paginationHtml += `<button class="page-btn" onclick="loadKolList(${totalPages})">${totalPages}</button>`;
+                }
+
+                if (page < totalPages) {
+                    paginationHtml += `<button class="page-btn" onclick="loadKolList(${page + 1})">下一页</button>`;
+                }
+
+                paginationHtml += '</div>';
+                pagination.innerHTML = paginationHtml;
+            } else {
+                pagination.innerHTML = '<div class="pagination-info">共 ' + data.total + ' 个 KOL</div>';
+            }
+        } else {
+            container.innerHTML = '<div class="kol-empty">暂无 KOL，请先导入</div>';
+            pagination.innerHTML = '';
+        }
+    } catch (error) {
+        container.innerHTML = '<div class="kol-error">加载失败</div>';
+        pagination.innerHTML = '';
+    }
+}
+
+function openKolEdit(id, handle, name) {
+    document.getElementById('kol-edit-id').value = id;
+    document.getElementById('kol-edit-handle').value = handle;
+    document.getElementById('kol-edit-name').value = name;
+    document.getElementById('modal-kol-edit').classList.add('active');
+}
+
+async function saveKolEdit() {
+    const id = document.getElementById('kol-edit-id').value;
+    const name = document.getElementById('kol-edit-name').value.trim();
+
+    if (!name) {
+        alert('请输入名称');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/kols/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            closeModal('kol-edit');
+            loadKolList(kolCurrentPage);
+        } else {
+            alert(data.detail || '保存失败');
+        }
+    } catch (error) {
+        alert('保存失败');
+    }
+}
+
+async function deleteKol(id, handle) {
+    if (!confirm(`确定删除 @${handle}？`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/kols/${id}`, {
+            method: 'DELETE'
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            loadKolList(kolCurrentPage);
+        } else {
+            alert(data.detail || '删除失败');
+        }
+    } catch (error) {
+        alert('删除失败');
+    }
+}
+
+async function importKol() {
+    const input = document.getElementById('kol-import-input');
+    const result = document.getElementById('kol-import-result');
+    const text = input.value.trim();
+
+    if (!text) {
+        result.innerHTML = '<span class="error">请输入用户名</span>';
+        return;
+    }
+
+    // 支持批量导入：按换行、逗号、空格分割
+    const handles = text.split(/[\n,\s]+/)
+        .map(h => h.trim().replace(/^@/, ''))
+        .filter(h => h.length > 0);
+
+    if (handles.length === 0) {
+        result.innerHTML = '<span class="error">请输入有效的用户名</span>';
+        return;
+    }
+
+    result.innerHTML = `<span class="loading">正在导入 ${handles.length} 个 KOL...</span>`;
+
+    let successCount = 0;
+    let failedHandles = [];
+
+    for (const handle of handles) {
+        try {
+            const response = await fetch('/api/kols', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ handle: handle })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                successCount++;
+            } else {
+                failedHandles.push(handle);
+            }
+        } catch (error) {
+            failedHandles.push(handle);
+        }
+    }
+
+    // 显示结果
+    let resultHtml = '';
+    if (successCount > 0) {
+        resultHtml += `<span class="success">成功导入 ${successCount} 个 KOL</span>`;
+    }
+    if (failedHandles.length > 0) {
+        resultHtml += `<br><span class="error">失败 ${failedHandles.length} 个: ${failedHandles.slice(0, 5).join(', ')}${failedHandles.length > 5 ? '...' : ''}</span>`;
+    }
+
+    result.innerHTML = resultHtml || '<span class="error">导入失败</span>';
+
+    if (successCount > 0) {
+        input.value = '';
+        loadKolList();
+    }
+}
+</script>
+{% endblock %}

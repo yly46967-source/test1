@@ -879,3 +879,39 @@ sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled 
 [SQL: INSERT INTO raw_contents (source_type, source_url, source_url_hash, kol_id, author_name, author_handle, author_avatar, is_verified, title, text_content, media_urls, code_snippet, likes, retweets, replies, stars, forks, topic_id, relevance_score, is_clustered, is_synthesized, published_at, clustered_at, raw_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, fetched_at, created_at]
 [parameters: ('X_POST', 'https://x.com/Fenng/status/1690611278140821504', 'c2f1cc95517d6fee03b4bfb4108d1e408bbf736dcb9f6b2d9039b9711330fa4c', None, None, None, None, 0, None, '这本书太牛逼了', 'null', None, 0, 0, 0, 0, 0, 1, 0.0, 1, 0, '2023-08-13 06:28:33.000000', '2026-02-22 00:49:01.313338', 'null')]
 (Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-02-23 14:34:00 │ [31mERROR[0m │ database        │ service.py:101 │ 数据库事务回滚: (sqlite3.OperationalError) no such column: raw_contents.topic_name
+[SQL: SELECT raw_contents.id, raw_contents.source_type, raw_contents.source_url, raw_contents.source_url_hash, raw_contents.kol_id, raw_contents.author_name, raw_contents.author_handle, raw_contents.author_avatar, raw_contents.is_verified, raw_contents.title, raw_contents.text_content, raw_contents.media_urls, raw_contents.code_snippet, raw_contents.likes, raw_contents.retweets, raw_contents.replies, raw_contents.stars, raw_contents.forks, raw_contents.topic_id, raw_contents.topic_name, raw_contents.relevance_score, raw_contents.value_score, raw_contents.is_clustered, raw_contents.is_synthesized, raw_contents.published_at, raw_contents.fetched_at, raw_contents.clustered_at, raw_contents.raw_data, raw_contents.created_at 
+FROM raw_contents 
+WHERE raw_contents.value_score > ? ORDER BY raw_contents.value_score DESC
+ LIMIT ? OFFSET ?]
+[parameters: (0, 50, 0)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-02-23 14:34:02 │ [31mERROR[0m │ database        │ service.py:101 │ 数据库事务回滚: (sqlite3.OperationalError) no such column: raw_contents.topic_name
+[SQL: SELECT raw_contents.id, raw_contents.source_type, raw_contents.source_url, raw_contents.source_url_hash, raw_contents.kol_id, raw_contents.author_name, raw_contents.author_handle, raw_contents.author_avatar, raw_contents.is_verified, raw_contents.title, raw_contents.text_content, raw_contents.media_urls, raw_contents.code_snippet, raw_contents.likes, raw_contents.retweets, raw_contents.replies, raw_contents.stars, raw_contents.forks, raw_contents.topic_id, raw_contents.topic_name, raw_contents.relevance_score, raw_contents.value_score, raw_contents.is_clustered, raw_contents.is_synthesized, raw_contents.published_at, raw_contents.fetched_at, raw_contents.clustered_at, raw_contents.raw_data, raw_contents.created_at 
+FROM raw_contents 
+WHERE raw_contents.value_score > ? ORDER BY raw_contents.value_score DESC
+ LIMIT ? OFFSET ?]
+[parameters: (0, 50, 0)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-02-23 14:34:15 │ [31mERROR[0m │ database        │ service.py:101 │ 数据库事务回滚: (sqlite3.OperationalError) no such column: raw_contents.topic_name
+[SQL: SELECT raw_contents.id, raw_contents.source_type, raw_contents.source_url, raw_contents.source_url_hash, raw_contents.kol_id, raw_contents.author_name, raw_contents.author_handle, raw_contents.author_avatar, raw_contents.is_verified, raw_contents.title, raw_contents.text_content, raw_contents.media_urls, raw_contents.code_snippet, raw_contents.likes, raw_contents.retweets, raw_contents.replies, raw_contents.stars, raw_contents.forks, raw_contents.topic_id, raw_contents.topic_name, raw_contents.relevance_score, raw_contents.value_score, raw_contents.is_clustered, raw_contents.is_synthesized, raw_contents.published_at, raw_contents.fetched_at, raw_contents.clustered_at, raw_contents.raw_data, raw_contents.created_at 
+FROM raw_contents 
+WHERE raw_contents.value_score > ? ORDER BY raw_contents.value_score DESC
+ LIMIT ? OFFSET ?]
+[parameters: (0, 50, 0)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-02-23 14:35:59 │ [31mERROR[0m │ database        │ service.py:101 │ 数据库事务回滚: (sqlite3.OperationalError) no such column: raw_contents.topic_name
+[SQL: SELECT raw_contents.id, raw_contents.source_type, raw_contents.source_url, raw_contents.source_url_hash, raw_contents.kol_id, raw_contents.author_name, raw_contents.author_handle, raw_contents.author_avatar, raw_contents.is_verified, raw_contents.title, raw_contents.text_content, raw_contents.media_urls, raw_contents.code_snippet, raw_contents.likes, raw_contents.retweets, raw_contents.replies, raw_contents.stars, raw_contents.forks, raw_contents.topic_id, raw_contents.topic_name, raw_contents.relevance_score, raw_contents.value_score, raw_contents.is_clustered, raw_contents.is_synthesized, raw_contents.published_at, raw_contents.fetched_at, raw_contents.clustered_at, raw_contents.raw_data, raw_contents.created_at 
+FROM raw_contents 
+WHERE raw_contents.value_score > ? ORDER BY raw_contents.value_score DESC
+ LIMIT ? OFFSET ?]
+[parameters: (0, 50, 0)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-02-23 19:55:04 │ [31mERROR[0m │ main            │ ainsight.py:216 │ 抓取失败: BrowserType.launch_persistent_context: Timeout 30000ms exceeded.
+Call log:
+  - <launching> C:\Program Files\Google\Chrome\Application\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --no-sandbox --profile-directory=Default --disable-blink-features=AutomationControlled --no-sandbox --user-data-dir=C:\Users\yyl\AppData\Local\Google\Chrome\User Data --remote-debugging-pipe about:blank
+  - <launched> pid=140860
+  - [pid=140860][err]
+  - [pid=140860][err] DevTools remote debugging requires a non-default data directory. Specify this using --user-data-dir.
+  - [pid=140860][err] [140860:210564:0223/195408.198:ERROR:google_apis\gcm\engine\registration_request.cc:290] Registration response error message: DEPRECATED_ENDPOINT
+

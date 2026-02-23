@@ -1,0 +1,766 @@
+19:54:51 │ [32mINFO[0m │ main         │ ==================================================
+19:54:51 │ [32mINFO[0m │ main         │ AInsight 启动
+19:54:51 │ [32mINFO[0m │ main         │ ==================================================
+19:54:51 │ [32mINFO[0m │ main         │ 数据库已连接
+19:54:51 │ [32mINFO[0m │ main         │ ==================================================
+19:54:51 │ [32mINFO[0m │ main         │ Twitter 抓取
+19:54:51 │ [32mINFO[0m │ main         │ ==================================================
+19:54:51 │ [32mINFO[0m │ main         │ 将抓取 10 个 Twitter 用户
+19:54:52 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Playwright browser initialized
+19:54:52 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Processing batch 1/2 (5 users)
+19:54:52 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Fetching @williamlong...
+19:55:05 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ @williamlong: 9 tweets fetched
+19:55:05 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Fetching @BrendanEich...
+19:55:18 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ @BrendanEich: 10 tweets fetched
+19:55:18 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Fetching @Fenng...
+19:55:28 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ @Fenng: 8 tweets fetched
+19:55:28 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Fetching @mranti...
+19:55:38 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ @mranti: 12 tweets fetched
+19:55:38 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Fetching @nikitabier...
+19:55:49 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ @nikitabier: 10 tweets fetched
+19:55:49 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Batch interval: 30.0s
+19:56:19 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Processing batch 2/2 (5 users)
+19:56:19 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Fetching @MarioNawfal...
+19:56:28 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ @MarioNawfal: 6 tweets fetched
+19:56:28 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Fetching @justinsuntron...
+19:56:38 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ @justinsuntron: 12 tweets fetched
+19:56:38 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Fetching @JeffBezos...
+19:56:50 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ @JeffBezos: 10 tweets fetched
+19:56:50 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Fetching @OpenAI...
+19:57:01 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ @OpenAI: 9 tweets fetched
+19:57:01 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Fetching @GeminiApp...
+19:57:12 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ @GeminiApp: 7 tweets fetched
+19:57:12 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Fetch completed: 10/10 users, 93 tweets
+19:57:12 │ [32mINFO[0m │ src.fetcher.playwright_twitter │ Playwright browser closed
+19:57:12 │ [32mINFO[0m │ main         │ @williamlong: 9 条推文
+19:57:12 │ [32mINFO[0m │ main         │ @BrendanEich: 10 条推文
+19:57:12 │ [32mINFO[0m │ main         │ @Fenng: 8 条推文
+19:57:12 │ [32mINFO[0m │ main         │ @mranti: 12 条推文
+19:57:12 │ [32mINFO[0m │ main         │ @nikitabier: 10 条推文
+19:57:12 │ [32mINFO[0m │ main         │ @MarioNawfal: 6 条推文
+19:57:12 │ [32mINFO[0m │ main         │ @justinsuntron: 12 条推文
+19:57:12 │ [32mINFO[0m │ main         │ @JeffBezos: 10 条推文
+19:57:12 │ [32mINFO[0m │ main         │ @OpenAI: 9 条推文
+19:57:12 │ [32mINFO[0m │ main         │ @GeminiApp: 7 条推文
+19:57:12 │ [32mINFO[0m │ main         │ Twitter 抓取完成: 保存 93 条新推文
+19:57:12 │ [32mINFO[0m │ main         │ Twitter 抓取: 93 条
+19:57:12 │ [32mINFO[0m │ src.fetcher.source_loader │ 加载 0 个数据源
+19:57:12 │ [32mINFO[0m │ main         │ ==================================================
+19:57:12 │ [32mINFO[0m │ main         │ 聚类处理
+19:57:12 │ [32mINFO[0m │ main         │ ==================================================
+19:57:13 │ [32mINFO[0m │ main         │ 待聚类内容: 50 条
+19:57:13 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"使用一个" OR "Grok" OR "越狱提示词" OR "之后"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:57:13 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 0 个候选主题
+19:57:13 │ [32mINFO[0m │ src.clustering.topic_cluster │ 无候选主题，创建新主题
+19:57:16 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.00
+19:57:16 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: Grok 3越狱提示词引发安全争议 (ID: 1)
+19:57:16 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"知乎问答"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:57:16 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 1 个候选主题
+19:57:17 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.10
+19:57:19 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: 知乎问答平台内容生态分析 (ID: 2)
+19:57:19 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"如果一部电影让你看完后就想屠杀某个种族或民族" OR "那么这部电影宣扬的就是法西斯主义和军国主义"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:57:19 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 2 个候选主题
+19:57:22 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:57:22 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] 如果一部电影让你看完后就想屠杀某个种族或民族，那么这部电影宣... (ID: 3)
+19:57:22 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"Grok居然能提供番号推荐" OR "就这一项" OR "就把ChatGPT等其他所有AI大模型给比下去了"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:57:22 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 3 个候选主题
+19:57:24 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: merge, 相关度: 0.85
+19:57:24 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"本国女人被外国男人睡" OR "就算有损国格" OR "其潜台词就是" OR "女人的身体是国家的财产和门面" OR "完全不把女人当人"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:57:24 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 3 个候选主题
+19:57:26 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.15
+19:57:28 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: 批判借爱国之名物化女性的错误思潮 (ID: 4)
+19:57:28 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"国内网友大多支持俄罗斯" OR "而很少有同情乌克兰" OR "主要原因是被洗脑洗傻了" OR "一个主权国家的领土完整不容侵犯是一个国际公认的原则问题" OR "一个联合国安理会常任理事国竟然公然违反联合国宪章"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:57:28 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 4 个候选主题
+19:57:31 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.15
+19:57:33 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: 俄乌冲突中的国际法与舆论分化 (ID: 5)
+19:57:33 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"我不建议去小城市养老" OR "小城市基本就是法治的盐碱地" OR "无法无天" OR "地方财政基本已经破产" OR "只要见到钱就像蚊子闻到了血"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:57:33 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:57:36 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:57:36 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] 我不建议去小城市养老，小城市基本就是法治的盐碱地，无法无天，... (ID: 6)
+19:57:36 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"知乎问答" OR "通过手机号码怎样知道机主姓名" OR "用支付宝转账"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:57:36 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:57:38 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: merge, 相关度: 0.85
+19:57:38 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"知乎问答" OR "为什么现在很多人反感辩证法" OR "转载的人家的"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:57:38 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:57:40 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: merge, 相关度: 0.85
+19:57:40 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"http" OR "brave" OR "com" OR "premium" OR "lists"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:57:40 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:57:43 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.12
+19:57:45 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: Brave推出Premium Search订阅服务 (ID: 7)
+19:57:45 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"https" OR "mozilla"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:57:45 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:57:48 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:57:48 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] W T F
+
+
+https://
+mozilla.org/e... (ID: 8)
+19:57:48 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"Hi" OR "created" OR "JavaScript" OR "You"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:57:48 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:57:51 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.12
+19:57:53 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: JavaScript隐私风险与反追踪实践 (ID: 9)
+19:57:53 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"Who" OR "owns" OR "your" OR "attention" OR "Who"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:57:53 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:57:56 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:57:56 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] Who owns your attention? Who o... (ID: 10)
+19:57:56 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"miss" OR "the" OR "90s"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:57:56 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:57:58 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.05
+19:58:00 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: 怀旧情绪：90年代文化回潮 (ID: 11)
+19:58:00 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"Twitter" OR "search" OR "quickly" OR "confirms" OR "that"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:00 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:03 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:58:03 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] Twitter search quickly confirm... (ID: 12)
+19:58:03 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"People" OR "used" OR "to" OR "follow"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:03 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:06 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:58:06 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] People I used to follow, inclu... (ID: 13)
+19:58:06 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"GitHub" OR "cofounder" OR "https" OR "co"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:06 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:08 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.05
+19:58:09 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: GitHub联合创始人动态 (ID: 14)
+19:58:09 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ 内容缺少必填字段
+19:58:09 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ 内容缺少必填字段
+19:58:09 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"黑粉是执着的" OR "不加批判的" OR "不喜欢你成为他们身份的一部分" OR "他们在自己的脑海中创造了一个比现实更糟糕的你的形象" OR "你做的每件事都是坏事"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:09 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:13 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:58:13 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] 黑粉是执着的，不加批判的。不喜欢你成为他们身份的一部分，他们... (ID: 15)
+19:58:13 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"刚看到一句话" OR "疫情搞得村头的狗都以为自己是警犬了"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:13 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:15 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.15
+19:58:17 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: 疫情下的幽默社会观察 (ID: 16)
+19:58:17 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"奥威尔的这句话在今天依然有意义"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:17 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:19 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.50
+19:58:19 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] 奥威尔的这句话在今天依然有意义... (ID: 17)
+19:58:19 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"可能是业界最全的原研药" OR "进口药" OR "目录" OR "我们同事调研了网络上流传的几个原研药清单" OR "比较多的一份收录了"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:19 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:21 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.05
+19:58:24 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: 业界最全原研药（进口药）目录发布 (ID: 18)
+19:58:24 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"金庸可能也没意识到" OR "他小说里的丐帮最爱国这个设定实在是太黑色幽默了"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:24 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:27 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:58:27 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] 金庸可能也没意识到，他小说里的丐帮最爱国这个设定实在是太黑色... (ID: 19)
+19:58:27 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"找到罗翔的这个原话了"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:27 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:29 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:58:29 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] 找到罗翔的这个原话了 ... (ID: 20)
+19:58:29 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"昨天直播的时候说起在门诊开药的事儿来" OR "我随口说了一个" OR "老舅定律" OR "定律一" OR "门诊给你开的药物处方里如果含有三个或三个以上药物"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:29 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:32 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.05
+19:58:34 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: 老舅定律：门诊多药处方的合理性质疑 (ID: 21)
+19:58:34 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ 内容缺少必填字段
+19:58:34 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"解释下过去三周淡出推特的原因" OR "1月10日" OR "我突因心痛摔倒" OR "诊断是" OR "主动脉夹层A型"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:34 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:36 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.05
+19:58:38 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: 财经媒体人经历主动脉夹层生死劫 (ID: 22)
+19:58:38 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"太后现代了" OR "女排亚洲杯排小组赛" OR "中国对伊朗" OR "一边全口罩" OR "一边全黑袍头罩"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:38 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:41 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:58:41 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] 太后现代了，女排亚洲杯排小组赛，中国对伊朗，一边全口罩，一边... (ID: 23)
+19:58:41 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"我认真说一句" OR "李文亮事件上" OR "任何五毛都死全家"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:41 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:44 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:58:44 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] 我认真说一句，李文亮事件上，任何五毛都死全家。... (ID: 24)
+19:58:44 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"今天人民日报评论" OR "核酸乱象不止" OR "疫情永无宁日" OR "我早说过" OR "核酸公司是政府第一个要祭旗的"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:44 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:46 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.15
+19:58:48 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: 核酸乱象与疫情治理路径反思 (ID: 25)
+19:58:48 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"谢谢南传学生" OR "此刻特别自豪自己是土生土长的南京人"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:48 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:51 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:58:51 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] 谢谢南传学生。此刻特别自豪自己是土生土长的南京人。... (ID: 26)
+19:58:51 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"这是Midjourney画的一对情侣" OR "人类画师别活了"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:51 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:54 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:58:54 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] 这是Midjourney画的一对情侣，人类画师别活了。... (ID: 27)
+19:58:54 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"经过此轮封禁" OR "还在国内的人应该意识到" OR "支付要少用微信" OR "多用支付宝" OR "毕竟后者没和社交功能捆绑"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:54 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:58:57 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:58:57 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] 经过此轮封禁，还在国内的人应该意识到，支付要少用微信，多用支... (ID: 28)
+19:58:57 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"证明文心一言画画是先翻译成英文" OR "内核是英文模型在画画的证据"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:58:57 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:00 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.15
+19:59:02 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: 文心一言图像生成依赖英文模型的实证分析 (ID: 29)
+19:59:02 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"乌克兰大使馆推出了乌克兰战争中文信息网站" OR "声称是对抗中文世界关于乌克兰战争的虚假信息" OR "https" OR "war" OR "ukraine"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:59:02 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:05 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: merge, 相关度: 0.85
+19:59:05 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"我觉得目前赚核酸检测钱的那些老板们最好谨慎点" OR "现在是政府还在执行清零政策" OR "有一天撑不下去" OR "更换政策" OR "一看全国医保资金都被耗散的差不多"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:59:05 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:07 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.12
+19:59:09 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: 核酸检测利益链的政策风险警示 (ID: 30)
+19:59:09 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"美国股市大降" OR "一片怨声载道" OR "然而今天的白宫网站新闻是"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:59:09 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:11 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:59:11 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] 美国股市大降，一片怨声载道，然而今天的白宫网站新闻是：... (ID: 31)
+19:59:11 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"日本首相石破茂今天发表了战后80年的感想" OR "从宪法" OR "政府" OR "议会" OR "媒体"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:59:11 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:14 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:59:14 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] 日本首相石破茂今天发表了战后80年的感想，从宪法、政府、议会... (ID: 32)
+19:59:14 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"After" OR "10" OR "years" OR "of" OR "building"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:59:14 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:16 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.05
+19:59:18 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: 十年社交App创业经验总结 (ID: 33)
+19:59:18 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"Current" OR "state" OR "of" OR "the" OR "medical"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:59:18 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:22 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.55
+19:59:22 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] Current state of the medical e... (ID: 34)
+19:59:22 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"Elon" OR "watching" OR "federal" OR "employees" OR "enter"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:59:22 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:25 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:59:25 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] Elon watching federal employee... (ID: 35)
+19:59:25 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"Happy" OR "Easter"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:59:25 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:26 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.05
+19:59:28 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: Happy Easter节日问候 (ID: 36)
+19:59:28 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"Bro" OR "the" OR "tariffs" OR "are" OR "good"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:59:28 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:32 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:59:32 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] Bro the tariffs are good. Yes ... (ID: 37)
+19:59:32 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"You" OR "cannot" OR "spin" OR "this" OR "If"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:59:32 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:34 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: merge, 相关度: 0.85
+19:59:34 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"miss" OR "when" OR "this" OR "was"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:59:34 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:36 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:59:36 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] I miss when this was our bigge... (ID: 38)
+19:59:36 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"The" OR "fact" OR "TikTok" OR "didn"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:59:36 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:40 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: review, 相关度: 0.45
+19:59:40 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建待审核主题: [待审核] The fact TikTok didn’t sell, d... (ID: 39)
+19:59:40 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"This" OR "week" OR "we" OR "purged"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:59:40 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:43 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.12
+19:59:44 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: 平台大规模清理回复垃圾机器人 (ID: 40)
+19:59:44 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"Ladies" OR "and" OR "gentlemen" OR "ve"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:59:44 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:46 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.05
+19:59:48 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: 加入X平台担任产品负责人 (ID: 41)
+19:59:48 │ [33mWARNING[0m │ src.clustering.enhanced_pipeline │ FTS 查询失败: (sqlite3.OperationalError) no such table: topics_fts
+[SQL: 
+                SELECT t.id, t.title, t.category, t.tags, t.heat_score, t.keywords
+                FROM topics t
+                JOIN topics_fts fts ON t.id = fts.rowid
+                WHERE topics_fts MATCH ?
+                AND t.status = ?
+                ORDER BY t.heat_score DESC
+                LIMIT ?
+            ]
+[parameters: ('"MILLION" OR "EPSTEIN" OR "FILES" OR "RELEASED"', 'active', 5)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+19:59:48 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ FTS 匹配到 5 个候选主题
+19:59:51 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 聚类决策: create, 相关度: 0.12
+19:59:53 │ [32mINFO[0m │ src.clustering.enhanced_pipeline │ 创建新主题: 600万爱泼斯坦文件解密：酷刑与婴儿交易指控 (ID: 42)
+19:59:53 │ [32mINFO[0m │ main         │ 聚类完成: 47 处理, 3 跳过
+19:59:53 │ [32mINFO[0m │ main         │ 检查情报合成触发条件...
+19:59:54 │ [32mINFO[0m │ main         │ 情报合成: 0 个主题
+19:59:54 │ [32mINFO[0m │ main         │ 准备发送情报摘要...
+19:59:56 │ [32mINFO[0m │ main         │ 情报推送完成
+19:59:56 │ [32mINFO[0m │ main         │ 统计: 主题 0 个, 内容 93 条, 情报包 0 个
+19:59:56 │ [32mINFO[0m │ main         │ 运行完成

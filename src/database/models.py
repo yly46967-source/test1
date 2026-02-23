@@ -430,7 +430,11 @@ class RawContent(Base):
 
     # 主题关联
     topic_id = Column(Integer, ForeignKey("topics.id"), comment="关联的主题")
+    topic_name = Column(String(100), comment="主题名称（冗余存储）")
     relevance_score = Column(Float, default=0.0, comment="与主题的相关度 0-1")
+
+    # 价值评分（MVP 新增）
+    value_score = Column(Float, default=0.0, comment="帖子价值评分")
 
     # 处理状态
     is_clustered = Column(Boolean, default=False, comment="是否已聚类")
@@ -471,15 +475,20 @@ class IntelligencePackage(Base):
     intel_id = Column(String(100), unique=True, nullable=False, comment="情报包 ID (intel_20240219_xxx)")
 
     # 主题关联
-    topic_id = Column(Integer, ForeignKey("topics.id"), unique=True, nullable=False, comment="关联的主题")
+    topic_id = Column(Integer, ForeignKey("topics.id"), unique=True, nullable=True, comment="关联的主题")
 
-    # 合成内容 (JSON 存储完整的 synthesis 对象)
-    tldr = Column(String(200), comment="一句话结论")
-    fact_summary = Column(JSON, comment="事实摘要 {what, who, when, scale}")
-    action_guide = Column(JSON, comment="行动指南 {for_developers, for_investors, pitfalls}")
-    logic_chain = Column(JSON, comment="逻辑推演链")
-    historical_context = Column(JSON, comment="历史关联")
-    verdict = Column(JSON, comment="综合判断 {impact_level, time_sensitivity, analyst_note}")
+    # 合成内容 - 三段式情报结构（MVP）
+    tldr = Column(String(200), comment="情报标题")
+    signal = Column(Text, comment="核心信号：3句话说清新变量")
+    shift = Column(Text, comment="利益重构：谁获利？谁受损？")
+    alpha = Column(JSON, comment="行动灵感：2-3个可操作方向")
+
+    # 兼容旧字段
+    fact_summary = Column(JSON, comment="[旧] 事实摘要")
+    action_guide = Column(JSON, comment="[旧] 行动指南")
+    logic_chain = Column(JSON, comment="[旧] 逻辑推演链")
+    historical_context = Column(JSON, comment="[旧] 历史关联")
+    verdict = Column(JSON, comment="[旧] 综合判断")
 
     # 时间轴
     event_date = Column(DateTime, comment="事件日期")

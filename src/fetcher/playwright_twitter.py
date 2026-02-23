@@ -192,13 +192,18 @@ class PlaywrightTwitterFetcher:
         delay = random.uniform(self.min_delay, self.max_delay)
         await asyncio.sleep(delay)
 
-    async def _human_scroll(self, page: Page):
-        """模拟人类滚动行为"""
-        for _ in range(3):
+    async def _human_scroll(self, page: Page, scroll_times: int = 5):
+        """模拟人类滚动行为，加载更多推文"""
+        for i in range(scroll_times):
             # 随机滚动距离
-            scroll_distance = random.randint(300, 600)
+            scroll_distance = random.randint(400, 800)
             await page.evaluate(f'window.scrollBy(0, {scroll_distance})')
-            await asyncio.sleep(random.uniform(0.5, 1.5))
+            # 等待内容加载
+            await asyncio.sleep(random.uniform(1.0, 2.0))
+
+            # 每隔几次滚动，等待更长时间让内容完全加载
+            if (i + 1) % 2 == 0:
+                await asyncio.sleep(random.uniform(0.5, 1.0))
 
     async def fetch_user_tweets(
         self,
@@ -236,6 +241,7 @@ class PlaywrightTwitterFetcher:
         tweets = []
 
         try:
+            # 访问用户主页（默认显示最新推文）
             url = f"https://x.com/{username}"
             logger.info(f"Fetching @{username}...")
 
@@ -268,11 +274,17 @@ class PlaywrightTwitterFetcher:
                     error="Page redirected or blocked"
                 )
 
-            # 模拟人类滚动
-            await self._human_scroll(page)
+            # 等待页面稳定
+            await asyncio.sleep(1.5)
+
+            # 模拟人类滚动，加载更多推文（增加滚动次数）
+            await self._human_scroll(page, scroll_times=6)
 
             # 提取推文数据
             tweets = await self._extract_tweets(page, username)
+
+            # 按发布时间排序（最新的在前）
+            tweets.sort(key=lambda t: t.published_at or datetime.min, reverse=True)
 
             # 记录抓取时间
             self._last_fetch_times[username] = datetime.now()
@@ -332,13 +344,40 @@ class PlaywrightTwitterFetcher:
                         const verifiedEl = article.querySelector('[data-testid="User-Name"] svg[aria-label*="Verified"], [data-testid="User-Name"] svg[data-testid="icon-verified"]');
                         const isVerified = !!verifiedEl;
 
-                        // 提取互动数据
+                        // 提取互动数据 - 改进版本，支持多种格式
                         const getMetric = (testId) => {
                             const el = article.querySelector(`[data-testid="${testId}"]`);
                             if (!el) return 0;
-                            const text = el.innerText || el.getAttribute('aria-label') || '';
-                            const match = text.match(/([\\d,]+)/);
-                            return match ? parseInt(match[1].replace(/,/g, '')) : 0;
+
+                            // 优先从 aria-label 获取（更准确）
+                            const ariaLabel = el.getAttribute('aria-label') || '';
+                            // 格式如 "123 Likes", "1,234 replies", "12K Retweets"
+                            const ariaMatch = ariaLabel.match(/([\\d,\\.]+)\\s*[KMkm]?/i);
+                            if (ariaMatch) {
+                                let num = ariaMatch[0].replace(/,/g, '');
+                                // 处理 K/M 后缀
+                                if (/k/i.test(num)) {
+                                    return Math.round(parseFloat(num) * 1000);
+                                } else if (/m/i.test(num)) {
+                                    return Math.round(parseFloat(num) * 1000000);
+                                }
+                                return parseInt(num) || 0;
+                            }
+
+                            // 备用：从 innerText 获取
+                            const text = el.innerText || '';
+                            const textMatch = text.match(/([\\d,\\.]+)\\s*[KMkm]?/i);
+                            if (textMatch) {
+                                let num = textMatch[0].replace(/,/g, '');
+                                if (/k/i.test(num)) {
+                                    return Math.round(parseFloat(num) * 1000);
+                                } else if (/m/i.test(num)) {
+                                    return Math.round(parseFloat(num) * 1000000);
+                                }
+                                return parseInt(num) || 0;
+                            }
+
+                            return 0;
                         };
 
                         const replies = getMetric('reply');

@@ -1,28 +1,30 @@
 """情报处理模块"""
+# 新版简化合成
+from .synthesis import SynthesisEngine, SynthesisResult, ValueLevel, synthesize_topic
+
+# 兼容旧版
 from .enhanced_synthesis import (
     EnhancedSynthesisEngine,
     EnhancedSynthesisResult,
-    ValueLevel,
     SourceMapping,
     enhanced_synthesize_topic,
     BatchSynthesizer,
     BatchSynthesisResult,
     batch_synthesize_topics,
-    GEMINI_BATCH_SIZE,
-    MAX_CONCURRENT_LLM,
 )
 
 __all__ = [
-    # 增强版合成
+    # 新版
+    "SynthesisEngine",
+    "SynthesisResult",
+    "ValueLevel",
+    "synthesize_topic",
+    # 兼容旧版
     "EnhancedSynthesisEngine",
     "EnhancedSynthesisResult",
-    "ValueLevel",
     "SourceMapping",
     "enhanced_synthesize_topic",
-    # 批量合成
     "BatchSynthesizer",
     "BatchSynthesisResult",
     "batch_synthesize_topics",
-    "GEMINI_BATCH_SIZE",
-    "MAX_CONCURRENT_LLM",
 ]
