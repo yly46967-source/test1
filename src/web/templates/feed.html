@@ -177,18 +177,18 @@
                 <h3 class="intel-title">{{ intel.tldr }}</h3>
                 <div class="intel-signal">
                     <strong>核心信号</strong>
-                    <p>{{ intel.signal[:120] }}{% if intel.signal|length > 120 %}...{% endif %}</p>
+                    <p>{{ intel.signal }}</p>
                 </div>
                 <div class="intel-shift">
                     <strong>利益重构</strong>
-                    <p>{{ intel.shift[:80] }}{% if intel.shift|length > 80 %}...{% endif %}</p>
+                    <p>{{ intel.shift }}</p>
                 </div>
                 {% if intel.alpha %}
                 <div class="intel-alpha">
                     <strong>行动灵感</strong>
                     <ul>
-                        {% for action in intel.alpha[:2] %}
-                        <li>{{ action[:60] }}{% if action|length > 60 %}...{% endif %}</li>
+                        {% for action in intel.alpha %}
+                        <li>{{ action }}</li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -430,7 +430,10 @@ async function loadKolList(page = 1) {
         if (data.kols && data.kols.length > 0) {
             container.innerHTML = `<div class="kol-grid">${data.kols.map(kol => `
                 <div class="kol-card" data-id="${kol.id}">
-                    <div class="kol-card-avatar">${(kol.name || kol.handle)[0].toUpperCase()}</div>
+                    ${kol.avatar_url
+                        ? `<img class="kol-card-avatar-img" src="${kol.avatar_url}" alt="${kol.name || kol.handle}">`
+                        : `<div class="kol-card-avatar">${(kol.name || kol.handle)[0].toUpperCase()}</div>`
+                    }
                     <div class="kol-card-info">
                         <div class="kol-card-name">${kol.name || kol.handle}</div>
                         <div class="kol-card-handle">@${kol.handle}</div>

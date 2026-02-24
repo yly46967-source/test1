@@ -116,7 +116,7 @@ async def run_fetch(limit: int = 10, profile: str = "Default") -> List[dict]:
         profile: Chrome Profile 名称 (Default, Profile 2, Profile 3)
     """
     from src.fetcher.chrome_twitter import ChromeTwitterFetcher
-    from src.database.models import RawContent, SourceTypeEnum
+    from src.database.models import RawContent, SourceTypeEnum, KOL
     from src.algorithms.scoring import calc_value_score, should_filter
 
     logger.info("=" * 40)
@@ -152,6 +152,17 @@ async def run_fetch(limit: int = 10, profile: str = "Default") -> List[dict]:
                     continue
 
                 kol = kol_map.get(username)
+
+                # 更新 KOL 头像（从第一条推文获取）
+                if kol and result.tweets and not kol.avatar_url:
+                    first_tweet = result.tweets[0]
+                    if first_tweet.author_avatar:
+                        await session.execute(
+                            update(KOL)
+                            .where(KOL.id == kol.id)
+                            .values(avatar_url=first_tweet.author_avatar)
+                        )
+
                 for tweet in result.tweets:
                     if not tweet.tweet_url:
                         continue

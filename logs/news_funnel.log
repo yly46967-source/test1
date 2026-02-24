@@ -17497,3 +17497,62 @@ Call log:
 2026-02-23 20:47:53 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:152 │ 已从文件导入 2 个 Cookie
 2026-02-23 20:47:53 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [1/10] 抓取 @ylecun
 2026-02-23 20:47:53 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @ylecun 主页...
+2026-02-23 20:48:12 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:392 │ @ylecun: 找到 9 条推文 URL
+2026-02-23 20:48:21 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:415 │ @ylecun: 成功获取 9 条推文详情
+2026-02-23 20:48:24 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [2/10] 抓取 @demaborsa
+2026-02-23 20:48:24 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @demaborsa 主页...
+2026-02-23 20:48:44 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [3/10] 抓取 @DarioAmodei
+2026-02-23 20:48:44 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @DarioAmodei 主页...
+2026-02-23 20:48:57 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:392 │ @DarioAmodei: 找到 4 条推文 URL
+2026-02-23 20:49:00 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:415 │ @DarioAmodei: 成功获取 4 条推文详情
+2026-02-23 20:49:03 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [4/10] 抓取 @DrJimFan
+2026-02-23 20:49:04 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @DrJimFan 主页...
+2026-02-23 20:49:16 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:392 │ @DrJimFan: 找到 14 条推文 URL
+2026-02-23 20:49:30 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:415 │ @DrJimFan: 成功获取 14 条推文详情
+2026-02-23 20:49:33 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [5/10] 抓取 @swyx
+2026-02-23 20:49:33 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @swyx 主页...
+2026-02-23 20:49:46 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:392 │ @swyx: 找到 14 条推文 URL
+2026-02-23 20:50:01 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:415 │ @swyx: 成功获取 14 条推文详情
+2026-02-23 20:50:04 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [6/10] 抓取 @hwchase17
+2026-02-23 20:50:04 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @hwchase17 主页...
+2026-02-23 20:50:16 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:392 │ @hwchase17: 找到 9 条推文 URL
+2026-02-23 20:50:25 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:415 │ @hwchase17: 成功获取 9 条推文详情
+2026-02-23 20:50:28 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [7/10] 抓取 @jerryjliu0
+2026-02-23 20:50:28 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @jerryjliu0 主页...
+2026-02-23 20:50:40 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:392 │ @jerryjliu0: 找到 10 条推文 URL
+2026-02-23 20:50:50 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:415 │ @jerryjliu0: 成功获取 10 条推文详情
+2026-02-23 20:50:53 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [8/10] 抓取 @cloakedninja
+2026-02-23 20:50:53 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @cloakedninja 主页...
+2026-02-23 20:51:12 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [9/10] 抓取 @aabordes
+2026-02-23 20:51:12 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @aabordes 主页...
+2026-02-23 20:51:31 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [10/10] 抓取 @jaseweston
+2026-02-23 20:51:31 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @jaseweston 主页...
+2026-02-23 20:51:43 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:392 │ @jaseweston: 找到 14 条推文 URL
+2026-02-23 20:51:57 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:415 │ @jaseweston: 成功获取 14 条推文详情
+2026-02-23 20:51:57 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:575 │ 批量抓取完成: 7/10 成功, 74 条推文
+2026-02-23 20:51:57 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:342 │ 浏览器已关闭
+2026-02-23 20:51:57 │ [32mINFO[0m │ main            │ ainsight.py:209 │ @ylecun: 9 条
+2026-02-23 20:51:57 │ [33mWARNING[0m │ main            │ ainsight.py:151 │ @demaborsa: 失败 - 页面加载超时或无推文
+2026-02-23 20:51:57 │ [32mINFO[0m │ main            │ ainsight.py:209 │ @DarioAmodei: 4 条
+2026-02-23 20:51:57 │ [32mINFO[0m │ main            │ ainsight.py:209 │ @DrJimFan: 14 条
+2026-02-23 20:51:57 │ [32mINFO[0m │ main            │ ainsight.py:209 │ @swyx: 14 条
+2026-02-23 20:51:57 │ [32mINFO[0m │ main            │ ainsight.py:209 │ @hwchase17: 9 条
+2026-02-23 20:51:57 │ [32mINFO[0m │ main            │ ainsight.py:209 │ @jerryjliu0: 10 条
+2026-02-23 20:51:57 │ [33mWARNING[0m │ main            │ ainsight.py:151 │ @cloakedninja: 失败 - 页面加载超时或无推文
+2026-02-23 20:51:57 │ [33mWARNING[0m │ main            │ ainsight.py:151 │ @aabordes: 失败 - 页面加载超时或无推文
+2026-02-23 20:51:57 │ [32mINFO[0m │ main            │ ainsight.py:209 │ @jaseweston: 14 条
+2026-02-23 20:51:57 │ [32mINFO[0m │ main            │ ainsight.py:213 │ 抓取完成: 30 条保存, 4 条过滤
+2026-02-23 20:51:57 │ [32mINFO[0m │ main            │ ainsight.py:228 │ ========================================
+2026-02-23 20:51:57 │ [32mINFO[0m │ main            │ ainsight.py:229 │ 开始主题提取
+2026-02-23 20:51:57 │ [32mINFO[0m │ main            │ ainsight.py:230 │ ========================================
+2026-02-23 20:51:58 │ [32mINFO[0m │ main            │ ainsight.py:249 │ 待提取: 42 条
+2026-02-23 20:52:23 │ [32mINFO[0m │ main            │ ainsight.py:272 │ 主题提取完成: 30 条更新
+2026-02-23 20:52:23 │ [32mINFO[0m │ main            │ ainsight.py:280 │ ========================================
+2026-02-23 20:52:23 │ [32mINFO[0m │ main            │ ainsight.py:281 │ 开始情报生成
+2026-02-23 20:52:23 │ [32mINFO[0m │ main            │ ainsight.py:282 │ ========================================
+2026-02-23 20:52:24 │ [32mINFO[0m │ main            │ ainsight.py:321 │ 主题分布: 120 个主题
+2026-02-23 20:53:05 │ [32mINFO[0m │ main            │ ainsight.py:365 │ 情报生成完成: 8 个情报
+2026-02-23 20:53:05 │ [32mINFO[0m │ main            │ ainsight.py:429 │ 流程完成，Web 服务运行中: http://localhost:8001
+2026-02-23 20:53:05 │ [32mINFO[0m │ main            │ ainsight.py:430 │ 按 Ctrl+C 退出
+2026-02-23 22:28:10 │ [32mINFO[0m │ main            │ ainsight.py:403 │ 启动 Web: http://0.0.0.0:8001
+2026-02-23 22:41:34 │ [32mINFO[0m │ main            │ ainsight.py:403 │ 启动 Web: http://0.0.0.0:8001

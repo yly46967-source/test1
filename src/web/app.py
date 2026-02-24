@@ -316,6 +316,7 @@ async def api_list_kols(
                 "id": k.id,
                 "handle": k.handle,
                 "name": k.name,
+                "avatar_url": k.avatar_url,
                 "tier": k.tier.value if k.tier else None,
                 "role": k.role.value if k.role else None,
                 "weight": k.weight,
