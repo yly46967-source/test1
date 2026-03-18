@@ -17556,3 +17556,76 @@ Call log:
 2026-02-23 20:53:05 │ [32mINFO[0m │ main            │ ainsight.py:430 │ 按 Ctrl+C 退出
 2026-02-23 22:28:10 │ [32mINFO[0m │ main            │ ainsight.py:403 │ 启动 Web: http://0.0.0.0:8001
 2026-02-23 22:41:34 │ [32mINFO[0m │ main            │ ainsight.py:403 │ 启动 Web: http://0.0.0.0:8001
+2026-02-26 02:03:31 │ [32mINFO[0m │ main            │ ainsight.py:414 │ 启动 Web: http://0.0.0.0:8001
+2026-03-12 16:46:44 │ [32mINFO[0m │ main            │ ainsight.py:422 │ ==================================================
+2026-03-12 16:46:44 │ [32mINFO[0m │ main            │ ainsight.py:423 │ AInsight MVP 全功能模式
+2026-03-12 16:46:44 │ [32mINFO[0m │ main            │ ainsight.py:424 │ ==================================================
+2026-03-12 16:46:44 │ [32mINFO[0m │ main            │ ainsight.py:50 │ 数据库已初始化
+2026-03-12 16:46:44 │ [32mINFO[0m │ main            │ ainsight.py:432 │ Web 服务已启动: http://localhost:8001
+2026-03-12 16:46:44 │ [32mINFO[0m │ main            │ ainsight.py:414 │ 启动 Web: http://0.0.0.0:8001
+2026-03-12 16:46:44 │ [32mINFO[0m │ main            │ ainsight.py:122 │ ========================================
+2026-03-12 16:46:44 │ [32mINFO[0m │ main            │ ainsight.py:123 │ 开始抓取 (Chrome Profile + FxTwitter)
+2026-03-12 16:46:44 │ [32mINFO[0m │ main            │ ainsight.py:124 │ ========================================
+2026-03-12 16:46:44 │ [32mINFO[0m │ main            │ ainsight.py:135 │ 抓取 10 个用户，使用 Profile: Default
+2026-03-12 16:46:45 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:152 │ 已从文件导入 2 个 Cookie
+2026-03-12 16:46:45 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [1/10] 抓取 @Cryptobtcmiko
+2026-03-12 16:46:45 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @Cryptobtcmiko 主页...
+2026-03-12 16:47:11 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [2/10] 抓取 @Space_Station
+2026-03-12 16:47:11 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @Space_Station 主页...
+2026-03-12 16:47:31 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [3/10] 抓取 @lilaoshizuikeai
+2026-03-12 16:47:31 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @lilaoshizuikeai 主页...
+2026-03-12 16:47:50 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:392 │ @lilaoshizuikeai: 找到 14 条推文 URL
+2026-03-12 16:48:21 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:415 │ @lilaoshizuikeai: 成功获取 14 条推文详情
+2026-03-12 16:48:24 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [4/10] 抓取 @thedorbrothers
+2026-03-12 16:48:24 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @thedorbrothers 主页...
+2026-03-12 16:48:46 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:392 │ @thedorbrothers: 找到 12 条推文 URL
+2026-03-12 16:49:14 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:415 │ @thedorbrothers: 成功获取 12 条推文详情
+2026-03-12 16:49:17 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [5/10] 抓取 @IceBearMiner
+2026-03-12 16:49:17 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @IceBearMiner 主页...
+2026-03-12 16:49:34 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:392 │ @IceBearMiner: 找到 10 条推文 URL
+2026-03-12 16:49:54 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:415 │ @IceBearMiner: 成功获取 10 条推文详情
+2026-03-12 16:49:57 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [6/10] 抓取 @turingou
+2026-03-12 16:49:57 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @turingou 主页...
+2026-03-12 16:50:13 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:392 │ @turingou: 找到 14 条推文 URL
+2026-03-12 16:50:39 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:415 │ @turingou: 成功获取 14 条推文详情
+2026-03-12 16:50:43 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [7/10] 抓取 @NEO_Diver
+2026-03-12 16:50:43 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @NEO_Diver 主页...
+2026-03-12 16:50:56 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:392 │ @NEO_Diver: 找到 10 条推文 URL
+2026-03-12 16:51:14 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:415 │ @NEO_Diver: 成功获取 10 条推文详情
+2026-03-12 16:51:17 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [8/10] 抓取 @Lara82175200
+2026-03-12 16:51:17 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @Lara82175200 主页...
+2026-03-12 16:51:30 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:392 │ @Lara82175200: 找到 11 条推文 URL
+2026-03-12 16:51:58 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:415 │ @Lara82175200: 成功获取 11 条推文详情
+2026-03-12 16:52:01 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [9/10] 抓取 @Nikitka_aktikiN
+2026-03-12 16:52:01 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @Nikitka_aktikiN 主页...
+2026-03-12 16:52:23 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:563 │ [10/10] 抓取 @li12826221
+2026-03-12 16:52:23 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:364 │ 访问 @li12826221 主页...
+2026-03-12 16:52:37 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:392 │ @li12826221: 找到 15 条推文 URL
+2026-03-12 16:53:05 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:415 │ @li12826221: 成功获取 15 条推文详情
+2026-03-12 16:53:05 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:575 │ 批量抓取完成: 7/10 成功, 86 条推文
+2026-03-12 16:53:05 │ [32mINFO[0m │ src.fetcher.chrome_twitter │ chrome_twitter.py:342 │ 浏览器已关闭
+2026-03-12 16:53:05 │ [33mWARNING[0m │ main            │ ainsight.py:151 │ @Cryptobtcmiko: 失败 - 页面加载超时或无推文
+2026-03-12 16:53:05 │ [33mWARNING[0m │ main            │ ainsight.py:151 │ @Space_Station: 失败 - 页面加载超时或无推文
+2026-03-12 16:53:05 │ [32mINFO[0m │ main            │ ainsight.py:220 │ @lilaoshizuikeai: 14 条
+2026-03-12 16:53:05 │ [32mINFO[0m │ main            │ ainsight.py:220 │ @thedorbrothers: 12 条
+2026-03-12 16:53:05 │ [32mINFO[0m │ main            │ ainsight.py:220 │ @IceBearMiner: 10 条
+2026-03-12 16:53:05 │ [32mINFO[0m │ main            │ ainsight.py:220 │ @turingou: 14 条
+2026-03-12 16:53:05 │ [32mINFO[0m │ main            │ ainsight.py:220 │ @NEO_Diver: 10 条
+2026-03-12 16:53:05 │ [32mINFO[0m │ main            │ ainsight.py:220 │ @Lara82175200: 11 条
+2026-03-12 16:53:05 │ [33mWARNING[0m │ main            │ ainsight.py:151 │ @Nikitka_aktikiN: 失败 - 页面加载超时或无推文
+2026-03-12 16:53:05 │ [32mINFO[0m │ main            │ ainsight.py:220 │ @li12826221: 15 条
+2026-03-12 16:53:05 │ [32mINFO[0m │ main            │ ainsight.py:224 │ 抓取完成: 63 条保存, 23 条过滤
+2026-03-12 16:53:05 │ [32mINFO[0m │ main            │ ainsight.py:239 │ ========================================
+2026-03-12 16:53:05 │ [32mINFO[0m │ main            │ ainsight.py:240 │ 开始主题提取
+2026-03-12 16:53:05 │ [32mINFO[0m │ main            │ ainsight.py:241 │ ========================================
+2026-03-12 16:53:06 │ [32mINFO[0m │ main            │ ainsight.py:260 │ 待提取: 75 条
+2026-03-12 16:53:08 │ [33mWARNING[0m │ src.algorithms.topic │ topic.py:101 │ 主题提取失败: Error code: 400 - {'error': {'message': 'Input data may contain inappropriate content. For details, see: https://help.aliyun.com/zh/model-studio/error-code#inappropriate-content', 'type': 'data_inspection_failed', 'param': None, 'code': 'data_inspection_failed'}, 'id': 'chatcmpl-abd4dda4-541b-9f95-8ee0-ba2b4f7a0774', 'request_id': 'abd4dda4-541b-9f95-8ee0-ba2b4f7a0774'}
+2026-03-12 16:53:45 │ [32mINFO[0m │ main            │ ainsight.py:283 │ 主题提取完成: 56 条更新
+2026-03-12 16:53:45 │ [32mINFO[0m │ main            │ ainsight.py:291 │ ========================================
+2026-03-12 16:53:45 │ [32mINFO[0m │ main            │ ainsight.py:292 │ 开始情报生成
+2026-03-12 16:53:45 │ [32mINFO[0m │ main            │ ainsight.py:293 │ ========================================
+2026-03-12 16:53:46 │ [32mINFO[0m │ main            │ ainsight.py:332 │ 主题分布: 158 个主题
+2026-03-12 16:54:06 │ [33mWARNING[0m │ src.algorithms.intel │ intel.py:105 │ 情报生成失败 [wanman AI]: Error code: 400 - {'error': {'message': 'Input data may contain inappropriate content. For details, see: https://help.aliyun.com/zh/model-studio/error-code#inappropriate-content', 'type': 'data_inspection_failed', 'param': None, 'code': 'data_inspection_failed'}, 'id': 'chatcmpl-2c88db50-1f81-9887-ab41-5476eff0194b', 'request_id': '2c88db50-1f81-9887-ab41-5476eff0194b'}
+2026-03-12 16:55:17 │ [32mINFO[0m │ main            │ ainsight.py:376 │ 情报生成完成: 13 个情报
+2026-03-12 16:55:17 │ [32mINFO[0m │ main            │ ainsight.py:440 │ 流程完成，Web 服务运行中: http://localhost:8001
+2026-03-12 16:55:17 │ [32mINFO[0m │ main            │ ainsight.py:441 │ 按 Ctrl+C 退出

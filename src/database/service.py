@@ -130,24 +130,24 @@ class DatabaseService:
                     source_data["region"].lower(), RegionEnum.WORLD
                 )
 
-            stmt = pg_insert(NewsSource).values(**source_data)
-            stmt = stmt.on_conflict_do_update(
-                index_elements=["name"],
-                set_={
-                    "url": stmt.excluded.url,
-                    "region": stmt.excluded.region,
-                    "source_type": stmt.excluded.source_type,
-                    "enabled": stmt.excluded.enabled,
-                    "updated_at": datetime.utcnow(),
-                }
-            )
-            await session.execute(stmt)
-            await session.commit()
-
+            # 先查找是否存在
             result = await session.execute(
                 select(NewsSource).where(NewsSource.name == source_data["name"])
             )
-            return result.scalar_one()
+            existing = result.scalar_one_or_none()
+
+            if existing:
+                for key, value in source_data.items():
+                    if key != "name":
+                        setattr(existing, key, value)
+                existing.updated_at = datetime.utcnow()
+                await session.flush()
+                return existing
+            else:
+                source = NewsSource(**source_data)
+                session.add(source)
+                await session.flush()
+                return source
 
     async def update_source_fetch_time(self, source_id: int):
         """更新新闻源的最后抓取时间"""

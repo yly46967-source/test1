@@ -161,7 +161,7 @@ async def api_content_detail(content_id: int):
         content = result.scalar_one_or_none()
 
         if not content:
-            return {"error": "Content not found"}
+            raise HTTPException(status_code=404, detail="Content not found")
 
         return {
             "content": {
@@ -175,12 +175,11 @@ async def api_content_detail(content_id: int):
                 "author_name": content.author_name,
                 "author_handle": content.author_handle,
                 "author_avatar": content.author_avatar,
-                "is_verified": getattr(content, 'is_verified', False),
-                "kol_tier": content.raw_data.get('kol_tier', 'observer') if content.raw_data else 'observer',
+                "is_verified": content.is_verified or False,
                 "likes": content.likes or 0,
                 "retweets": content.retweets or 0,
                 "replies": content.replies or 0,
-                "raw_data": content.raw_data if content.raw_data else {},
+                "value_score": content.value_score or 0,
             }
         }
 

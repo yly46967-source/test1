@@ -6,8 +6,11 @@
 使用 LLM 批量提取，10 条帖子一次调用。
 """
 import json
+import logging
 from typing import Optional
 from openai import AsyncOpenAI
+
+logger = logging.getLogger(__name__)
 
 
 # 主题提取 Prompt
@@ -95,7 +98,7 @@ async def _extract_batch(
         return results
 
     except Exception as e:
-        print(f"主题提取失败: {e}")
+        logger.warning(f"主题提取失败: {e}")
         # 失败时返回空
         return {start_index + j: [] for j in range(len(posts))}
 

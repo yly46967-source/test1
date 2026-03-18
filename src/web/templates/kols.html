@@ -24,7 +24,7 @@
             </select>
 
             <select id="categoryFilter" onchange="applyFilters()">
-                <option value="">全部分类</option>
+                <option value="">全部角色</option>
                 {% for c in categories %}
                 <option value="{{ c.value }}" {% if current_category == c.value %}selected{% endif %}>
                     {{ c.emoji }} {{ c.label }}
@@ -67,18 +67,6 @@
             </div>
 
             <div class="kol-meta">
-                {% if kol.category %}
-                <span class="tag category-tag">
-                    {% if kol.category.value == 'ai_researcher' %}🔬 研究员
-                    {% elif kol.category.value == 'founder_ceo' %}🚀 创始人
-                    {% elif kol.category.value == 'vc_investor' %}💰 投资人
-                    {% elif kol.category.value == 'engineer' %}👨‍💻 工程师
-                    {% elif kol.category.value == 'journalist' %}📰 媒体
-                    {% elif kol.category.value == 'influencer' %}🎤 博主
-                    {% else %}{{ kol.category.value }}{% endif %}
-                </span>
-                {% endif %}
-
                 {% if kol.role %}
                 <span class="tag role-tag">{{ kol.role.value }}</span>
                 {% endif %}
@@ -90,7 +78,7 @@
                 <a href="{{ nitter_instance }}/{{ kol.handle }}/rss" target="_blank" class="btn-icon" title="RSS 订阅">
                     📡
                 </a>
-                <button class="btn-icon" onclick="editKol({{ kol.id }}, '{{ kol.handle }}', '{{ kol.name }}', '{{ kol.tier.value if kol.tier else 'observer' }}', '{{ kol.category.value if kol.category else '' }}', {{ kol.weight }})" title="编辑">
+                <button class="btn-icon" onclick="editKol({{ kol.id }}, '{{ kol.handle }}', '{{ kol.name }}', '{{ kol.tier.value if kol.tier else 'observer' }}', {{ kol.weight }})" title="编辑">
                     ✏️
                 </button>
                 <button class="btn-icon btn-danger" onclick="deleteKol({{ kol.id }}, '{{ kol.handle }}')" title="删除">
@@ -146,18 +134,6 @@
                         <option value="insider">🔮 Insider</option>
                         <option value="expert">🎯 Expert</option>
                         <option value="god">👑 God Tier</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>分类</label>
-                    <select name="category">
-                        <option value="">未分类</option>
-                        <option value="ai_researcher">🔬 AI 研究员</option>
-                        <option value="founder_ceo">🚀 创始人/CEO</option>
-                        <option value="vc_investor">💰 投资人</option>
-                        <option value="engineer">👨‍💻 工程师</option>
-                        <option value="journalist">📰 记者/媒体</option>
-                        <option value="influencer">🎤 KOL/博主</option>
                     </select>
                 </div>
             </div>
@@ -222,18 +198,6 @@
                         <option value="insider">🔮 Insider</option>
                         <option value="expert">🎯 Expert</option>
                         <option value="god">👑 God Tier</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>分类</label>
-                    <select name="category" id="editKolCategory">
-                        <option value="">未分类</option>
-                        <option value="ai_researcher">🔬 AI 研究员</option>
-                        <option value="founder_ceo">🚀 创始人/CEO</option>
-                        <option value="vc_investor">💰 投资人</option>
-                        <option value="engineer">👨‍💻 工程师</option>
-                        <option value="journalist">📰 记者/媒体</option>
-                        <option value="influencer">🎤 KOL/博主</option>
                     </select>
                 </div>
             </div>
@@ -623,7 +587,6 @@ async function submitAddKol(e) {
         handle: form.handle.value,
         name: form.name.value || null,
         tier: form.tier.value,
-        category: form.category.value || null,
         weight: parseFloat(form.weight.value)
     };
 
@@ -681,12 +644,11 @@ async function submitBatchImport(e) {
 }
 
 // 编辑 KOL
-function editKol(id, handle, name, tier, category, weight) {
+function editKol(id, handle, name, tier, weight) {
     document.getElementById('editKolId').value = id;
     document.getElementById('editKolHandle').value = '@' + handle;
     document.getElementById('editKolName').value = name;
     document.getElementById('editKolTier').value = tier;
-    document.getElementById('editKolCategory').value = category;
     document.getElementById('editKolWeight').value = weight;
     document.getElementById('editKolModal').style.display = 'flex';
 }
@@ -698,7 +660,6 @@ async function submitEditKol(e) {
     const data = {
         name: form.name.value,
         tier: form.tier.value,
-        category: form.category.value || null,
         weight: parseFloat(form.weight.value)
     };
 

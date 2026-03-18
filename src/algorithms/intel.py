@@ -6,9 +6,12 @@
 3. 行动灵感 (The Alpha Opportunity) - 2-3个可操作方向
 """
 import json
+import logging
 from dataclasses import dataclass
 from typing import Optional
 from openai import AsyncOpenAI
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -44,7 +47,7 @@ INTEL_PROMPT = """你是机会发现者。基于以下帖子生成情报。
 
 ## 注意
 - 不要简单总结帖子内容
-- 要挖掘背后的机��和影响
+- 要挖掘背后的机会和影响
 - 行动灵感要具体、可执行"""
 
 
@@ -99,7 +102,7 @@ async def generate_intel(
         )
 
     except Exception as e:
-        print(f"情报生成失败 [{topic}]: {e}")
+        logger.warning(f"情报生成失败 [{topic}]: {e}")
         return None
 
 
